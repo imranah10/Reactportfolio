@@ -1,0 +1,40 @@
+
+[
+    {
+        "id":1,
+        "role":"Web Developer intern",
+        "startDate":"15 jan 2024",
+        "endDate":"17 march 2024",
+        "Location":"CDC Building BHU Banaras",
+        "experiences":[
+            "Working with teams members",
+            "Working on front Technology"
+        ],
+        "imagesrc":"company/makeindia.png"
+    },
+
+    {
+        "id":2,
+        "role":"Internship",
+        "startDate":"04 april 2022",
+        "endDate":"04 june 2022",
+        "Location":"Navi Mumbai, Maharashtra",
+        "experiences":[
+            "works on responsive design",
+            "works on projects under mentor guidance"
+        ],
+        "imagesrc":"company/tcr.webp"
+    },
+    {
+        "id":3,
+        "role":"Training",
+        "startDate":"01 march 2022",
+        "endDate":"11 dec 2022",
+        "Location":"Salt Lake Kolkata",
+        "experiences":[
+            "learn html css js bootstrap jquery react node",
+            "learn to make industry level projects"
+        ],
+        "imagesrc":"company/iem.png"
+    }
+]
