@@ -34,7 +34,7 @@ const Footer = () => {
                     </div>
                   </div>
                     <footer className="fs-5 mb-3">
-                        &copy; Copywrite 2024 Devloped by   <a className="text-white" href="">Imran</a>
+                        &copy; Copywrite 2024 Devloped by   <a className="text-white" href="https://reactportfolio-mu-hazel.vercel.app/">Imran</a>
                     </footer>
                 </div>
             </div>
