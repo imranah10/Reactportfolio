@@ -5,10 +5,12 @@ import './Home.css'
 import  smartedu from '../assets/SmartEDU.png'
 import techhy from '../assets/Techyy.png'
 import trendzz from '../assets/Trendzz.png'
-import Tour from '../assets/tour.png'
+// import Tour from '../assets/tour.png'
 import Retodo from '../assets/todo.png'
 import Boost from '../assets/Boost.png'
 import Portfo1 from '../assets/PORTFOLIO1.png'
+import countries from '../assets/Countries.png'
+import weather from '../assets/weather.png'
 // import Pricing from './projects/Pricing.png'
 // import Counter from './projects/Counter.png'
 import Aos from 'aos'
@@ -51,26 +53,26 @@ const Projects = () => {
 
       <div className="row d-flex justify-content-evenly">
       <div onMouseOver={projimgboxhandle} className="col-sm-12 col-lg-3 mb-2 card projects " style={{'width': '18rem'}} data-aos='flip-left'>
-        <h4 className='card-title projectfontHead text-center'>NOTE TAKING APP</h4>
-  <img onMouseOver={imghandle} src={trendzz} className="card-img-top projimg" alt="Note taking"/>
+        <h4 className='card-title projectfontHead text-center'>Countries api APP</h4>
+  <img onMouseOver={imghandle} src={countries} className="card-img-top projimg" alt="Note taking"/>
   <div className="card-body">
-    <h6 className="card-title">HTML CSS JS BOOTSRAP NODE MONGO DB</h6>
+    <h6 className="card-title">HTML CSS JS BOOTSRAP NODE REACT TAILWIND</h6>
   </div>
   <div className="card-body text-center">
-    <a href="https://github.com/imranah10/Note-Taking-App" className="card-link"style={projectcodecolor}>View code</a>
-    <a href="#" className="card-link"style={projectcodecolor}>Live</a>
+    <a href="https://github.com/imranah10/Countries-api" className="card-link"style={projectcodecolor}>View code</a>
+    <a href="countriesapiproject1.netlify.app" className="card-link"style={projectcodecolor}>Live</a>
   </div>
 </div>
 
 <div onMouseOver={projimgboxhandle}  className="col-sm-12 col-lg-3 mb-2 card projects" style={{'width': '18rem'}} data-aos='flip-right'>
-        <h4 className='card-title text-center projectfontHead py-1'>SMART EDU</h4>
-  <img src={smartedu} className="card-img-top projimg" alt="SMART EDU"/>
+        <h4 className='card-title text-center projectfontHead py-1'>Weather Api App</h4>
+  <img src={weather} className="card-img-top projimg" alt="Weather Api App"/>
   <div className="card-body">
-    <h6 className="card-title text-center">HTML CSS JS BOOTSRAP</h6>
+    <h6 className="card-title text-center">HTML CSS JS REACT REST Apis</h6>
   </div>
   <div className="card-body text-center">
-    <a href="https://github.com/imranah10/SmartEDU" className="card-link"style={projectcodecolor}>View code</a>
-    <a href="https://imranah10.github.io/SmartEDU/" className="card-link"style={projectcodecolor}>Live</a>
+    <a href="https://github.com/imranah10/Weather-App" className="card-link"style={projectcodecolor}>View code</a>
+    <a href="weather-app-eta-ruddy-61.vercel.app" className="card-link"style={projectcodecolor}>Live</a>
   </div>
 </div>
 
@@ -102,15 +104,15 @@ const Projects = () => {
 
   {isShow &&     <div className="row d-flex justify-content-evenly my-3">
     <p className='ms-5 text-white'> <span style={{'color':'#6526ad'}}># </span>Small Projects</p>
-    <div onMouseOver={projimgboxhandle}  className="col-sm-12 col-lg-3 mb-2 card projects" style={{'width': '18rem'}}data-aos='flip-left'>
-        <h4 className='card-title projectfontHead text-center py-1'>TOUR APP</h4>
-  <img src={Tour} className="card-img-top projimg" alt="Tredzz"/>
+    <div onMouseOver={projimgboxhandle}  className="col-sm-12 col-lg-3 mb-2 card projects" style={{'width': '18rem'}} data-aos='flip-right'>
+        <h4 className='card-title text-center projectfontHead py-1'>SMART EDU</h4>
+  <img src={smartedu} className="card-img-top projimg" alt="SMART EDU"/>
   <div className="card-body">
-    <h6 className="card-title text-center">HTML CSS JS BOOTSRAP NODE REACT</h6>
+    <h6 className="card-title text-center">HTML CSS JS BOOTSRAP</h6>
   </div>
   <div className="card-body text-center">
-    <a href="https://github.com/imranah10/React-Tour-Travel" className="card-link"style={projectcodecolor}>View code</a>
-    <a href="https://travel-plum.vercel.app/" className="card-link"style={projectcodecolor}>Live</a>
+    <a href="https://github.com/imranah10/SmartEDU" className="card-link"style={projectcodecolor}>View code</a>
+    <a href="https://imranah10.github.io/SmartEDU/" className="card-link"style={projectcodecolor}>Live</a>
   </div>
 </div>
 
