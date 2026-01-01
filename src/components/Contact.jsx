@@ -1,66 +1,64 @@
 import React from "react";
 import { FaGithub, FaHackerrank, FaLongArrowAltRight } from "react-icons/fa";
 import { BsLinkedin } from "react-icons/bs";
-import './Home.css'
+import './Home.css';
 import { Link } from "react-router-dom";
-// import Aos from 'aos'
-// import 'aos/dist/aos.css'
+import { motion } from "framer-motion";
 
 const Contact = () => {
-  // useEffect(()=>{
-  //   Aos.init({duration:2000});
-  //   },[])
-  const iconstyle = {
-    border: "2px solid #FFFF00",
-    borderRadius: "100%",
-    boxShadow: "5px 5px 10px 0px rgba(101,175,10,0.5)",
-  };
-
   return (
-    <>
-      <div className="container my-3"data-aos="fade-up">
-        <h2 className="text-white text-center my-4">
-          <span style={{ borderBottom: "2px solid #FFFF00" }}>Contact -Us</span>
-        </h2>
-        <div className="row d-flex justify-content-evenly ">
-          <div className="col-sm-12 col-lg-4 text-white fs-4 border contcontenbox " data-aos="fade-up-right">
-            <p>
-              I 'm interested in Full, part and freelance opportunities
-              also.However if you have Jobs available,please give me chance or
-              connect to me.. <FaLongArrowAltRight />{" "}
-            </p>
-          </div>
-          <div className="col-sm-12 col-lg-4 border py-4 px-auto connecbox "data-aos="fade-up-left">
-            <div className="py-1 d-flex justify-content-evenly align-items-center">
-              <FaGithub style={iconstyle} className="fs-1 text-white" />
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to="https://github.com/imranah10">
-                https://github.com/imranah10
-              </Link>
-            </div>
-            <div className="py-1 d-flex justify-content-evenly align-items-center">
-              <BsLinkedin style={iconstyle} className="fs-1 text-white" />
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to="https://www.linkedin.com/in/imran-ahmad-aa257520b/">
-                linkedin.com/in/imran-ahmad
-              </Link>
-            </div>
-            <div className="py-1 d-flex justify-content-evenly align-items-center">
-              <FaHackerrank  style={iconstyle} className="fs-1 text-white" />
+    <div className="container" style={{ padding: '4rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
+      <h2 className="text-center section-title" style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '3rem', color: '#fff' }}>
+        <span style={{ borderBottom: "2px solid var(--neon-cyan)" }}>CONTACT US</span>
+      </h2>
 
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to="https://www.hackerrank.com/profile/imranaha310">
-                www.hackerrank/imranaha10
-              </Link>
-            </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <motion.div
+          className="glass-panel"
+          style={{
+            padding: '3rem',
+            borderRadius: '24px',
+            maxWidth: '600px',
+            width: '100%',
+            position: 'relative',
+            background: 'linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(0,20,20,0.9) 100%)',
+            border: '1px solid var(--neon-cyan)'
+          }}
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+        >
+          {/* Scanning Line */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--neon-green)',
+            boxShadow: '0 0 20px var(--neon-green)', animation: 'scan 2s ease-in-out infinite'
+          }}></div>
+
+          <h3 style={{ textAlign: 'center', fontFamily: 'var(--font-display)', color: 'var(--neon-green)', marginBottom: '2rem' }}>
+            <span style={{ animation: 'blink 1s infinite' }}>●</span> SECURE UPLINK ESTABLISHED
+          </h3>
+
+          <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
+            Initiate protocol to transmit freelance opportunities, mission briefings, or alliance requests.
+          </p>
+
+          <div style={{ display: 'grid', gap: '1.5rem' }}>
+            <a href="https://github.com/imranah10" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: 'var(--text-primary)', color: 'white' }}>
+              <FaGithub size={24} /> ACCESS_GITHUB_REPO
+            </a>
+            <a href="https://www.linkedin.com/in/imran-ahmad-aa257520b/" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: '#0077b5', color: '#0077b5' }}>
+              <BsLinkedin size={24} /> CONNECT_LINKEDIN_NODE
+            </a>
+            <a href="https://www.hackerrank.com/profile/imranaha310" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: '#2EC866', color: '#2EC866' }}>
+              <FaHackerrank size={24} /> DECRYPT_HACKERRANK
+            </a>
           </div>
-        </div>
+
+          <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.8rem', color: '#555', fontFamily: 'monospace' }}>
+            ENCRYPTION: AES-256-GCM // LATENCY: 12ms // STATUS: ONLINE
+          </div>
+        </motion.div>
       </div>
-      {/* <a href="Tel:+91946141526">91946141526</a> */}
-    </>
+    </div>
   );
 };
 

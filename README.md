@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=280&section=header&text=IMRAN%20AHMAD&fontSize=80&animation=fadeIn&fontAlignY=35&desc=MERN%20STACK%20ENGINEER%20|%20AI%20SURGEON&descAlignY=55&descSize=20" width="100%" />
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <br/>
+  <a href="https://reactportfolio-mu-hazel.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/DECRYPT_PORTFOLIO_2026-ACCESS_GRANTED-00FF00?style=for-the-badge&logo=react&logoColor=black" height="45" />
+  </a>
+</div>
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+### 🛡️ Mission: AXIO-LINK
+> "Current Objective: Building the world's most intelligent connectivity bridge using MERN + Generative AI."
 
-### `npm start`
+- 🚀 **Status**: Deploying Advanced Logic
+- 🌱 **Learning**: Quantum React & AI-Native Architecture
+- ⚡ **Activity**: 366/366 Days of relentless evolution in 2025.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🧠 The AI Neural Network (Vibe Coding Arsenal)
+<p align="center">
+  <img src="https://img.shields.io/badge/Cursor_AI-000000?style=for-the-badge&logo=cursor&logoColor=white" />
+  <img src="https://img.shields.io/badge/Lovable-FF00FF?style=for-the-badge&logo=sparkles&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Grok_xAI-000000?style=for-the-badge&logo=x&logoColor=white" />
+  <img src="https://img.shields.io/badge/Perplexity-20B2AA?style=for-the-badge&logo=perplexity&logoColor=white" />
+  <img src="https://img.shields.io/badge/Prompt_Eng-FFD700?style=for-the-badge&logo=ai&logoColor=black" />
+</p>
 
-### `npm test`
+### 💻 Full-Stack Implants (The Tech Core)
+<p align="center">
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/React_JS-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" />
+</p>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🔧 Deep-System Utilities
+<p align="center">
+  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+  <img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" />
+  <img src="https://img.shields.io/badge/Git_Bash-F05032?style=for-the-badge&logo=git&logoColor=white" />
+  <img src="https://img.shields.io/badge/Antigravity-000000?style=for-the-badge&logo=freebsd&logoColor=white" />
+  <img src="https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+</p>
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+###  System Performance & Neural Pulse (2025-2026)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=imranah10&theme=tokyonight&area=true&hide_border=true&point=true" width="100%" alt="Neural Pulse Graph" />
+</p>
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<br/>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🏗️ 2025-2026 Contribution 3D View (New Achievement Logic)
+<div align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=imranah10&theme=tokyonight" width="100%" />
+</div>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<br/>
 
-## Learn More
+<div align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=imranah10&theme=tokyonight" width="100%" />
+</div>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🤝 Initialize Connection
+<p align="center">
+<a href="https://www.linkedin.com/in/imran-ahmad-aa257520b/" target="_blank">
+  <img src="https://img.shields.io/badge/LINKEDIN-INITIATE-blue?style=for-the-badge&logo=linkedin" />
+</a>
+<a href="mailto:imranaha310@gmail.com">
+  <img src="https://img.shields.io/badge/EMAIL-DECRYPT-red?style=for-the-badge&logo=gmail" />
+</a>
+</p>
 
-### Code Splitting
+<p align="center">
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight" />
+</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
+---
 
-### Analyzing the Bundle Size
+### 📂 Repository Identity: Cyber-Luxury Matrix Portfolio
+> This repository houses the source code for my 2025/2026 Developer Portfolio, a high-fidelity web experience designed to showcase advanced MERN stack capabilities and AI integration.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### 🛠️ Local Installation
+```bash
+# Clone the repository
+git clone https://github.com/imranah10/Reactportfolio.git
 
-### Making a Progressive Web App
+# Install dependencies
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Start the neural link
+npm start
+```

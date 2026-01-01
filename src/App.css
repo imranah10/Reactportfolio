@@ -1,0 +1,65 @@
+/* Global CRT Scanline Overlay */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 99999;
+    /* MAX Z-INDEX */
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* Static Noise Overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 255, 255, 0.05) 1px,
+            rgba(0, 255, 255, 0.05) 2px);
+    pointer-events: none;
+    z-index: 99998;
+}
+
+/* Cyber Grid Floor */
+.App-Container {
+    background-image:
+        linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center top;
+}
+
+/* Scrollbar customization for Cyber Look */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--neon-cyan);
+    border-radius: 4px;
+}
+
+/* Selection Color */
+::selection {
+    background: var(--neon-cyan);
+    color: #000;
+    text-shadow: none;
+}
