@@ -1,359 +1,184 @@
-import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { FaLongArrowAltRight, FaYoutube, FaExternalLinkAlt, FaGithub, FaPlay } from 'react-icons/fa';
-import './Home.css';
-
-const TiltCard = ({ children, className }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      className={`project-card ${className || ''}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-    >
-      <div
-        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-        className="glass-card"
-      >
-        {/* Holo Overlay */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(125deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%)',
-          pointerEvents: 'none', zIndex: 10
-        }} />
-        {children}
-      </div>
-    </motion.div>
-  );
-};
-
-const VideoModal = ({ videoUrl, onClose }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-        background: 'rgba(0,0,0,0.8)', zIndex: 99999,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '1rem'
-      }}
-      onClick={onClose}
-    >
-      <motion.div
-        layoutId={videoUrl} // Shared layout ID for smooth expansion
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.8, opacity: 0 }}
-        style={{
-          width: '90%', maxWidth: '800px', // Smaller than full screen
-          aspectRatio: '16/9',
-          position: 'relative', background: '#000',
-          boxShadow: '0 0 30px rgba(0, 243, 255, 0.3)',
-          border: '1px solid var(--neon-cyan)',
-          borderRadius: '12px',
-          overflow: 'hidden'
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute', top: '10px', right: '15px', zIndex: 10,
-            background: 'rgba(0,0,0,0.5)', border: 'none', color: '#fff',
-            fontSize: '1.5rem', cursor: 'pointer', borderRadius: '50%',
-            width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center'
-          }}
-        >
-          &times;
-        </button>
-        <video
-          src={videoUrl}
-          autoPlay
-          controls
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </motion.div>
-    </motion.div>
-  );
-};
-
-const VideoPreview = ({ videoUrl, isActive }) => {
-  const videoRef = useRef(null);
-
-  React.useEffect(() => {
-    if (videoRef.current) {
-      if (isActive) {
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(e => console.log("Play interrupted"));
-        }
-      } else {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    }
-  }, [isActive]);
-
-  return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', background: '#000' }}>
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        muted
-        loop
-        playsInline
-        style={{
-          width: '100%', height: '100%', objectFit: 'cover',
-          filter: isActive ? 'none' : 'brightness(0.6)',
-          transition: 'filter 0.3s ease'
-        }}
-      />
-
-      {/* Play Icon - Only visible when NOT active */}
-      {!isActive && (
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          pointerEvents: 'none'
-        }}>
-          <div style={{
-            width: '50px', height: '50px', borderRadius: '50%',
-            background: 'rgba(0,0,0,0.5)',
-            border: '2px solid var(--neon-cyan)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 10px var(--neon-cyan)'
-          }}>
-            <FaPlay className="text-white" style={{ marginLeft: '3px', color: 'var(--neon-cyan)' }} size={20} />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+import React, { useState } from 'react';
+import projects from './data/projects.json';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaGithub, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa';
 
 const Projects = () => {
-  const [showAll, setShowAll] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(null);
+  const [showArchive, setShowArchive] = useState(false);
 
-  // Helper to build Cloudinary Video URL
-  const getCloudinaryVideo = (publicId) =>
-    `https://res.cloudinary.com/dzhtnwfg0/video/upload/${publicId}.mp4`;
+  // Safe array slicing just in case projects don't load correctly
+  const projectList = projects || [];
+  const featured = projectList.slice(0, 4); // First 4 are video projects
+  const archive = projectList.slice(4); // Remaining 9 are image projects
 
-  const videoProjects = [
-    {
-      title: "Thought Echo 🌙✨",
-      desc: "A magical cosmic web app that turns your daily thoughts into beautiful, personalized AI reflections.",
-      tech: "React • Vite • Tailwind • Framer Motion • Gemini API",
-      live: "https://thought-echo.vercel.app",
-      videoUrl: getCloudinaryVideo("Thought_Echo_-_Magical_Resonance_q8kafk"),
-    },
-    {
-      title: "Dev (Portfolio)",
-      desc: "Futuristic 3D portfolio with particle tornadoes and electric physics borders.",
-      tech: "Next.js 14 • Three.js • Tailwind",
-      live: "https://modern-portfolio-eight-topaz.vercel.app/",
-      videoUrl: getCloudinaryVideo("Dev_Portfolio___Void_Neon_yep88m"),
-    },
-    {
-      title: "Etheria (UI/UX)",
-      desc: "Premium Awwwards-style portfolio focused on fluid motion and magnetic interactions.",
-      tech: "Next.js 14 • Framer Motion • Lenis",
-      live: "https://ui-ux-designer-port.vercel.app/",
-      videoUrl: getCloudinaryVideo("Etheria___UI_UX_Portfolio_k0ohf9"),
-    },
-    {
-      title: "AetherStack (UI Lib)",
-      desc: "Modern, customizable UI component library with dark/light mode support.",
-      tech: "React • Tailwind • Framer Motion",
-      live: "https://aether-stack-official.vercel.app/",
-      videoUrl: getCloudinaryVideo("Aetherstack_Futuristic_Quantum_Realms_n6skkt"),
-    }
-  ];
-
-  // Image Projects - Specific Order Requested
-  const imageProjects = [
-    {
-      title: "MyVirtualMate",
-      desc: "AI-powered virtual companion for emotional support.",
-      tech: "React Native • Firebase • Gemini API",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/presentmyvirt_du9pfo.png", // Using similar image as fallback/placeholder if specific one missing
-      live: "https://myvirtualmate.com.au/"
-    },
-    {
-      title: "Approkure",
-      desc: "Smart procurement platform for vendor management.",
-      tech: "React • Node.js • MongoDB • Tailwind",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/appprokure_jsvhtk.png",
-      live: "https://approkure.com/"
-    },
-    {
-      title: "Resume-Scribe",
-      desc: "Intelligent AI resume builder tailored to job descriptions.",
-      tech: "Lovable • Tailwind CSS • Gemini API • Firebase • supabase",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/resumescribe_yfbnat.png",
-      live: "https://shortlisted.myvirtualmate.com.au/auth"
-    },
-    {
-      title: "PresentMyVirtualMate",
-      desc: "Presentation tool for showcasing AI virtual assistants.",
-      tech: "React • Framer Motion • Tailwind CSS",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/presentmyvirt_du9pfo.png",
-      live: "https://present.myvirtualmate.com.au/"
-    },
-    {
-      title: "Benefits of Outsource",
-      desc: "Informative landing page with stats and case studies.",
-      tech: "HTML • Tailwind CSS • JavaScript",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/benefitsofoutsorcing_vozcfg.png",
-      live: "https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/"
-    },
-    {
-      title: "SmartEDU",
-      desc: "Educational platform for smart learning.",
-      tech: "HTML • CSS • JS • Bootstrap",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/SmartEDU_uzgbba.png",
-      live: "https://imranah10.github.io/SmartEDU/"
-    },
-    {
-      title: "Trendzz",
-      desc: "E-commerce trend tracking application.",
-      tech: "HTML • CSS • JS • Bootstrap",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/Trendzz_mixefq.png",
-      live: "https://imranah10.github.io/Trendzz/"
-    },
-    {
-      title: "Techyy",
-      desc: "Tech news and electronics store landing page.",
-      tech: "HTML • CSS • JS • Bootstrap",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/Techyy_ba8eaz.png",
-      live: "https://imranah10.github.io/Techy/"
-    },
-    {
-      title: "I-Folio",
-      desc: "Classic portfolio template.",
-      tech: "HTML • CSS • JS • Bootstrap",
-      img: "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/PORTFOLIO1_x6w8s9.png",
-      live: "https://imranah10.github.io/Portfolio-bootstrap-sample/"
-    }
-  ];
+  // Generic tech color mapper for pills
+  const getTechColor = (tech) => {
+    const t = tech.toLowerCase();
+    if (t.includes('react') || t.includes('tailwind')) return 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20';
+    if (t.includes('node') || t.includes('mongo')) return 'text-green-400 bg-green-400/10 border-green-400/20';
+    if (t.includes('next') || t.includes('three')) return 'text-white bg-white/10 border-white/20';
+    if (t.includes('framer') || t.includes('lovable')) return 'text-pink-400 bg-pink-400/10 border-pink-400/20';
+    if (t.includes('firebase')) return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
+    return 'text-purple-400 bg-purple-400/10 border-purple-400/20';
+  };
 
   return (
-    <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
+    <div id="projects" className="py-24 sm:py-32 md:py-40 px-4 sm:px-8 md:px-12 max-w-[1400px] mx-auto z-10 relative">
 
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-        <h2 className="section-title" style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem' }}>
-          <span style={{ color: 'var(--neon-magenta)' }}>#</span> PROJECTS
-        </h2>
-        <button
-          className="cyber-btn"
-          onClick={() => setShowAll(!showAll)}
-          style={{ fontSize: '0.8rem', padding: '8px 16px' }}
-        >
-          {showAll ? 'SHOW LESS' : 'SHOW ALL'} <FaLongArrowAltRight />
-        </button>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="mb-16 sm:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 relative z-10"
+      >
+        <div>
+          <div className="inline-block px-4 py-2 rounded-full mb-6 border border-purple-500/30 bg-purple-500/10 backdrop-blur-md">
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-purple-400">
+              Selected Work
+            </span>
+          </div>
+          <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-display font-extrabold tracking-tight leading-none text-white">
+            Featured <br /> <span className="text-gradient">Projects.</span>
+          </h2>
+        </div>
+      </motion.div>
 
       {/* Featured Video Projects */}
-      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--neon-cyan)', borderLeft: '3px solid var(--neon-cyan)', paddingLeft: '1rem' }}>
-        Featured / <span style={{ color: 'var(--text-secondary)' }}>Interactive Demos</span>
-      </h3>
-
-      <div className="projects-grid" style={{ marginBottom: '4rem' }}>
-        {videoProjects.map((proj, idx) => (
-          <TiltCard key={idx} className="video-card">
-            <div
-              style={{ height: '220px', overflow: 'hidden', borderRadius: '12px 12px 0 0', position: 'relative' }}
-              onMouseEnter={() => setActiveVideo(idx)}
-              onMouseLeave={() => setActiveVideo(null)}
-            >
-              <VideoPreview
-                videoUrl={proj.videoUrl}
-                isActive={activeVideo === idx}
-              />
+      <div className="flex flex-col gap-16 md:gap-24 relative z-10 w-full overflow-hidden">
+        {featured.map((project, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 md:gap-12 lg:gap-20 items-center group`}
+          >
+            {/* Project Media Container - Vibrant Glow Hover */}
+            <div className="w-full lg:w-[60%] overflow-hidden rounded-[1.5rem] bg-[#0f0f16] border border-white/10 relative aspect-video transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(168,85,247,0.3)] hover:border-purple-500/40">
+              {project.videoSrc ? (
+                <video
+                  src={project.videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 ease-out"
+                />
+              ) : (
+                <img
+                  src={project.imageSrc}
+                  alt={project.title}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 ease-out"
+                />
+              )}
+              {/* Overlay Gradient on Video/Image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"></div>
             </div>
 
-            <div className="card-content">
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '0.5rem', fontSize: '1.25rem', color: '#fff' }}>{proj.title}</h3>
-                <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', marginBottom: '1rem', lineHeight: '1.4' }}>{proj.desc}</p>
-                <p className="tech-stack">{proj.tech}</p>
+            {/* Project Details */}
+            <div className="w-full lg:w-[40%] flex flex-col justify-center px-2 sm:px-0">
+              <span className="text-cyan-400 font-mono tracking-widest text-sm font-bold mb-4">0{idx + 1}</span>
+              <h3 className="text-[clamp(1.8rem,3vw,2.5rem)] font-display font-bold text-white mb-4 tracking-tight leading-tight">
+                {project.title}
+              </h3>
+              <p className="text-gray-400 font-medium text-[15px] sm:text-[16px] mb-8 leading-relaxed max-w-md">
+                {project.desc}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-10 w-[95%]">
+                {project.stack.map((tech, i) => (
+                  <span key={i} className={`px-3 py-1.5 rounded-full border text-xs font-bold tracking-wider uppercase ${getTechColor(tech)}`}>
+                    {tech}
+                  </span>
+                ))}
               </div>
 
-              <div className="card-actions">
-                <a href={proj.live} target="_blank" rel="noreferrer" className="card-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <FaExternalLinkAlt /> Live
+              <div className="flex flex-wrap gap-4 sm:gap-6 items-center">
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-6 py-3 rounded-full bg-white text-black text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-400 hover:to-purple-500 hover:text-white flex items-center justify-center gap-2 flex-1 sm:flex-none"
+                >
+                  <FaExternalLinkAlt size={14} /> Live Demo
                 </a>
               </div>
             </div>
-          </TiltCard>
+          </motion.div>
         ))}
       </div>
 
-      {/* Standard Image Projects */}
-      {showAll && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          transition={{ duration: 0.5 }}
+      <div className="mt-24 sm:mt-32 w-full flex justify-center relative z-10">
+        <button
+          onClick={() => setShowArchive(!showArchive)}
+          className="group flex flex-col items-center gap-4 text-gray-400 hover:text-white transition-colors duration-300 focus:outline-none"
         >
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--neon-green)', borderLeft: '3px solid var(--neon-green)', paddingLeft: '1rem' }}>
-            More / <span style={{ color: 'var(--text-secondary)' }}>Development</span>
-          </h3>
-          <div className="projects-grid">
-            {imageProjects.map((proj, idx) => (
-              <TiltCard key={idx}>
-                <div style={{ position: 'relative', overflow: 'hidden', height: '200px' }}>
-                  <img src={proj.img} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} className="project-img" />
-                </div>
-                <div className="card-content">
-                  <div>
-                    <h3 style={{ fontFamily: 'var(--font-display)', marginBottom: '0.5rem', color: '#fff' }}>{proj.title}</h3>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>{proj.desc}</p>
-                    <p className="tech-stack">{proj.tech}</p>
-                  </div>
-                  <div className="card-actions">
-                    <a href={proj.live} target="_blank" rel="noreferrer" className="card-btn">Live View</a>
-                  </div>
-                </div>
-              </TiltCard>
-            ))}
-          </div>
-        </motion.div>
-      )}
+          <span className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase transition-colors group-hover:text-cyan-400">
+            {showArchive ? 'Hide Development Lab' : 'View Development Lab'}
+          </span>
+          <motion.div
+            animate={{ rotate: showArchive ? 180 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="w-14 h-14 rounded-full border border-cyan-500/30 flex items-center justify-center bg-[#111] group-hover:bg-cyan-500 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 shadow-lg"
+          >
+            <FaChevronDown size={18} />
+          </motion.div>
+        </button>
+      </div>
 
+      {/* Archive / Image Projects */}
+      <AnimatePresence>
+        {showArchive && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden mt-16 sm:mt-24"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 relative z-10 pb-10 pt-4">
+              {archive.map((project, idx) => (
+                <div key={idx} className="bg-[#0f0f16] rounded-[1.5rem] border border-white/10 overflow-hidden group hover:-translate-y-2 transition-transform duration-500 hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col h-full cursor-pointer relative">
+
+                  <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 backdrop-blur-md p-2 rounded-full text-white pointer-events-none">
+                    <FaExternalLinkAlt size={16} />
+                  </div>
+
+                  <div className="relative aspect-video w-full overflow-hidden bg-[#111]">
+                    <img
+                      src={project.imageSrc}
+                      alt={project.title}
+                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-700 ease-out group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f16] to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                  </div>
+
+                  <div className="p-6 sm:p-8 flex flex-col flex-1 relative z-10">
+                    <h4 className="text-xl sm:text-2xl font-display font-bold text-white mb-2 tracking-tight group-hover:text-cyan-400 transition-colors">
+                      {project.title}
+                    </h4>
+                    <p className="text-gray-400 font-medium text-14px sm:text-15px mb-6 leading-relaxed">
+                      {project.desc}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                      {project.stack.map((tech, i) => (
+                        <span key={i} className={`px-2.5 py-1 rounded-md border text-[10px] sm:text-[11px] font-bold tracking-widest uppercase ${getTechColor(tech)}`}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Entire card acts as link through absolute click overlay */}
+                    <a href={project.demo} target="_blank" rel="noreferrer" className="absolute inset-0 z-10" aria-label={`View ${project.title} Demo`}></a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

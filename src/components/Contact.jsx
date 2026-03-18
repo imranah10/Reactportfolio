@@ -1,63 +1,52 @@
 import React from "react";
-import { FaGithub, FaHackerrank, FaLongArrowAltRight } from "react-icons/fa";
-import { BsLinkedin } from "react-icons/bs";
-import './Home.css';
-import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Contact = () => {
   return (
-    <div className="container" style={{ padding: '4rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
-      <h2 className="text-center section-title" style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '3rem', color: '#fff' }}>
-        <span style={{ borderBottom: "2px solid var(--neon-cyan)" }}>CONTACT US</span>
-      </h2>
+    <div id="contact" className="py-24 sm:py-32 md:py-40 px-4 md:px-12 max-w-[1400px] mx-auto text-center z-10 relative">
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <motion.div
-          className="glass-panel"
-          style={{
-            padding: '3rem',
-            borderRadius: '24px',
-            maxWidth: '600px',
-            width: '100%',
-            position: 'relative',
-            background: 'linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(0,20,20,0.9) 100%)',
-            border: '1px solid var(--neon-cyan)'
-          }}
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-        >
-          {/* Scanning Line */}
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--neon-green)',
-            boxShadow: '0 0 20px var(--neon-green)', animation: 'scan 2s ease-in-out infinite'
-          }}></div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-[#0f0f16]/80 backdrop-blur-2xl py-20 sm:py-24 md:py-32 px-4 rounded-[2rem] sm:rounded-[3rem] relative overflow-hidden group border border-purple-500/20 shadow-[0_0_50px_rgba(168,85,247,0.1)] transition-all duration-700 hover:border-cyan-500/40 hover:shadow-[0_0_80px_rgba(6,182,212,0.2)]"
+      >
+        {/* Internal Vibrant Ambient Glows */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-cyan-500/20 transition-colors duration-700"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-purple-500/20 transition-colors duration-700"></div>
 
-          <h3 style={{ textAlign: 'center', fontFamily: 'var(--font-display)', color: 'var(--neon-green)', marginBottom: '2rem' }}>
-            <span style={{ animation: 'blink 1s infinite' }}>●</span> SECURE UPLINK ESTABLISHED
-          </h3>
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="inline-block px-4 py-2 rounded-full border border-cyan-500/30 mb-8 sm:mb-10 bg-cyan-500/10">
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-cyan-400">
+              Project Inquiries
+            </span>
+          </div>
 
-          <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-            Initiate protocol to transmit freelance opportunities, mission briefings, or alliance requests.
+          <h2 className="text-[clamp(3rem,8vw,7.5rem)] leading-[1] font-display font-extrabold tracking-tight text-white mb-6 sm:mb-8">
+            Let's build <br />
+            the <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">future.</span>
+          </h2>
+
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-12 sm:mb-16 max-w-2xl mx-auto font-body font-medium px-4">
+            Available for freelance opportunities and innovative front-end collaborations. Let's create something incredibly vibrant together.
           </p>
 
-          <div style={{ display: 'grid', gap: '1.5rem' }}>
-            <a href="https://github.com/imranah10" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: 'var(--text-primary)', color: 'white' }}>
-              <FaGithub size={24} /> ACCESS_GITHUB_REPO
-            </a>
-            <a href="https://www.linkedin.com/in/imran-ahmad-aa257520b/" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: '#0077b5', color: '#0077b5' }}>
-              <BsLinkedin size={24} /> CONNECT_LINKEDIN_NODE
-            </a>
-            <a href="https://www.hackerrank.com/profile/imranaha310" target="_blank" rel="noreferrer" className="cyber-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', borderColor: '#2EC866', color: '#2EC866' }}>
-              <FaHackerrank size={24} /> DECRYPT_HACKERRANK
+          <div className="flex justify-center flex-col sm:flex-row gap-6 w-full sm:w-auto px-6 sm:px-0">
+            <a
+              href="mailto:imranaha310@gmail.com"
+              className="group/btn w-full sm:w-auto px-10 py-5 rounded-full bg-gradient-to-r from-cyan-500 hover:from-cyan-400 to-purple-600 hover:to-purple-500 text-white font-display text-sm font-bold tracking-[0.2em] uppercase transition-all duration-500 flex items-center justify-center gap-4 shadow-[0_0_30px_rgba(168,85,247,0.4)] hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] hover:-translate-y-1"
+            >
+              Get in touch
+              <span className="transform group-hover/btn:translate-x-1 transition-transform duration-300">
+                <FaArrowRight size={14} />
+              </span>
             </a>
           </div>
+        </div>
+      </motion.div>
 
-          <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.8rem', color: '#555', fontFamily: 'monospace' }}>
-            ENCRYPTION: AES-256-GCM // LATENCY: 12ms // STATUS: ONLINE
-          </div>
-        </motion.div>
-      </div>
     </div>
   );
 };

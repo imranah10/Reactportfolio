@@ -1,80 +1,75 @@
-import React, { useEffect } from 'react';
-import './Home.css';
+import React from 'react';
 import experience from './data/experience.json';
 import Skills from './Skills';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
 import { motion } from 'framer-motion';
 
 const Experience = () => {
-  useEffect(() => {
-    Aos.init({ duration: 2000 });
-  }, []);
-
   return (
-    <div className="container" style={{ padding: '2rem 1rem' }}>
-      <h1 className="text-center section-title" style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '3rem', color: '#fff' }}>
-        <span style={{ borderBottom: "2px solid var(--neon-cyan)" }}>EXPERIENCE</span>
-      </h1>
+    <div id="experience" className="py-24 sm:py-32 md:py-40 px-4 sm:px-8 max-w-[1200px] mx-auto z-10 relative overflow-hidden">
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="mb-24 text-center relative z-10 flex flex-col items-center"
+      >
+        <div className="inline-block px-4 py-2 rounded-full mb-6 relative overflow-hidden border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-md">
+          <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-cyan-400 relative z-10">
+            Professional Journey
+          </span>
+        </div>
+        <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-display font-extrabold tracking-tight leading-none relative z-10 text-white">
+          Work <span className="text-gradient">Experience</span>
+        </h2>
+      </motion.div>
 
-        {/* Timeline Center Line */}
-        <div style={{ position: 'absolute', left: '50px', top: '0', bottom: '0', width: '2px', background: 'linear-gradient(to bottom, var(--neon-cyan), var(--neon-magenta))', zIndex: 0 }}></div>
+      <div className="flex flex-col gap-12 sm:gap-16 relative mb-32 max-w-5xl mx-auto">
+
+        {/* Vibrant Glowing Timeline Line */}
+        <div className="absolute left-[39px] sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-transparent via-purple-500 to-transparent z-0 blur-[1px]"></div>
+        <div className="absolute left-[40px] sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent z-0"></div>
 
         {experience.map((data, idx) => (
           <motion.div
             key={idx}
-            className="glass-panel"
-            style={{
-              padding: '2rem',
-              borderRadius: '20px',
-              display: 'flex',
-              gap: '2rem',
-              alignItems: 'flex-start',
-              position: 'relative',
-              zIndex: 1,
-              background: 'rgba(10, 10, 10, 0.8)', // Darker bg to pop against timeline
-              borderLeft: '4px solid var(--neon-cyan)'
-            }}
-            initial={{ x: 100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: idx * 0.2 }}
-            whileHover={{ scale: 1.02, x: 10 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className={`flex flex-col sm:flex-row items-center justify-between w-full relative z-10 ${idx % 2 === 0 ? 'sm:flex-row-reverse' : ''}`}
           >
-            {/* Timeline Node */}
-            <div style={{
-              position: 'absolute', left: '-41px', top: '30px',
-              width: '20px', height: '20px',
-              background: '#000', border: '4px solid var(--neon-cyan)',
-              borderRadius: '50%', zIndex: 2,
-              boxShadow: '0 0 15px var(--neon-cyan)'
-            }}></div>
+            {/* Glowing Neon Timeline Marker */}
+            <div className="absolute left-8 sm:left-1/2 transform sm:-translate-x-1/2 flex items-center justify-center w-6 h-6 rounded-full bg-[#0a0a0f] border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)] z-20 transition-transform duration-500 hover:scale-125">
+              <div className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse"></div>
+            </div>
 
-            <div style={{ flexShrink: 0 }}>
-              <img
-                src={data.imagesrc}
-                alt="company"
-                style={{ width: '80px', height: '80px', borderRadius: '12px', border: '1px solid var(--neon-magenta)', padding: '5px', background: 'white', objectFit: 'contain' }}
-              />
+            {/* Content Container - Ensure Flex sizing works properly across devices */}
+            <div className={`w-full sm:w-[45%] flex ${idx % 2 === 0 ? 'justify-start sm:justify-start' : 'justify-start sm:justify-end'} px-2 sm:px-0`}>
+              <div className="w-full ml-16 sm:ml-0 bg-[#0f0f16]/80 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-2xl group relative overflow-hidden transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:-translate-y-1">
+                <div className="flex items-center gap-5 mb-5 sm:mb-6">
+                  <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,255,255,0.2)] relative z-10">
+                    <img src={data.imagesrc} alt={data.role} className="w-full h-full object-contain" />
+                  </div>
+                  <div className="relative z-10">
+                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight leading-tight group-hover:text-cyan-400 transition-colors">
+                      {data.role}
+                    </h3>
+                    <p className="text-gray-400 text-sm mt-1 font-semibold tracking-wide">
+                      {data.Location}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="inline-block text-[10px] sm:text-[11px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 tracking-[0.2em] uppercase relative z-10">
+                  {data.startDate} — {data.endDate}
+                </div>
+
+                {/* Subtle internal gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </div>
             </div>
-            <div style={{ flex: 1, minWidth: 0, overflowWrap: 'break-word' }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '0.5rem', color: 'white', textShadow: '0 0 10px rgba(255,255,255,0.3)', wordBreak: 'break-word' }}>
-                {data.role}
-              </h2>
-              <h6 style={{ color: 'var(--neon-green)', fontFamily: 'var(--font-display)', marginBottom: '1.5rem', fontSize: '1rem', letterSpacing: '1px', wordBreak: 'break-word' }}>
-                <i className="bi bi-clock-history"></i> {`${data.startDate}- ${data.endDate}`} <span style={{ color: 'var(--text-secondary)' }}>| {data.Location}</span>
-              </h6>
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                <li style={{ marginBottom: '10px', color: 'var(--text-secondary)', display: 'flex', gap: '10px' }}>
-                  {/* <span style={{ color: 'var(--neon-cyan)', flexShrink: 0 }}>▹</span> <span style={{ wordBreak: 'break-word' }}>{data.experiences[0]}</span> */}
-                </li>
-                <li style={{ color: 'var(--text-secondary)', display: 'flex', gap: '10px' }}>
-                  {/* <span style={{ color: 'var(--neon-cyan)', flexShrink: 0 }}>▹</span> <span style={{ wordBreak: 'break-word' }}>{data.experiences[1]}</span> */}
-                </li>
-              </ul>
-            </div>
+
           </motion.div>
         ))}
       </div>

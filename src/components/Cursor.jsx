@@ -2,118 +2,78 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const Cursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [clicked, setClicked] = useState(false);
-  const [linkHovered, setLinkHovered] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [cursorText, setCursorText] = useState("");
 
   useEffect(() => {
-    const addEventListeners = () => {
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseenter", onMouseEnter);
-      document.addEventListener("mouseleave", onMouseLeave);
-      document.addEventListener("mousedown", onMouseDown);
-      document.addEventListener("mouseup", onMouseUp);
-    };
+    const updateMousePosition = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
 
-    const removeEventListeners = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseenter", onMouseEnter);
-      document.removeEventListener("mouseleave", onMouseLeave);
-      document.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mouseup", onMouseUp);
-    };
-
-    const onMouseMove = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      
-      // Check if hovering over a clickable element
       const target = e.target;
-      const isLink = (
+
+      const isClickable =
         target.tagName.toLowerCase() === 'a' ||
         target.tagName.toLowerCase() === 'button' ||
-        target.onclick ||
         target.closest('a') ||
         target.closest('button') ||
-        window.getComputedStyle(target).cursor === 'pointer'
-      );
-      setLinkHovered(isLink);
+        window.getComputedStyle(target).cursor === 'pointer';
+
+      const viewTarget = target.closest('.data-cursor-view');
+
+      if (viewTarget) {
+        setIsHovering(true);
+        setCursorText("VIEW");
+      } else if (isClickable) {
+        setIsHovering(true);
+        setCursorText("");
+      } else {
+        setIsHovering(false);
+        setCursorText("");
+      }
     };
 
-    const onMouseDown = () => {
-      setClicked(true);
-    };
-
-    const onMouseUp = () => {
-      setClicked(false);
-    };
-
-    const onMouseLeave = () => {
-      setHidden(true);
-    };
-
-    const onMouseEnter = () => {
-      setHidden(false);
-    };
-
-    addEventListeners();
-    return () => removeEventListeners();
+    window.addEventListener('mousemove', updateMousePosition);
+    return () => window.removeEventListener('mousemove', updateMousePosition);
   }, []);
 
-  const cursorStyle = {
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    pointerEvents: 'none',
-    zIndex: 9999,
-    transform: `translate(${position.x - 16}px, ${position.y - 16}px)`,
-    mixBlendMode: 'difference',
-    backgroundColor: linkHovered ? 'var(--neon-green)' : 'var(--neon-cyan)',
-    border: '2px solid white',
-    transition: 'transform 0.1s ease-out, background-color 0.2s',
-  };
-
-  if (typeof navigator !== 'undefined' && isMobile()) return null;
+  // Hide on mobile devices
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
 
   return (
     <>
-      <div 
-        className="cursor-dot"
-        style={{
-          position: 'fixed', left: 0, top: 0,
-          width: '8px', height: '8px', background: 'white', borderRadius: '50%',
-          pointerEvents: 'none', zIndex: 9999,
-          transform: `translate(${position.x - 4}px, ${position.y - 4}px)`,
-          mixBlendMode: 'difference'
+      {/* Tiny dot */}
+      <motion.div
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[99999] mix-blend-difference"
+        animate={{
+          x: mousePosition.x - 3,
+          y: mousePosition.y - 3,
+          opacity: isHovering ? 0 : 1
         }}
+        transition={{ type: 'tween', ease: 'backOut', duration: 0.1 }}
       />
-      <div 
-        className="cursor-ring"
-        style={{
-           position: 'fixed', left: 0, top: 0,
-           width: '40px', height: '40px', 
-           border: '2px solid var(--neon-cyan)', borderRadius: '50%',
-           pointerEvents: 'none', zIndex: 9999,
-           transform: `translate(${position.x - 20}px, ${position.y - 20}px) scale(${clicked ? 0.8 : (linkHovered ? 1.5 : 1)})`,
-           transition: 'transform 0.1s ease-out',
-           mixBlendMode: 'difference',
-           boxShadow: linkHovered ? '0 0 15px var(--neon-cyan)' : 'none'
+
+      {/* Main Ring & Text Container */}
+      <motion.div
+        className="fixed top-0 left-0 border border-white/50 rounded-full pointer-events-none z-[99998] mix-blend-difference flex items-center justify-center overflow-hidden"
+        initial={{ width: 40, height: 40 }}
+        animate={{
+          x: cursorText ? mousePosition.x - 40 : mousePosition.x - 20,
+          y: cursorText ? mousePosition.y - 40 : mousePosition.y - 20,
+          width: cursorText ? 80 : 40,
+          height: cursorText ? 80 : 40,
+          scale: isHovering && !cursorText ? 1.5 : 1,
+          backgroundColor: isHovering ? '#fff' : 'transparent',
+          borderWidth: isHovering ? '0px' : '1px'
         }}
+        transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.5 }}
       >
-         {/* Crosshair Lines */}
-         <div style={{ position: 'absolute', top: '50%', left: '-10px', width: '60px', height: '1px', background: 'rgba(0,255,255,0.3)', transform: 'translateY(-50%)' }}></div>
-         <div style={{ position: 'absolute', left: '50%', top: '-10px', width: '1px', height: '60px', background: 'rgba(0,255,255,0.3)', transform: 'translateX(-50%)' }}></div>
-      </div>
+        <span className="text-black font-display font-bold text-xs tracking-wider" style={{ opacity: cursorText ? 1 : 0, transition: 'opacity 0.2s' }}>
+          {cursorText}
+        </span>
+      </motion.div>
     </>
   );
-};
-
-const isMobile = () => {
-  const ua = navigator.userAgent;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
 };
 
 export default Cursor;

@@ -14,10 +14,6 @@ function App() {
       element: <AppLayout />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/projects', element: <Projects /> },
-        { path: '/experience', element: <Experience /> },
-        { path: '/contact', element: <Contact /> },
-        { path: '/about', element: <About /> }
       ]
     },
   ]);

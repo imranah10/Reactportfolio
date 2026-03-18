@@ -1,0 +1,178 @@
+[
+    {
+        "title": "Flow - Generative AI",
+        "desc": "Interactive canvas environment for generating rich node-based AI interfaces.",
+        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Thought_Echo_-_Magical_Resonance_q8kafk.mp4",
+        "imageSrc": "",
+        "stack": [
+            "React 18",
+            "Framer Motion",
+            "Node.js"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://generative-ai-flow-env.vercel.app/"
+    },
+    {
+        "title": "Dev (Portfolio)",
+        "desc": "Futuristic 3D portfolio with particle tornadoes and electric physics borders.",
+        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Dev_Portfolio___Void_Neon_yep88m.mp4",
+        "imageSrc": "",
+        "stack": [
+            "Next.js 14",
+            "Three.js",
+            "Tailwind"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://modern-portfolio-eight-topaz.vercel.app/"
+    },
+    {
+        "title": "Etheria (UI/UX)",
+        "desc": "Premium Awwwards-style portfolio focused on fluid motion and magnetic interactions.",
+        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Etheria___UI_UX_Portfolio_k0ohf9.mp4",
+        "imageSrc": "",
+        "stack": [
+            "Next.js 14",
+            "Framer Motion",
+            "Lenis"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://ui-ux-designer-port.vercel.app/"
+    },
+    {
+        "title": "AetherStack (UI Lib)",
+        "desc": "Modern, customizable UI component library with dark/light mode support.",
+        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Aetherstack_Futuristic_Quantum_Realms_n6skkt.mp4",
+        "imageSrc": "",
+        "stack": [
+            "React",
+            "Tailwind",
+            "Framer Motion"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://aether-stack-official.vercel.app/"
+    },
+    {
+        "title": "MyVirtualMate",
+        "desc": "AI-powered virtual companion for emotional support.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/presentmyvirt_du9pfo.png",
+        "stack": [
+            "React Native",
+            "Firebase",
+            "Gemini API"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://myvirtualmate.com.au/"
+    },
+    {
+        "title": "Approkure",
+        "desc": "Smart procurement platform for vendor management.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/appprokure_jsvhtk.png",
+        "stack": [
+            "React",
+            "Node.js",
+            "MongoDB",
+            "Tailwind"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://approkure.com/"
+    },
+    {
+        "title": "Resume-Scribe",
+        "desc": "Intelligent AI resume builder tailored to job descriptions.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/resumescribe_yfbnat.png",
+        "stack": [
+            "Lovable",
+            "Tailwind",
+            "Gemini API",
+            "Firebase",
+            "Supabase"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://shortlisted.myvirtualmate.com.au/auth"
+    },
+    {
+        "title": "PresentMyVirtualMate",
+        "desc": "Presentation tool for showcasing AI virtual assistants.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/presentmyvirt_du9pfo.png",
+        "stack": [
+            "React",
+            "Framer Motion",
+            "Tailwind CSS"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://present.myvirtualmate.com.au/"
+    },
+    {
+        "title": "Benefits of Outsource",
+        "desc": "Informative landing page with stats and case studies.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/benefitsofoutsorcing_vozcfg.png",
+        "stack": [
+            "HTML",
+            "Tailwind CSS",
+            "JavaScript"
+        ],
+        "source": "https://github.com/imranah10",
+        "demo": "https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/"
+    },
+    {
+        "title": "SmartEDU",
+        "desc": "Educational platform for smart learning.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/SmartEDU_uzgbba.png",
+        "stack": [
+            "HTML",
+            "CSS",
+            "JS",
+            "Bootstrap"
+        ],
+        "source": "https://github.com/imranah10/SmartEDU",
+        "demo": "https://imranah10.github.io/SmartEDU/"
+    },
+    {
+        "title": "Trendzz",
+        "desc": "E-commerce trend tracking application.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/Trendzz_mixefq.png",
+        "stack": [
+            "HTML",
+            "CSS",
+            "JS",
+            "Bootstrap"
+        ],
+        "source": "https://github.com/imranah10/Trendzz",
+        "demo": "https://imranah10.github.io/Trendzz/"
+    },
+    {
+        "title": "Techyy",
+        "desc": "Tech news and electronics store landing page.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181736/Techyy_ba8eaz.png",
+        "stack": [
+            "HTML",
+            "CSS",
+            "JS",
+            "Bootstrap"
+        ],
+        "source": "https://github.com/imranah10/Techy",
+        "demo": "https://imranah10.github.io/Techy/"
+    },
+    {
+        "title": "I-Folio",
+        "desc": "Classic portfolio template.",
+        "videoSrc": "",
+        "imageSrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767181735/PORTFOLIO1_x6w8s9.png",
+        "stack": [
+            "HTML",
+            "CSS",
+            "JS",
+            "Bootstrap"
+        ],
+        "source": "https://github.com/imranah10/Portfolio-bootstrap-sample",
+        "demo": "https://imranah10.github.io/Portfolio-bootstrap-sample/"
+    }
+]

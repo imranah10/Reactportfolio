@@ -1,82 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const IntroOverlay = ({ onComplete }) => {
-  const [lines, setLines] = useState([]);
   const [progress, setProgress] = useState(0);
 
-  const bootSequence = [
-    "INITIALIZING NEURAL LINK...",
-    "DECRYPTING SECURE PORTFOLIO...",
-    "LOADING REACT MODULES...",
-    "ESTABLISHING CONNECTION TO SERVER...",
-    "ACCESS GRANTED."
-  ];
-
   useEffect(() => {
-    let lineIndex = 0;
-    const interval = setInterval(() => {
-      if (lineIndex < bootSequence.length) {
-        setLines(prev => [...prev, bootSequence[lineIndex]]);
-        lineIndex++;
-        setProgress(prev => prev + 20);
-      } else {
-        clearInterval(interval);
-        setTimeout(onComplete, 800); 
-      }
-    }, 500);
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(onComplete, 500);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 20);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, [onComplete]);
 
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-      transition={{ duration: 0.8 }}
+      exit={{ opacity: 0, y: "-100%" }}
+      transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#000',
+        backgroundColor: 'var(--bg-color)',
+        color: 'var(--text-primary)',
         zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        fontFamily: "'Courier New', monospace",
-        color: '#0f0'
       }}
     >
-      <div style={{ width: '300px' }}>
-        {lines.map((line, index) => (
-          <motion.div 
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            style={{ marginBottom: '5px', fontSize: '14px', textShadow: '0 0 5px #0f0' }}
-          >
-            {`> ${line}`}
-          </motion.div>
-        ))}
-        <motion.div 
-          style={{ 
-            marginTop: '20px', 
-            height: '4px', 
-            background: '#111', 
-            borderRadius: '2px',
-            overflow: 'hidden'
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'var(--text-4xl)',
+          fontWeight: 600,
+          letterSpacing: '-0.02em'
+        }}
+      >
+        IMRAN<span style={{ color: '#555' }}>.</span>
+      </motion.div>
+      <motion.div
+        style={{
+          marginTop: '2rem',
+          width: '200px',
+          height: '2px',
+          backgroundColor: '#222',
+          overflow: 'hidden'
+        }}
+      >
+        <motion.div
+          style={{
+            height: '100%',
+            backgroundColor: '#fff',
+            width: `${progress}%`
           }}
-        >
-          <motion.div 
-            style={{ 
-              height: '100%', 
-              background: '#0f0', 
-              boxShadow: '0 0 10px #0f0' 
-            }}
-            animate={{ width: `${progress}%` }}
-          />
-        </motion.div>
-      </div>
+          transition={{ ease: "linear" }}
+        />
+      </motion.div>
     </motion.div>
   );
 };
