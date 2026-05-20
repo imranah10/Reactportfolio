@@ -169,10 +169,10 @@ const Projects = () => {
                         </span>
                       ))}
                     </div>
-
-                    {/* Entire card acts as link through absolute click overlay */}
-                    <a href={project.demo} target="_blank" rel="noreferrer" className="absolute inset-0 z-10" aria-label={`View ${project.title} Demo`}></a>
                   </div>
+                  
+                  {/* Entire card acts as link through absolute click overlay */}
+                  <a href={project.demo} target="_blank" rel="noreferrer" className="absolute inset-0 z-20" aria-label={`View ${project.title} Demo`}></a>
                 </div>
               ))}
             </div>
