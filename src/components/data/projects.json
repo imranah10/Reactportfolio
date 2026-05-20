@@ -1,17 +1,5 @@
 [
-    {
-        "title": "Flow - Generative AI",
-        "desc": "Interactive canvas environment for generating rich node-based AI interfaces.",
-        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Thought_Echo_-_Magical_Resonance_q8kafk.mp4",
-        "imageSrc": "",
-        "stack": [
-            "React 18",
-            "Framer Motion",
-            "Node.js"
-        ],
-        "source": "https://github.com/imranah10",
-        "demo": "https://generative-ai-flow-env.vercel.app/"
-    },
+
     {
         "title": "Dev (Portfolio)",
         "desc": "Futuristic 3D portfolio with particle tornadoes and electric physics borders.",
@@ -38,19 +26,7 @@
         "source": "https://github.com/imranah10",
         "demo": "https://ui-ux-designer-port.vercel.app/"
     },
-    {
-        "title": "AetherStack (UI Lib)",
-        "desc": "Modern, customizable UI component library with dark/light mode support.",
-        "videoSrc": "https://res.cloudinary.com/dzhtnwfg0/video/upload/v1/Aetherstack_Futuristic_Quantum_Realms_n6skkt.mp4",
-        "imageSrc": "",
-        "stack": [
-            "React",
-            "Tailwind",
-            "Framer Motion"
-        ],
-        "source": "https://github.com/imranah10",
-        "demo": "https://aether-stack-official.vercel.app/"
-    },
+
     {
         "title": "MyVirtualMate",
         "desc": "AI-powered virtual companion for emotional support.",

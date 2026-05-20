@@ -1,11 +1,8 @@
 import './App.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Home from './components/Home';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import About from './components/About';
 import AppLayout from './components/AppLayout';
-import Experience from './components/Experience';
+import AurelianCanvas from './components/AurelianCanvas';
 
 function App() {
   const Allroute = createBrowserRouter([
@@ -14,6 +11,7 @@ function App() {
       element: <AppLayout />,
       children: [
         { path: '/', element: <Home /> },
+        { path: '/ventures/aurelian-canvas', element: <AurelianCanvas /> },
       ]
     },
   ]);

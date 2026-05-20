@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
-import Cursor from './Cursor';
-import Background from './Background';
+import AdvancedCursor from './AdvancedCursor';
+import ShaderBackground from './ShaderBackground';
 import { AnimatePresence } from 'framer-motion';
 import IntroOverlay from './IntroOverlay';
 
@@ -13,8 +13,8 @@ function AppLayout() {
   return (
     <div className="w-full min-h-screen text-[#f8f8f8] selection:bg-purple-500/50 selection:text-white overflow-x-hidden relative z-0">
 
-      <Background />
-      <Cursor />
+      <ShaderBackground />
+      <AdvancedCursor />
 
       <AnimatePresence>
         {showIntro && <IntroOverlay onComplete={() => setShowIntro(false)} />}
