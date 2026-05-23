@@ -241,7 +241,7 @@ const About = () => {
             ))}
           </div>
 
-          {/* AXIO_LINK Monospace shell console */}
+          {/* PromptForge Monospace shell console */}
           <div className="bg-[#07070b]/90 border border-purple-500/25 rounded-2xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] group transition-all duration-500 hover:border-cyan-500/40">
             {/* Terminal Window Header Bar */}
             <div className="bg-[#0b0b12] px-4 py-3 border-b border-white/5 flex items-center justify-between">
@@ -251,7 +251,7 @@ const About = () => {
                 <span className="w-3 h-3 rounded-full bg-green-500/30 group-hover:bg-green-500 transition-colors duration-300 inline-block"></span>
               </div>
               <span className="font-mono text-[9px] text-gray-500 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
-                <FiTerminal className="text-cyan-400" /> AXIO_LINK_MISSION.sh
+                <FiTerminal className="text-cyan-400" /> PROMPTFORGE_SYSTEM.sh
               </span>
               <span className="w-8"></span>
             </div>
@@ -262,16 +262,16 @@ const About = () => {
               
               <div className="flex gap-2 mb-2 text-cyan-400 font-bold">
                 <span>$</span>
-                <span>cat mission_statement.txt</span>
+                <span>cat promptforge_core.txt</span>
               </div>
               
               <p className="text-gray-300 italic mb-4 leading-relaxed pl-4 border-l border-purple-500/30 text-sm sm:text-base">
-                "To architect visually elegant, fluid digital pathways using advanced frontend frameworks, weaving vibrant responsive aesthetics with modular clean code structures to solve real-world logic."
+                "PromptForge is a state-of-the-art AI orchestration matrix engineered to craft complex prompt configurations, design dynamic agentic pipelines, and bridge the gap between human design principles and large-scale language model execution."
               </p>
 
               <div className="flex items-center gap-1.5 text-pink-400 font-bold font-mono">
                 <span>$</span>
-                <span className="text-gray-300 uppercase tracking-widest text-[9px] sm:text-xs">SYSTEM INTEGRATION READY</span>
+                <span className="text-gray-300 uppercase tracking-widest text-[9px] sm:text-xs">PROMPTFORGE AGENT READY</span>
                 <span className="w-2 h-4 bg-pink-400 animate-[blink_1s_step-start_infinite]"></span>
               </div>
             </div>

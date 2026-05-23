@@ -1,9 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import pdf from "./resume.pdf";
 import profileimg1 from "./images/profile1.jpg";
 const acLogo = "https://cgomxsxsvfgvivnyhhvu.supabase.co/storage/v1/object/public/aurelian-canvas/AurelianCanvas/Logo.png";
-import { FaDownload, FaArrowRight, FaCode, FaPaintBrush, FaRobot, FaChartLine, FaShoppingBag } from "react-icons/fa";
+import { FaExternalLinkAlt, FaArrowRight, FaCode, FaPaintBrush, FaRobot, FaChartLine, FaShoppingBag } from "react-icons/fa";
 import { SiPinterest, SiGumroad } from "react-icons/si";
 
 /* ── 3D tilt card hook ── */
@@ -121,9 +120,9 @@ const Hero = () => {
               <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               See my work <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
             </a>
-            <a href={pdf} target="_blank" rel="noreferrer"
+            <a href="https://drive.google.com/file/d/1DwAcNdCOdmru6jUFx3qb_cWVInKRUHkN/view?usp=sharing" target="_blank" rel="noreferrer"
               className="w-full sm:w-auto text-center px-8 py-4 rounded-full border border-white/20 font-display font-bold text-sm tracking-wide uppercase text-white transition-all duration-300 hover:bg-white hover:text-black hover:border-white flex items-center justify-center gap-3">
-              <FaDownload /> Resume
+              <FaExternalLinkAlt /> Resume
             </a>
           </motion.div>
 
