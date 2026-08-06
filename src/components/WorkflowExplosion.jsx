@@ -16,115 +16,46 @@ const WorkflowExplosion = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
         onViewportEnter={() => sounds.reveal()}
-        className="text-3xl md:text-6xl font-black text-primary mb-6 relative z-10 tracking-tight"
+        className="text-3xl md:text-6xl font-black text-primary mb-4 md:mb-6 relative z-10 tracking-tight px-4"
       >
         The Intersection
       </motion.h2>
-      <p className="text-base md:text-lg text-on-surface-variant mb-16 max-w-2xl mx-auto relative z-10 px-4">
+      <p className="text-sm md:text-lg text-on-surface-variant mb-10 md:mb-20 max-w-2xl mx-auto relative z-10 px-4">
         Where 3D, AI, and Precision converge to create next-generation web experiences.
       </p>
 
-      {/* Desktop: Node diagram */}
-      <div className="hidden md:block relative max-w-4xl mx-auto h-[500px] flex items-center justify-center">
-        {/* Central node */}
-        <div className="absolute z-20 w-48 h-48 rounded-full glass-panel border-2 border-primary shadow-[0_0_50px_rgba(76,215,246,0.3)] flex flex-col items-center justify-center node-pulse backdrop-blur-xl">
+      {/* Responsive Layout: works on ALL screen sizes */}
+      <div className="relative z-10 flex flex-col items-center justify-center gap-4 md:gap-0">
+        {/* Central CORE node */}
+        <div className="relative w-28 h-28 md:w-48 md:h-48 rounded-full glass-panel border-2 border-primary shadow-[0_0_50px_rgba(76,215,246,0.3)] flex flex-col items-center justify-center node-pulse backdrop-blur-xl">
           <div className="corner-bracket corner-tl scale-75" />
           <div className="corner-bracket corner-tr scale-75" />
           <div className="corner-bracket corner-bl scale-75" />
           <div className="corner-bracket corner-br scale-75" />
-          <span className="text-3xl font-black text-text-primary tracking-tighter">CORE</span>
-          <span className="font-mono text-primary text-xs mt-2">SYNERGY</span>
+          <span className="text-xl md:text-3xl font-black text-text-primary tracking-tighter">CORE</span>
+          <span className="font-mono text-primary text-[10px] md:text-xs mt-1 md:mt-2">SYNERGY</span>
         </div>
 
-        {/* Satellite nodes */}
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="absolute z-10 w-32 h-32 rounded-full glass-panel border-2 border-tertiary/70 shadow-[0_0_30px_rgba(255,185,95,0.2)] flex flex-col items-center justify-center transform -translate-x-64 -translate-y-32 hover:scale-110 transition-transform cursor-pointer"
-        >
-          <span className="text-3xl text-tertiary mb-1">🎨</span>
-          <span className="font-mono text-tertiary text-sm">3D / WebGL</span>
-        </div>
-
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="absolute z-10 w-32 h-32 rounded-full glass-panel border-2 border-neon-pink/70 shadow-[0_0_30px_rgba(236,72,153,0.2)] flex flex-col items-center justify-center transform translate-x-64 -translate-y-32 hover:scale-110 transition-transform cursor-pointer"
-        >
-          <span className="text-3xl text-neon-pink mb-1">🧠</span>
-          <span className="font-mono text-neon-pink text-sm">AI / LLM</span>
-        </div>
-
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="absolute z-10 w-32 h-32 rounded-full glass-panel border-2 border-primary-container/70 shadow-[0_0_30px_rgba(6,182,212,0.2)] flex flex-col items-center justify-center transform translate-y-48 hover:scale-110 transition-transform cursor-pointer"
-        >
-          <span className="text-3xl text-primary-container mb-1">⚙️</span>
-          <span className="font-mono text-primary-container text-sm">LOGIC</span>
-        </div>
-
-        {/* SVG connecting lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1000 600">
-          <defs>
-            <linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#ffb95f', stopOpacity: 0.8 }} />
-              <stop offset="100%" style={{ stopColor: '#4cd7f6', stopOpacity: 0.8 }} />
-            </linearGradient>
-            <linearGradient id="grad2" x1="100%" x2="0%" y1="0%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#ec4899', stopOpacity: 0.8 }} />
-              <stop offset="100%" style={{ stopColor: '#4cd7f6', stopOpacity: 0.8 }} />
-            </linearGradient>
-            <linearGradient id="grad3" x1="50%" x2="50%" y1="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: '#06b6d4', stopOpacity: 0.8 }} />
-              <stop offset="100%" style={{ stopColor: '#4cd7f6', stopOpacity: 0.8 }} />
-            </linearGradient>
-          </defs>
-          <path className="animate-[dash_3s_linear_infinite]" d="M 500 300 Q 370 230 244 172" fill="none" stroke="url(#grad1)" strokeDasharray="10,10" strokeWidth="3" />
-          <path className="animate-[dash_3s_linear_infinite_reverse]" d="M 500 300 Q 630 230 756 172" fill="none" stroke="url(#grad2)" strokeDasharray="10,10" strokeWidth="3" />
-          <path className="animate-[dash_3s_linear_infinite]" d="M 500 300 L 500 492" fill="none" stroke="url(#grad3)" strokeDasharray="10,10" strokeWidth="3" />
-        </svg>
-      </div>
-
-      {/* Mobile/Tablet: Vertical stack */}
-      <div className="md:hidden flex flex-col items-center gap-8 relative z-10 py-8">
-        {/* Central node */}
-        <div className="w-32 h-32 rounded-full glass-panel border-2 border-primary shadow-[0_0_30px_rgba(76,215,246,0.3)] flex flex-col items-center justify-center node-pulse backdrop-blur-xl relative">
-          <div className="corner-bracket corner-tl scale-75" />
-          <div className="corner-bracket corner-br scale-75" />
-          <span className="text-xl font-black text-text-primary tracking-tighter">CORE</span>
-          <span className="font-mono text-primary text-[10px] mt-1">SYNERGY</span>
-        </div>
-
-        {/* Vertical connecting line */}
-        <div className="w-[2px] h-8 bg-gradient-to-b from-primary to-tertiary/50" />
-
-        {/* 3D node */}
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="w-28 h-28 rounded-full glass-panel border-2 border-tertiary/70 shadow-[0_0_20px_rgba(255,185,95,0.2)] flex flex-col items-center justify-center"
-        >
-          <span className="text-2xl text-tertiary mb-1">🎨</span>
-          <span className="font-mono text-tertiary text-xs">3D / WebGL</span>
-        </div>
-
-        <div className="w-[2px] h-8 bg-gradient-to-b from-tertiary/50 to-neon-pink/50" />
-
-        {/* AI node */}
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="w-28 h-28 rounded-full glass-panel border-2 border-neon-pink/70 shadow-[0_0_20px_rgba(236,72,153,0.2)] flex flex-col items-center justify-center"
-        >
-          <span className="text-2xl text-neon-pink mb-1">🧠</span>
-          <span className="font-mono text-neon-pink text-xs">AI / LLM</span>
-        </div>
-
-        <div className="w-[2px] h-8 bg-gradient-to-b from-neon-pink/50 to-primary-container/50" />
-
-        {/* Logic node */}
-        <div
-          onMouseEnter={() => sounds.hover()}
-          className="w-28 h-28 rounded-full glass-panel border-2 border-primary-container/70 shadow-[0_0_20px_rgba(6,182,212,0.2)] flex flex-col items-center justify-center"
-        >
-          <span className="text-2xl text-primary-container mb-1">⚙️</span>
-          <span className="font-mono text-primary-container text-xs">LOGIC</span>
+        {/* 3 Nodes in a responsive grid below CORE */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mt-8 md:mt-16 w-full max-w-3xl">
+          {[
+            { icon: '🎨', label: '3D / WebGL', color: 'tertiary', border: 'border-tertiary/70', shadow: 'shadow-[0_0_30px_rgba(255,185,95,0.2)]', text: 'text-tertiary' },
+            { icon: '🧠', label: 'AI / LLM', color: 'neon-pink', border: 'border-neon-pink/70', shadow: 'shadow-[0_0_30px_rgba(236,72,153,0.2)]', text: 'text-neon-pink' },
+            { icon: '⚙️', label: 'LOGIC', color: 'primary', border: 'border-primary/70', shadow: 'shadow-[0_0_30px_rgba(76,215,246,0.2)]', text: 'text-primary' },
+          ].map((node, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              onMouseEnter={() => sounds.hover()}
+              className={`w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full glass-panel border-2 ${node.border} ${node.shadow} flex flex-col items-center justify-center cursor-pointer hover:scale-110 transition-transform`}
+            >
+              <span className="text-2xl md:text-3xl mb-1">{node.icon}</span>
+              <span className={`font-mono text-xs md:text-sm ${node.text}`}>{node.label}</span>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
