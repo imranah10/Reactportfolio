@@ -10,14 +10,13 @@ import { sounds, toggleSound } from '../utils/sound';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
 function AppLayout() {
-  const [showIntro, setShowIntro] = useState(true);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  // ONLY show intro on home page, never on other pages
+  const [showIntro, setShowIntro] = useState(isHomePage);
   const [muted, setMuted] = useState(false);
   const soundToggleRef = useRef(null);
-  const location = useLocation();
-
-  // Only show intro overlay on home page
-  const isHomePage = location.pathname === '/';
-  const [introSeen, setIntroSeen] = useState(false);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -27,7 +26,7 @@ function AppLayout() {
 
     const handleHover = (e) => {
       const target = e.target;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON' || 
+      if (target.tagName === 'A' || target.tagName === 'BUTTON' ||
           target.closest('a') || target.closest('button')) {
         sounds.hover();
       }
@@ -42,26 +41,17 @@ function AppLayout() {
     };
   }, []);
 
+  // If navigating away from home, hide intro immediately
+  useEffect(() => {
+    if (!isHomePage) {
+      setShowIntro(false);
+    }
+  }, [isHomePage]);
+
   const handleToggleSound = () => {
     const enabled = toggleSound();
     setMuted(!enabled);
   };
-
-  // Only show intro on home page AND only once
-  const shouldShowIntro = isHomePage && !introSeen;
-
-  const handleIntroComplete = () => {
-    setShowIntro(false);
-    setIntroSeen(true);
-  };
-
-  // If not home page, skip intro entirely
-  useEffect(() => {
-    if (!isHomePage && showIntro) {
-      setShowIntro(false);
-      setIntroSeen(true);
-    }
-  }, [isHomePage]);
 
   return (
     <div className="w-full min-h-screen text-on-surface selection:bg-primary/30 text-white overflow-x-hidden relative z-0">
@@ -69,7 +59,7 @@ function AppLayout() {
       <AdvancedCursor />
 
       {/* Sound Toggle Button */}
-      {!shouldShowIntro && (
+      {!showIntro && (
         <button
           ref={soundToggleRef}
           onClick={handleToggleSound}
@@ -87,11 +77,15 @@ function AppLayout() {
         </button>
       )}
 
-      <AnimatePresence>
-        {shouldShowIntro && <IntroOverlay onComplete={handleIntroComplete} />}
-      </AnimatePresence>
+      {/* Intro ONLY on home page */}
+      {isHomePage && showIntro && (
+        <AnimatePresence>
+          <IntroOverlay onComplete={() => setShowIntro(false)} />
+        </AnimatePresence>
+      )}
 
-      {!shouldShowIntro && (
+      {/* Main content — show when intro is done OR when not on home page */}
+      {(!isHomePage || !showIntro) && (
         <div className="flex flex-col min-h-screen relative z-10">
           <Navbar />
           <main className="flex-1 w-full pt-32 pb-20">
