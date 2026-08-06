@@ -10,10 +10,12 @@ const Experience = () => {
   // Rich premium deliverables mapped by experience role/id for high-fidelity resume listings
   const detailedDeliverables = {
     4: [
-      "Engineered responsive, highly performant SaaS dashboards using React, Next.js, and MongoDB architectures.",
-      "Optimized asynchronous API routes and backend services, achieving a 45% reduction in JSON payload load times.",
-      "Implemented hardware-accelerated Framer Motion interactive layouts, maintaining a solid 60FPS on high-resolution displays.",
-      "Managed automatic production builds and SEO indexing schemes, boosting site visibility metrics by 30%."
+      "Built and deployed production SaaS dashboards for MyVirtualMate using React, Next.js, and MongoDB.",
+      "After the role transitioned, continued independently — dedicated to self-learning AI tools and AI automation full-time.",
+      "Built PromptForge (AI prompt engineering platform) entirely using AI-assisted development — GLM 5.2, AI Studio, and Google Stitch.",
+      "Currently building Toolverse — a privacy-first online toolkit with 100+ tools, published as an npm package (263 components, 1,099 icons). Includes advanced developer tools like CSS X-Ray (live audit + auto-fix), Code Universe (3D codebase visualization), and Butterfly Effect (static change impact analyzer).",
+      "Integrated Google Analytics for real-time user telemetry and traffic intelligence across all deployed platforms.",
+      "Mastered AI-assisted development workflow — using Cursor AI, Gemini, Claude, and GLM 5.2 for rapid prototyping and production-grade code generation."
     ],
     1: [
       "Crafted responsive public landing pages and digital tools in Banaras under the Make in India initiative.",

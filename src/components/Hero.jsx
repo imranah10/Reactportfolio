@@ -57,7 +57,7 @@ const Hero = () => {
   const profile3D = useTilt(8);
   const card3D    = useTilt(6);
   const [typed, setTyped] = useState('');
-  const roles = ['Front-End Engineer', 'AI Creative Operator', 'Digital Product Builder'];
+  const roles = ['Front-End Engineer', 'AI Creative Operator', 'Toolverse Creator', 'Digital Product Builder'];
   const [roleIdx, setRoleIdx] = useState(0);
 
   /* typewriter effect */
@@ -109,7 +109,7 @@ const Hero = () => {
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
             className="text-gray-400 text-base sm:text-lg md:text-xl font-body leading-relaxed max-w-lg mb-10">
-            I craft vibrant, high-performance web applications — and beyond that, I build full digital products using AI tools, from generating 16K artwork to marketing and selling them online.
+            I craft vibrant, high-performance web applications — and beyond that, I build full digital products using AI tools. Creator of Toolverse (100+ tools, npm package with 263 components), from generating 16K artwork to marketing and selling them online.
           </motion.p>
 
           {/* CTA buttons */}

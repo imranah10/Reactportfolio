@@ -10,8 +10,8 @@ const About = () => {
     {
       id: "SYS-01",
       label: "STACK DENSITY",
-      value: "25+",
-      desc: "Orbital technology nodes in active constellation maps",
+      value: "30+",
+      desc: "Technology nodes in active constellation — including GLM 5.2, AI Studio, Three.js",
       icon: <FiCpu className="text-cyan-400" size={20} />,
       glowColor: "rgba(34,211,238,0.2)",
       borderColor: "group-hover:border-cyan-500/50",
@@ -21,7 +21,7 @@ const About = () => {
       id: "SYS-02",
       label: "SYSTEM FLUIDITY",
       value: "99.9%",
-      desc: "Adaptive UI layout uptime across all screen scales",
+      desc: "Adaptive UI layout uptime across all screen scales and device matrices",
       icon: <FiActivity className="text-purple-400" size={20} />,
       glowColor: "rgba(168,85,247,0.2)",
       borderColor: "group-hover:border-purple-500/50",
@@ -30,8 +30,8 @@ const About = () => {
     {
       id: "SYS-03",
       label: "BUILDS DELIVERED",
-      value: "25+",
-      desc: "Immersive & performant digital web platforms compiled",
+      value: "30+",
+      desc: "Production web platforms, npm packages, and AI-powered digital products shipped",
       icon: <FiLayers className="text-pink-400" size={20} />,
       glowColor: "rgba(236,72,153,0.2)",
       borderColor: "group-hover:border-pink-500/50",
@@ -251,7 +251,7 @@ const About = () => {
                 <span className="w-3 h-3 rounded-full bg-green-500/30 group-hover:bg-green-500 transition-colors duration-300 inline-block"></span>
               </div>
               <span className="font-mono text-[9px] text-gray-500 font-bold uppercase tracking-[0.2em] flex items-center gap-1.5">
-                <FiTerminal className="text-cyan-400" /> PROMPTFORGE_SYSTEM.sh
+                <FiTerminal className="text-cyan-400" /> TOOLVERSE_SYSTEM.sh
               </span>
               <span className="w-8"></span>
             </div>
@@ -262,16 +262,16 @@ const About = () => {
               
               <div className="flex gap-2 mb-2 text-cyan-400 font-bold">
                 <span>$</span>
-                <span>cat promptforge_core.txt</span>
+                <span>cat toolverse_core.txt</span>
               </div>
-              
+
               <p className="text-gray-300 italic mb-4 leading-relaxed pl-4 border-l border-purple-500/30 text-sm sm:text-base">
-                "PromptForge is a state-of-the-art AI orchestration matrix engineered to craft complex prompt configurations, design dynamic agentic pipelines, and bridge the gap between human design principles and large-scale language model execution."
+                "Toolverse is a privacy-first online toolkit with 8 Studios and 100+ tools — all running 100% in the browser. Published as an npm package with 263 React components and 1,099 SVG icons. Features advanced developer tools like CSS X-Ray PRO (live audit + auto-fix), Code Universe (3D codebase galaxy), and Butterfly Effect (change impact analyzer). Built entirely with AI-assisted development using GLM 5.2, AI Studio, and Google Stitch."
               </p>
 
               <div className="flex items-center gap-1.5 text-pink-400 font-bold font-mono">
                 <span>$</span>
-                <span className="text-gray-300 uppercase tracking-widest text-[9px] sm:text-xs">PROMPTFORGE AGENT READY</span>
+                <span className="text-gray-300 uppercase tracking-widest text-[9px] sm:text-xs">TOOLVERSE SYSTEM ONLINE</span>
                 <span className="w-2 h-4 bg-pink-400 animate-[blink_1s_step-start_infinite]"></span>
               </div>
             </div>

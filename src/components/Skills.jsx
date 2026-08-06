@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SiGooglegemini, SiReact, SiNextdotjs, SiNodedotjs, SiMongodb, SiTailwindcss, SiTypescript, SiCloudflare, SiPostman, SiVercel, SiOpenai, SiGoogle } from 'react-icons/si';
+import { SiGooglegemini, SiReact, SiNextdotjs, SiNodedotjs, SiMongodb, SiTailwindcss, SiTypescript, SiCloudflare, SiPostman, SiVercel, SiOpenai, SiGoogle, SiGoogleanalytics } from 'react-icons/si';
 import { FaGitAlt, FaRobot, FaRocket } from 'react-icons/fa';
-import { LuSparkles, LuTerminalSquare, LuBrain, LuZap, LuNetwork, LuVideo, LuCpu } from 'react-icons/lu';
+import { LuSparkles, LuTerminalSquare, LuBrain, LuZap, LuNetwork, LuVideo, LuCpu, LuBoxes } from 'react-icons/lu';
 
 const Skills = () => {
   const categories = [
@@ -27,7 +27,11 @@ const Skills = () => {
         { name: "Antigravity", icon: <FaRocket />, prof: 100, status: "Infinite", desc: "Operating Advanced Agentic Coding vectors with zero friction.", officialColor: "#06b6d4" },
         { name: "Trae", icon: <LuTerminalSquare />, prof: 92, status: "Active", desc: "Co-piloting interactive system setups and script configurations.", officialColor: "#8b5cf6" },
         { name: "n8n", icon: <LuNetwork />, prof: 95, status: "Automation", desc: "Constructing complex workflow charts and API trigger nets.", officialColor: "#ff6c37" },
-        { name: "Lindy AI", icon: <FaRobot />, prof: 91, status: "Automation", desc: "Creating autonomous multi-agent pipelines for digital tasking.", officialColor: "#10b981" }
+        { name: "Lindy AI", icon: <FaRobot />, prof: 91, status: "Automation", desc: "Creating autonomous multi-agent pipelines for digital tasking.", officialColor: "#10b981" },
+        { name: "GLM 5.2", icon: <LuBrain />, prof: 95, status: "Active", desc: "Leveraging Z.ai's GLM 5.2 for autonomous multi-step coding and complex tool orchestration.", officialColor: "#3b82f6" },
+        { name: "Google AI Studio", icon: <SiGoogle />, prof: 94, status: "Active", desc: "Prototyping multi-modal AI applications and testing Gemini model capabilities at scale.", officialColor: "#4285f4" },
+        { name: "Google Stitch", icon: <LuSparkles />, prof: 90, status: "Active", desc: "Generating production-ready UI designs and component layouts from natural language prompts.", officialColor: "#ea4335" },
+        { name: "Google Analytics", icon: <SiGoogleanalytics />, prof: 93, status: "Active", desc: "Tracking real-time user telemetry, conversion funnels, and traffic intelligence across platforms.", officialColor: "#e37400" }
       ]
     },
     {
@@ -42,7 +46,9 @@ const Skills = () => {
         { name: "Node.js", icon: <SiNodedotjs />, prof: 95, status: "Fluent", desc: "Building high-throughput asynchronous APIs and backend micro-units.", officialColor: "#339933" },
         { name: "MongoDB", icon: <SiMongodb />, prof: 92, status: "Fluent", desc: "Modeling dynamic object structures and rapid document query pipelines.", officialColor: "#47a248" },
         { name: "Tailwind", icon: <SiTailwindcss />, prof: 99, status: "Mastered", desc: "Designing vibrant utilities, responsive grids, and luxury styles.", officialColor: "#38bdf8" },
-        { name: "TypeScript", icon: <SiTypescript />, prof: 94, status: "Fluent", desc: "Securing codebases with robust typing matrices and dynamic interfaces.", officialColor: "#3178c6" }
+        { name: "TypeScript", icon: <SiTypescript />, prof: 94, status: "Fluent", desc: "Securing codebases with robust typing matrices and dynamic interfaces.", officialColor: "#3178c6" },
+        { name: "Three.js", icon: <LuBoxes />, prof: 90, status: "Fluent", desc: "Building 3D codebase galaxy visualizations and WebGL-rendered interactive scenes.", officialColor: "#ffffff" },
+        { name: "npm Toolverse", icon: <LuBoxes />, prof: 95, status: "Published", desc: "Published npm package with 263 React components and 1,099 SVG icons across 7 variants.", officialColor: "#cb3837" }
       ]
     },
     {
