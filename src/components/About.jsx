@@ -55,7 +55,7 @@ const About = () => {
 
           {/* Bio */}
           <p className="text-lg text-on-surface-variant leading-relaxed">
-            Self-taught React & AI developer with 9 months of experience. Creator of Toolverse —
+            Self-taught React & AI developer with 1 year of experience. Creator of Toolverse —
             a privacy-first online toolkit with 100+ tools, published as an npm package with 263 React components
             and 1,099 SVG icons. I bridge the gap between conceptual design and robust technical implementation,
             specializing in high-performance web applications that demand both visual excellence and architectural integrity.

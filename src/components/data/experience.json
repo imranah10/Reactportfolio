@@ -2,37 +2,33 @@
     {
         "id": 4,
         "role": "Full Stack Developer → Independent AI Builder",
-        "startDate": "20 Aug",
-        "endDate": "Present",
-        "Location": "Remote",
+        "startDate": "20 Aug 2025",
+        "endDate": "20 Nov 2025",
+        "Location": "MyVirtualMate (Remote · Australian Company)",
         "imagesrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767182590/mvm_qmkk1p.png"
     },
     {
         "id": 1,
-        "role": "Web Developer intern",
-        "startDate": "15 jan 2024",
-        "endDate": "17 march 2024",
+        "role": "Web Developer Intern",
+        "startDate": "15 Jan 2024",
+        "endDate": "17 Mar 2024",
         "Location": "CDC Building BHU Banaras",
-       
         "imagesrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767182590/makeindia_cjhvnx.png"
     },
-
     {
         "id": 2,
         "role": "Internship",
-        "startDate": "04 april 2022",
-        "endDate": "04 june 2022",
+        "startDate": "04 Apr 2022",
+        "endDate": "04 Jun 2022",
         "Location": "Navi Mumbai, Maharashtra",
-      
         "imagesrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767182590/tcr_vizd37.webp"
     },
     {
         "id": 3,
         "role": "Training",
-        "startDate": "01 march 2022",
-        "endDate": "11 dec 2022",
+        "startDate": "01 Mar 2022",
+        "endDate": "11 Dec 2022",
         "Location": "Salt Lake Kolkata",
-       
         "imagesrc": "https://res.cloudinary.com/dzhtnwfg0/image/upload/v1767182593/iem_cnov66.png"
     }
 ]

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sounds } from '../utils/sound';
 
@@ -11,14 +11,24 @@ const Skills = () => {
       color: "#ec4899",
       items: [
         { name: "Cursor AI", desc: "Automating massive code transformations using custom system prompts." },
+        { name: "Lovable", desc: "Building beautiful glassmorphic elements in record-breaking speed." },
         { name: "Gemini", desc: "Integrating deep learning systems with multi-modal prompting arrays." },
         { name: "ChatGPT", desc: "Solving architectural puzzles and structural layouts efficiently." },
         { name: "Claude", desc: "Crafting highly structured documentation, refactors and logic flows." },
-        { name: "GLM 5.2", desc: "Leveraging Z.ai's GLM 5.2 for autonomous multi-step coding." },
-        { name: "Google AI Studio", desc: "Prototyping multi-modal AI applications at scale." },
-        { name: "Google Stitch", desc: "Generating production-ready UI designs from natural language prompts." },
-        { name: "Google Analytics", desc: "Tracking real-time user telemetry and traffic intelligence." },
+        { name: "Grok", desc: "Synthesizing real-time streams and visual logic pipelines." },
+        { name: "DeepSeek", desc: "Harnessing rapid open-source deep networks for server flows." },
+        { name: "Veo-3", desc: "Generating cinematic premium background footage for branding." },
+        { name: "Google Flow", desc: "Orchestrating cloud pipelines and structured distribution models." },
+        { name: "Ollama", desc: "Hosting and running custom-quantized language modules locally." },
+        { name: "Meta AI", desc: "Building modular agents with fast conversation layers." },
+        { name: "Antigravity", desc: "Operating Advanced Agentic Coding vectors with zero friction." },
+        { name: "Trae", desc: "Co-piloting interactive system setups and script configurations." },
         { name: "n8n", desc: "Constructing complex workflow charts and API trigger nets." },
+        { name: "Lindy AI", desc: "Creating autonomous multi-agent pipelines for digital tasking." },
+        { name: "GLM 5.2", desc: "Leveraging Z.ai's GLM 5.2 for autonomous multi-step coding and complex tool orchestration." },
+        { name: "Google AI Studio", desc: "Prototyping multi-modal AI applications and testing Gemini model capabilities at scale." },
+        { name: "Google Stitch", desc: "Generating production-ready UI designs and component layouts from natural language prompts." },
+        { name: "Google Analytics", desc: "Tracking real-time user telemetry, conversion funnels, and traffic intelligence across platforms." },
       ]
     },
     {
@@ -27,21 +37,21 @@ const Skills = () => {
       items: [
         { name: "React JS", desc: "Engineering reactive hook layers and hardware-accelerated loops." },
         { name: "Next.js", desc: "Configuring serverless routes, partial hydration, and SEO nodes." },
-        { name: "Node.js", desc: "Building high-throughput asynchronous APIs." },
-        { name: "MongoDB", desc: "Modeling dynamic object structures and document query pipelines." },
+        { name: "Node.js", desc: "Building high-throughput asynchronous APIs and backend micro-units." },
+        { name: "MongoDB", desc: "Modeling dynamic object structures and rapid document query pipelines." },
         { name: "Tailwind", desc: "Designing vibrant utilities, responsive grids, and luxury styles." },
-        { name: "TypeScript", desc: "Securing codebases with robust typing matrices." },
-        { name: "Three.js", desc: "Building 3D codebase galaxy visualizations and WebGL scenes." },
-        { name: "npm Toolverse", desc: "Published npm package: 263 components, 1,099 SVG icons." },
+        { name: "TypeScript", desc: "Securing codebases with robust typing matrices and dynamic interfaces." },
+        { name: "Three.js", desc: "Building 3D codebase galaxy visualizations and WebGL-rendered interactive scenes." },
+        { name: "npm Toolverse", desc: "Published npm package with 263 React components and 1,099 SVG icons across 7 variants." },
       ]
     },
     {
       title: "UTILITIES",
       color: "#ffb95f",
       items: [
-        { name: "Cloudflare", desc: "Managing global DNS routing, serverless workers, and caching." },
+        { name: "Cloudflare", desc: "Managing global DNS routing, serverless workers, and fast page caching." },
         { name: "Git", desc: "Handling complex atomic branching, merging, and pipeline webhooks." },
-        { name: "Postman", desc: "Testing backend queries and validating API JSON payload limits." },
+        { name: "Postman", desc: "Testing backend queries and validating API JSON payload structural limits." },
         { name: "Vercel", desc: "Deploying high-performance client panels and tracking live telemetry." },
       ]
     }

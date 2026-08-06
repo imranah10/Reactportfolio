@@ -98,7 +98,7 @@ export function speakIntro() {
 
   window.speechSynthesis.cancel();
 
-  const text = "My name is Imran Ahmad. I'm a React developer, AI developer with 9 months of experience.";
+  const text = "My name is Imran Ahmad. I'm a React developer, AI developer with 1 year of experience, specializing in AI automation.";
   
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = 0.9;

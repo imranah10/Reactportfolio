@@ -94,7 +94,7 @@ const Hero = () => {
           transition={{ delay: 0.5 }}
           className="text-lg text-on-surface-variant max-w-2xl leading-relaxed"
         >
-          Self-taught React & AI developer with 9 months of experience. Creator of{" "}
+          Self-taught React & AI developer with 1 year of experience. Creator of{" "}
           <span className="text-primary font-semibold">Toolverse</span> — 100+ online tools, npm package with 263 components.
           Engineering high-performance web experiences through the intersection of interactive 3D, advanced AI integrations, and relentless technical precision.
         </motion.p>
@@ -128,8 +128,8 @@ const Hero = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-outline-variant/30"
         >
           <div>
-            <div className="text-3xl font-bold text-primary">9</div>
-            <div className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Months Exp</div>
+            <div className="text-3xl font-bold text-primary">1</div>
+            <div className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Year Exp</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-primary">100+</div>

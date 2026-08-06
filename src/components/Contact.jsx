@@ -28,7 +28,7 @@ const Contact = () => {
         </h2>
 
         <p className="text-lg text-on-surface-variant mb-12 max-w-2xl">
-          React & AI developer with 9 months of experience. Creator of Toolverse (100+ tools, npm package).
+          React & AI developer with 1 year of experience. Creator of Toolverse (100+ tools, npm package).
           Open to freelance, full-time, and collaboration opportunities.
         </p>
 
