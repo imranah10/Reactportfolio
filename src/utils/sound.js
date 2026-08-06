@@ -101,47 +101,44 @@ export function speakIntro() {
   const text = "My name is Imran Ahmad. I'm a React developer, AI developer with 9 months of experience.";
   
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.85;
-  utterance.pitch = 1.3;
+  utterance.rate = 0.9;
+  utterance.pitch = 0.8;
   utterance.volume = 1.0;
   utterance.lang = "en-US";
 
   // Get all available voices
   const voices = window.speechSynthesis.getVoices();
 
-  // Female voice priority list — these are known female voices across platforms
-  const femaleVoiceNames = [
-    "Samantha",        // macOS/iOS - high quality female
-    "Google US English", // Chrome - female
-    "Microsoft Zira",  // Windows - female
-    "Microsoft Eva",   // Windows - female
-    "Victoria",        // macOS - female
-    "Karen",           // macOS - female
-    "Moira",           // macOS - female
-    "Tessa",           // macOS - female
-    "Fiona",           // macOS - female
-    "Veena",           // macOS - Indian English female
-    "Microsoft Aria",  // Windows - female
-    "Microsoft Jenny", // Windows - female
-    "Microsoft Michelle", // Windows - female
-    "Google UK English Female", // Chrome - female
-    "Zira",            // Windows - female
-    "Female",          // Generic
+  // Male voice priority list — clear, natural male voices across platforms
+  const maleVoiceNames = [
+    "Google UK English Male",  // Chrome - clear male
+    "Microsoft David",         // Windows - natural male
+    "Microsoft Guy",           // Windows - natural male
+    "Microsoft Ravi",          // Windows - Indian English male
+    "Daniel",                  // macOS - clear male
+    "Alex",                    // macOS - natural male
+    "Rishi",                   // macOS - Indian English male
+    "Microsoft Mark",          // Windows - male
+    "Google US English",       // Chrome - can be male with low pitch
+    "Arthur",                  // macOS - male
+    "Oliver",                  // macOS - male
+    "Aaron",                   // macOS - male
+    "Male",                    // Generic
   ];
 
-  // Try to find a female voice
+  // Try to find a male voice
   let selectedVoice = null;
-  for (const name of femaleVoiceNames) {
+  for (const name of maleVoiceNames) {
     selectedVoice = voices.find(v => 
       v.name.toLowerCase().includes(name.toLowerCase()) && v.lang.startsWith("en")
     );
     if (selectedVoice) break;
   }
 
-  // Fallback: any female-sounding voice or any English voice
+  // Fallback: any male-sounding voice or any English voice
   if (!selectedVoice) {
     selectedVoice = voices.find(v => 
-      v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
+      v.lang.startsWith("en") && v.name.toLowerCase().includes("male")
     ) || voices.find(v => v.lang.startsWith("en"));
   }
 
