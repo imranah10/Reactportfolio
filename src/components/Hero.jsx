@@ -1,11 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import profileimg1 from "./images/profile1.jpg";
-const acLogo = "https://cgomxsxsvfgvivnyhhvu.supabase.co/storage/v1/object/public/aurelian-canvas/AurelianCanvas/Logo.png";
-import { FaExternalLinkAlt, FaArrowRight, FaCode, FaPaintBrush, FaRobot, FaChartLine, FaShoppingBag } from "react-icons/fa";
-import { SiPinterest, SiGumroad } from "react-icons/si";
+import { FaArrowRight, FaExternalLinkAlt, FaRocket, FaCode, FaBrain, FaPalette } from "react-icons/fa";
+import { sounds } from "../utils/sound";
 
-/* ── 3D tilt card hook ── */
 const useTilt = (strength = 12) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
@@ -14,7 +12,6 @@ const useTilt = (strength = 12) => {
   const rotY = useTransform(x, [-0.5, 0.5], [-strength, strength]);
   const sRotX = useSpring(rotX, { stiffness: 200, damping: 20 });
   const sRotY = useSpring(rotY, { stiffness: 200, damping: 20 });
-
   const onMove = (e) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
@@ -25,49 +22,19 @@ const useTilt = (strength = 12) => {
   return { ref, onMove, onLeave, sRotX, sRotY };
 };
 
-/* ── Shader‑style animated gradient background lines ── */
-const ShaderLines = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-    {[...Array(6)].map((_, i) => (
-      <motion.div key={i}
-        className="absolute left-0 right-0 h-[1px] opacity-[0.06]"
-        style={{ top: `${15 + i * 14}%`, background: 'linear-gradient(90deg,transparent,#06b6d4,transparent)' }}
-        animate={{ x: ['-100%', '100%'] }}
-        transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'linear', delay: i * 1.2 }}
-      />
-    ))}
-    {/* radial ambient */}
-    <div className="absolute top-[-30%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.07]"
-      style={{ background: 'radial-gradient(circle,#7c3aed 0%,transparent 70%)', filter: 'blur(60px)' }} />
-    <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-[0.06]"
-      style={{ background: 'radial-gradient(circle,#06b6d4 0%,transparent 70%)', filter: 'blur(60px)' }} />
-  </div>
-);
-
-/* ── Floating orbit dot ── */
-const OrbitDot = ({ delay, radius, duration, color }) => (
-  <motion.div className="absolute rounded-full pointer-events-none"
-    style={{ width: 6, height: 6, background: color, top: '50%', left: '50%', marginLeft: -3, marginTop: -3 }}
-    animate={{ x: [radius, 0, -radius, 0, radius], y: [0, radius, 0, -radius, 0] }}
-    transition={{ duration, repeat: Infinity, ease: 'linear', delay }}
-  />
-);
-
 const Hero = () => {
   const profile3D = useTilt(8);
-  const card3D    = useTilt(6);
   const [typed, setTyped] = useState('');
-  const roles = ['Front-End Engineer', 'AI Creative Operator', 'Toolverse Creator', 'Digital Product Builder'];
   const [roleIdx, setRoleIdx] = useState(0);
+  const roles = ['React Developer', 'AI Developer', 'Toolverse Creator', 'Creative Technologist'];
 
-  /* typewriter effect */
   useEffect(() => {
     let i = 0, current = roles[roleIdx], forward = true;
     const tick = setInterval(() => {
       if (forward) {
         setTyped(current.slice(0, i + 1));
         i++;
-        if (i === current.length) { forward = false; setTimeout(() => {}, 1200); }
+        if (i === current.length) { forward = false; setTimeout(() => {}, 1500); }
       } else {
         setTyped(current.slice(0, i - 1));
         i--;
@@ -77,166 +44,148 @@ const Hero = () => {
     return () => clearInterval(tick);
   }, [roleIdx]);
 
+  // Mouse parallax
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    const handleMove = (e) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+    window.addEventListener('mousemove', handleMove);
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, []);
+
   return (
-    <div className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24">
-      <ShaderLines />
+    <div className="relative min-h-screen flex flex-col justify-center overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24">
+      {/* Animated background orbs */}
+      <motion.div
+        animate={{ x: mousePos.x, y: mousePos.y }}
+        transition={{ type: "spring", stiffness: 50, damping: 20 }}
+        className="absolute top-[10%] right-[5%] w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', filter: 'blur(80px)' }}
+      />
+      <motion.div
+        animate={{ x: -mousePos.x, y: -mousePos.y }}
+        transition={{ type: "spring", stiffness: 50, damping: 20 }}
+        className="absolute bottom-[10%] left-[5%] w-[400px] h-[400px] rounded-full opacity-15 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)', filter: 'blur(80px)' }}
+      />
+      <motion.div
+        animate={{ x: mousePos.x * 0.5, y: mousePos.y * 0.5 }}
+        transition={{ type: "spring", stiffness: 30, damping: 15 }}
+        className="absolute top-[40%] left-[30%] w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #ec4899 0%, transparent 70%)', filter: 'blur(60px)' }}
+      />
+
+      {/* Grid overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(6,182,212,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.5) 1px, transparent 1px)`,
+        backgroundSize: '60px 60px',
+        maskImage: 'radial-gradient(ellipse at center, black 0%, transparent 80%)'
+      }} />
 
       <div className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-10 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
 
-        {/* ── LEFT ── */}
+        {/* LEFT */}
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="w-full lg:w-[55%] flex flex-col items-start text-left">
 
-          {/* Role badge with typewriter */}
-          <div className="mb-7 flex items-center gap-3">
-            <div className="px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-md flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-cyan-400 min-w-[200px]">
+          {/* Role badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mb-7 flex items-center gap-3"
+          >
+            <div className="px-5 py-2.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-md flex items-center gap-2.5">
+              <div className="relative">
+                <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                <div className="absolute inset-0 w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              </div>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-cyan-400 min-w-[200px]">
                 {typed}<span className="animate-pulse">|</span>
               </span>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Headline with parallax chars */}
-          <h1 className="text-[clamp(2.5rem,7vw,6.5rem)] font-display font-black leading-[0.98] tracking-tight mb-6 sm:mb-8 text-white">
-            <motion.span initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="block">Building</motion.span>
-            <motion.span initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="block">
-              Seamless <span className="text-gradient">Web</span>
+          {/* Headline */}
+          <h1 className="text-[clamp(2.8rem,7.5vw,7rem)] font-display font-black leading-[0.95] tracking-tight mb-6 sm:mb-8 text-white">
+            <motion.span initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="block">
+              Crafting
             </motion.span>
-            <motion.span initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="block">Experiences.</motion.span>
+            <motion.span initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.25 }} className="block">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
+                Digital
+              </span>{" "}
+              Worlds.
+            </motion.span>
+            <motion.span initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="block">
+              Not Just Websites.
+            </motion.span>
           </h1>
 
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-gray-400 text-base sm:text-lg md:text-xl font-body leading-relaxed max-w-lg mb-10">
-            I craft vibrant, high-performance web applications — and beyond that, I build full digital products using AI tools. Creator of Toolverse (100+ tools, npm package with 263 components), from generating 16K artwork to marketing and selling them online.
+          {/* Description */}
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-gray-400 text-base sm:text-lg md:text-xl font-body leading-relaxed max-w-xl mb-8">
+            Self-taught React & AI developer with 9 months of experience. Creator of{" "}
+            <span className="text-cyan-400 font-semibold">Toolverse</span> — 100+ online tools, npm package with 263 components.
+            I build products using AI tools, from code to 16K artwork to marketing.
           </motion.p>
 
           {/* CTA buttons */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5 w-full sm:w-auto mb-10">
             <a href="#projects"
-              className="group w-full sm:w-auto text-center px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-display font-bold text-sm tracking-wide uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:-translate-y-1 flex items-center justify-center gap-3 relative overflow-hidden">
+              onMouseEnter={() => sounds.hover()}
+              onClick={() => sounds.click()}
+              className="group w-full sm:w-auto text-center px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-display font-bold text-sm tracking-wide uppercase transition-all duration-300 hover:shadow-[0_0_40px_rgba(6,182,212,0.5)] hover:-translate-y-1 flex items-center justify-center gap-3 relative overflow-hidden">
               <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              See my work <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
+              Explore My Work <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
             </a>
             <a href="https://drive.google.com/file/d/1DwAcNdCOdmru6jUFx3qb_cWVInKRUHkN/view?usp=sharing" target="_blank" rel="noreferrer"
+              onMouseEnter={() => sounds.hover()}
+              onClick={() => sounds.click()}
               className="w-full sm:w-auto text-center px-8 py-4 rounded-full border border-white/20 font-display font-bold text-sm tracking-wide uppercase text-white transition-all duration-300 hover:bg-white hover:text-black hover:border-white flex items-center justify-center gap-3">
               <FaExternalLinkAlt /> Resume
             </a>
           </motion.div>
 
-          {/* ══════════════════════════════════════════════════
-              VENTURE CARD — tells EVERY interviewer/client
-              exactly what Aurelian Canvas is
-          ══════════════════════════════════════════════════ */}
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="w-full max-w-lg"
-            ref={card3D.ref}
-            onMouseMove={card3D.onMove}
-            onMouseLeave={card3D.onLeave}
-          >
-            {/* Label */}
-            <div className="flex items-center gap-3 mb-3">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-amber-500/30" />
-              <p className="text-[9px] font-black tracking-[0.35em] uppercase text-amber-500/60">
-                I'm not just a developer — I also run this
-              </p>
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-amber-500/30" />
-            </div>
-
-            <motion.a href="/ventures/aurelian-canvas"
-              className="group block rounded-2xl border border-amber-500/25 overflow-hidden relative"
-              style={{ rotateX: card3D.sRotX, rotateY: card3D.sRotY, transformPerspective: 800,
-                background: 'linear-gradient(135deg,rgba(212,175,55,0.07) 0%,rgba(5,5,14,0.95) 60%,rgba(180,130,10,0.05) 100%)' }}
-              whileHover={{ borderColor: 'rgba(212,175,55,0.5)', boxShadow: '0 24px 80px rgba(212,175,55,0.18)' }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Gold shimmer line */}
-              <div className="h-[2px] w-full" style={{ background: 'linear-gradient(90deg,transparent,#D4AF37,transparent)' }} />
-
-              <div className="p-5">
-                {/* Top row */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl border border-amber-500/30 bg-amber-500/10 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-                      <img src={acLogo} alt="AC" className="w-7 h-7 object-contain relative z-10" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-white font-black text-sm leading-tight tracking-tight">Aurelian Canvas</p>
-                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-green-500/15 border border-green-500/25">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                          <span className="text-[8px] font-black uppercase tracking-widest text-green-400">Live</span>
-                        </div>
-                      </div>
-                      <p className="text-[10px] font-bold text-amber-300 tracking-wider uppercase mt-0.5">Founder · Solo Operator · AI Art Brand</p>
-                    </div>
-                  </div>
+          {/* Quick stats */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }}
+            className="flex gap-8 sm:gap-12 mb-8">
+            {[
+              { value: '9', label: 'Months Exp' },
+              { value: '100+', label: 'Tools Built' },
+              { value: '30+', label: 'Projects' },
+            ].map((stat, i) => (
+              <div key={i}>
+                <div className="text-3xl sm:text-4xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                  {stat.value}
                 </div>
-
-                {/* THIS IS THE KEY — what I actually do, explained clearly */}
-                <div className="rounded-xl bg-white/[0.04] border border-white/[0.08] p-4 mb-4">
-                  <p className="text-[10px] font-black text-white/85 uppercase tracking-[0.25em] mb-3">
-                    What I build & run here, entirely alone:
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { icon: FaRobot,      color: '#a78bfa', text: 'AI Prompt Engineering' },
-                      { icon: FaPaintBrush, color: '#D4AF37', text: '16K Digital Art Creation' },
-                      { icon: FaCode,       color: '#34d399', text: 'Frame Mockup Design' },
-                      { icon: FaChartLine,  color: '#f472b6', text: 'Pinterest SEO Strategy' },
-                      { icon: FaShoppingBag,color: '#fb923c', text: 'Gumroad Product Sales' },
-                      { icon: SiPinterest,  color: '#E60023', text: 'Video & Content Marketing' },
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <item.icon size={10} style={{ color: item.color, flexShrink: 0 }} />
-                        <span className="text-white/95 text-[11px] font-semibold leading-tight">{item.text}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {['AI Generation','Prompt Eng.','16K Art','Video Marketing','Pinterest SEO','Gumroad'].map((tag, i) => (
-                    <span key={i} className="px-2 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-[9px] font-black text-amber-300 tracking-wide">{tag}</span>
-                  ))}
-                </div>
-
-                {/* Bottom */}
-                <div className="flex items-center justify-between pt-3 border-t border-white/[0.08]">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] text-white/70 font-mono font-medium">7 artworks · $22 each</span>
-                    <span className="flex items-center gap-1 text-[10px] text-[#E60023] font-bold">
-                      <SiPinterest size={8} /> Pinterest
-                    </span>
-                    <span className="flex items-center gap-1 text-[10px] text-amber-400 font-bold">
-                      <SiGumroad size={8} /> Gumroad
-                    </span>
-                  </div>
-                  <span className="flex items-center gap-1.5 text-[10px] font-black tracking-[0.15em] uppercase text-amber-400 group-hover:gap-2.5 transition-all duration-300">
-                    Case Study <FaArrowRight size={8} className="group-hover:translate-x-1 transition-transform duration-300" />
-                  </span>
+                <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">
+                  {stat.label}
                 </div>
               </div>
-
-              {/* Hover shimmer sweep */}
-              <motion.div className="absolute inset-0 pointer-events-none"
-                initial={{ x: '-100%', opacity: 0 }}
-                whileHover={{ x: '100%', opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                style={{ background: 'linear-gradient(90deg,transparent,rgba(212,175,55,0.06),transparent)' }}
-              />
-            </motion.a>
+            ))}
           </motion.div>
 
+          {/* Tech badges */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
+            className="flex flex-wrap gap-2">
+            {['React', 'Next.js', 'AI Tools', 'Three.js', 'TypeScript', 'GLM 5.2'].map((tech, i) => (
+              <span key={i} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-gray-400 uppercase tracking-wider hover:border-cyan-500/30 hover:text-cyan-400 transition-colors cursor-default">
+                {tech}
+              </span>
+            ))}
+          </motion.div>
         </motion.div>
 
-        {/* ── RIGHT — 3D Profile ── */}
-        <motion.div initial={{ opacity: 0, scale: 0.93 }} animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        {/* RIGHT — 3D Profile */}
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="w-full lg:w-[45%] flex justify-center lg:justify-end mt-8 lg:mt-0 relative"
           ref={profile3D.ref}
           onMouseMove={profile3D.onMove}
@@ -248,38 +197,81 @@ const Hero = () => {
           >
             {/* Orbit dots */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <OrbitDot delay={0}   radius={180} duration={10} color="rgba(6,182,212,0.6)" />
-              <OrbitDot delay={2.5} radius={210} duration={14} color="rgba(168,85,247,0.5)" />
-              <OrbitDot delay={5}   radius={160} duration={8}  color="rgba(212,175,55,0.5)" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="absolute w-[420px] h-[420px] rounded-full"
+              >
+                <div className="absolute top-0 left-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_15px_#06b6d4]" />
+              </motion.div>
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                className="absolute w-[480px] h-[480px] rounded-full"
+              >
+                <div className="absolute bottom-0 left-1/2 w-2 h-2 -translate-x-1/2 translate-y-1/2 rounded-full bg-purple-400 shadow-[0_0_12px_#a855f7]" />
+              </motion.div>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                className="absolute w-[360px] h-[360px] rounded-full"
+              >
+                <div className="absolute top-1/2 right-0 w-2.5 h-2.5 translate-x-1/2 -translate-y-1/2 rounded-full bg-pink-400 shadow-[0_0_12px_#ec4899]" />
+              </motion.div>
             </div>
 
+            {/* Profile card */}
             <div className="relative w-[clamp(260px,65vw,400px)] aspect-[4/5] rounded-[2rem] p-[2px]"
               style={{ background: 'linear-gradient(135deg,#06b6d4,#7c3aed,#ec4899)' }}>
               <div className="absolute inset-0 rounded-[2rem]"
                 style={{ background: 'linear-gradient(135deg,rgba(6,182,212,0.3),rgba(124,58,237,0.3))', filter: 'blur(40px)', transform: 'scale(1.1)' }} />
               <div className="relative w-full h-full rounded-[1.9rem] overflow-hidden bg-[#0f0f18]">
-                <img src={profileimg1} alt="Imran" className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-110" />
-                {/* inner shimmer */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#05050e]/60 via-transparent to-transparent" />
+                <img src={profileimg1} alt="Imran Ahmad" className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05050e]/70 via-transparent to-transparent" />
+                
+                {/* Floating badge overlay */}
+                <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#05050e]/80 backdrop-blur-md border border-white/10">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-widest">Available for Work</span>
+                  </div>
+                  <p className="text-white text-sm font-bold">Imran Ahmad</p>
+                  <p className="text-gray-400 text-[10px]">Bihar, India · Remote</p>
+                </div>
               </div>
             </div>
 
-            {/* Floating badge */}
-            <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            {/* Floating badges */}
+            <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute -bottom-5 -left-5 sm:-left-10 bg-[#0f0f18]/95 border border-white/10 px-5 py-4 rounded-2xl shadow-2xl backdrop-blur-xl">
-              <div className="text-3xl sm:text-4xl font-black text-gradient mb-0.5">3+</div>
-              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Years Exp.</div>
+              <div className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-0.5">9</div>
+              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Months Exp.</div>
             </motion.div>
 
-            {/* Second badge */}
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
               className="absolute -top-3 -right-3 sm:-right-8 bg-[#0f0f18]/95 border border-amber-500/30 px-4 py-3 rounded-xl shadow-xl backdrop-blur-xl">
-              <div className="text-[10px] font-black text-amber-400 uppercase tracking-widest">AI · Art · Code</div>
+              <div className="text-[10px] font-black text-amber-400 uppercase tracking-widest">React · AI · Creative</div>
             </motion.div>
           </motion.div>
         </motion.div>
-
       </div>
+
+      {/* Scroll hint */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+      >
+        <span className="text-[9px] font-mono text-gray-600 uppercase tracking-[0.3em]">Scroll</span>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-cyan-400/50 to-transparent">
+          <motion.div
+            animate={{ y: [0, 48, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-[1px] h-3 bg-cyan-400"
+          />
+        </div>
+      </motion.div>
     </div>
   );
 };
