@@ -101,25 +101,60 @@ export function speakIntro() {
   const text = "My name is Imran Ahmad. I'm a React developer, AI developer with 9 months of experience.";
   
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.9;
-  utterance.pitch = 1.0;
-  utterance.volume = 0.9;
+  utterance.rate = 0.85;
+  utterance.pitch = 1.3;
+  utterance.volume = 1.0;
   utterance.lang = "en-US";
 
+  // Get all available voices
   const voices = window.speechSynthesis.getVoices();
-  const preferredVoice = voices.find(v => 
-    v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Microsoft") || v.name.includes("Samantha"))
-  ) || voices.find(v => v.lang.startsWith("en"));
-  
-  if (preferredVoice) {
-    utterance.voice = preferredVoice;
+
+  // Female voice priority list — these are known female voices across platforms
+  const femaleVoiceNames = [
+    "Samantha",        // macOS/iOS - high quality female
+    "Google US English", // Chrome - female
+    "Microsoft Zira",  // Windows - female
+    "Microsoft Eva",   // Windows - female
+    "Victoria",        // macOS - female
+    "Karen",           // macOS - female
+    "Moira",           // macOS - female
+    "Tessa",           // macOS - female
+    "Fiona",           // macOS - female
+    "Veena",           // macOS - Indian English female
+    "Microsoft Aria",  // Windows - female
+    "Microsoft Jenny", // Windows - female
+    "Microsoft Michelle", // Windows - female
+    "Google UK English Female", // Chrome - female
+    "Zira",            // Windows - female
+    "Female",          // Generic
+  ];
+
+  // Try to find a female voice
+  let selectedVoice = null;
+  for (const name of femaleVoiceNames) {
+    selectedVoice = voices.find(v => 
+      v.name.toLowerCase().includes(name.toLowerCase()) && v.lang.startsWith("en")
+    );
+    if (selectedVoice) break;
+  }
+
+  // Fallback: any female-sounding voice or any English voice
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v => 
+      v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
+    ) || voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+    console.log("Using voice:", selectedVoice.name);
   }
 
   sounds.bootComplete();
 
   setTimeout(() => {
     window.speechSynthesis.speak(utterance);
-  }, 800);
+  }, 600);
 }
 
 export function toggleSound() {
@@ -134,6 +169,11 @@ export function isSoundEnabled() {
   return soundEnabled;
 }
 
+// Pre-load voices (Chrome loads them async)
 if (typeof window !== "undefined" && "speechSynthesis" in window) {
-  window.speechSynthesis.onvoiceschanged = () => {};
+  // Force voice loading
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
 }
