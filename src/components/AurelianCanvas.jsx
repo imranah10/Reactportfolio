@@ -241,12 +241,12 @@ const AurelianCanvas = () => {
             {/* Cover image */}
             <div
               onClick={() => openLightbox('image', 0)}
-              className="relative aspect-[3/4] rounded-xl overflow-hidden glass-panel border border-tertiary/30 cursor-pointer group neon-glow-amber"
+              className="relative w-full rounded-xl overflow-hidden glass-panel border border-tertiary/30 cursor-pointer group neon-glow-amber"
             >
               <img
                 src={activePiece.cover}
                 alt={activePiece.title}
-                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                className="w-full h-auto object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-transparent to-transparent opacity-60" />
               <div className="corner-bracket corner-tl" />
