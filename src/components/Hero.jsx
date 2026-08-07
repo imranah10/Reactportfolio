@@ -44,7 +44,7 @@ const Hero = () => {
   }, [roleIdx]);
 
   return (
-    <section className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-12 relative mb-32 pt-32">
+    <section className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-12 relative mb-32 pt-32 px-6 md:px-12 lg:px-20">
       {/* Background ornaments */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] overflow-hidden">
         <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]"></div>

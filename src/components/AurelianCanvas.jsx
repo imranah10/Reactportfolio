@@ -4,7 +4,6 @@ import { FaShoppingBag, FaTimes, FaChevronLeft, FaChevronRight, FaImage, FaVideo
 import { SiPinterest, SiGumroad } from 'react-icons/si';
 import { sounds } from '../utils/sound';
 
-// ── Exact Supabase URLs from old portfolio ──
 const S = 'https://cgomxsxsvfgvivnyhhvu.supabase.co/storage/v1/object/public/aurelian-canvas/AurelianCanvas';
 const acLogo = `${S}/Logo.png`;
 
@@ -151,42 +150,41 @@ const artPieces = [
 ];
 
 const AurelianCanvas = () => {
-  const [selectedPiece, setSelectedPiece] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxType, setLightboxType] = useState('image');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const openLightbox = (piece, type, index = 0) => {
-    setSelectedPiece(piece);
+  const activePiece = artPieces[activeTab];
+
+  const openLightbox = (type, index = 0) => {
     setLightboxType(type);
     setLightboxIndex(index);
+    setLightboxOpen(true);
     sounds.whoosh();
   };
 
   const closeLightbox = () => {
-    setSelectedPiece(null);
+    setLightboxOpen(false);
     sounds.click();
   };
 
   const nextItem = () => {
-    if (!selectedPiece) return;
-    const items = lightboxType === 'image' ? selectedPiece.images : selectedPiece.videos;
+    const items = lightboxType === 'image' ? activePiece.images : activePiece.videos;
     setLightboxIndex((lightboxIndex + 1) % items.length);
     sounds.ping();
   };
 
   const prevItem = () => {
-    if (!selectedPiece) return;
-    const items = lightboxType === 'image' ? selectedPiece.images : selectedPiece.videos;
+    const items = lightboxType === 'image' ? activePiece.images : activePiece.videos;
     setLightboxIndex((lightboxIndex - 1 + items.length) % items.length);
     sounds.ping();
   };
 
-  const currentItems = selectedPiece
-    ? (lightboxType === 'image' ? selectedPiece.images : selectedPiece.videos)
-    : [];
+  const currentItems = lightboxType === 'image' ? activePiece.images : activePiece.videos;
 
   return (
-    <div className="min-h-screen pt-32 pb-20 max-w-[1280px] mx-auto px-5 md:px-16 relative z-10">
+    <div className="min-h-screen pt-32 pb-20 max-w-[1280px] mx-auto px-5 md:px-12 lg:px-16 relative z-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -210,86 +208,137 @@ const AurelianCanvas = () => {
         </p>
       </motion.div>
 
-      {/* Art Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
+      {/* Tab Navigation — Exhibit names */}
+      <div className="flex flex-wrap justify-center gap-2 mb-8 px-2">
         {artPieces.map((piece, idx) => (
-          <motion.div
+          <button
             key={piece.id}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className="glass-panel rounded-xl relative overflow-hidden group cursor-pointer border border-outline-variant/30 hover:border-tertiary/50 transition-all"
+            onClick={() => { setActiveTab(idx); sounds.click(); }}
+            onMouseEnter={() => sounds.hover()}
+            className={`px-3 py-2 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === idx
+                ? 'bg-tertiary text-on-tertiary shadow-[0_0_15px_rgba(255,185,95,0.3)]'
+                : 'glass-panel text-on-surface-variant hover:text-tertiary hover:border-tertiary/30'
+            }`}
           >
-            {/* Cover image — CLICK to open image lightbox */}
+            {String(piece.id).padStart(2, '0')} · {piece.title}
+          </button>
+        ))}
+      </div>
+
+      {/* Active Exhibit Content — 2 grid on desktop, 1 grid on mobile/tablet */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4 }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8"
+        >
+          {/* Left: Cover + Info */}
+          <div className="space-y-4">
+            {/* Cover image */}
             <div
-              onClick={() => openLightbox(piece, 'image', 0)}
-              className="relative aspect-[3/4] overflow-hidden"
+              onClick={() => openLightbox('image', 0)}
+              className="relative aspect-[3/4] rounded-xl overflow-hidden glass-panel border border-tertiary/30 cursor-pointer group neon-glow-amber"
             >
               <img
-                src={piece.cover}
-                alt={piece.title}
-                className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-                onError={(e) => { e.target.style.opacity = '0.2'; }}
+                src={activePiece.cover}
+                alt={activePiece.title}
+                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-surface-dark/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-dark via-transparent to-transparent opacity-60" />
               <div className="corner-bracket corner-tl" />
               <div className="corner-bracket corner-tr" />
               <div className="corner-bracket corner-bl" />
               <div className="corner-bracket corner-br" />
-
-              {/* Exhibit number */}
-              <div className="absolute top-3 left-3 font-mono text-tertiary text-xs">
-                EXHIBIT // {String(piece.id).padStart(2, '0')}
+              <div className="absolute top-4 left-4 font-mono text-tertiary text-sm">
+                EXHIBIT // {String(activePiece.id).padStart(2, '0')}
               </div>
-
-              {/* Price */}
-              <div className="absolute top-3 right-3 bg-tertiary text-on-tertiary px-2 py-0.5 rounded font-mono text-xs font-bold">
-                {piece.price}
-              </div>
-
-              {/* Hover hint */}
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="bg-surface-dark/80 px-2 py-1 rounded text-xs font-mono text-tertiary">Click to view →</span>
+              <div className="absolute top-4 right-4 bg-tertiary text-on-tertiary px-3 py-1 rounded font-mono text-sm font-bold">
+                {activePiece.price}
               </div>
             </div>
 
-            {/* Info bar */}
-            <div className="p-4">
-              <h3 className="text-lg font-bold text-text-primary group-hover:text-tertiary transition-colors">{piece.title}</h3>
-              <p className="text-xs text-on-surface-variant mt-1">{piece.tagline}</p>
-
-              {/* Image/Video count buttons */}
-              <div className="flex items-center gap-2 mt-3">
+            {/* Info */}
+            <div className="glass-panel p-6 rounded-xl border-tertiary/20">
+              <h2 className="text-2xl font-black text-text-primary">{activePiece.title}</h2>
+              <p className="text-sm text-tertiary mt-1">{activePiece.tagline}</p>
+              <div className="flex items-center gap-3 mt-4">
                 <button
-                  onClick={() => openLightbox(piece, 'image', 0)}
-                  className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono text-primary border border-primary/20 hover:bg-primary/10 transition-colors"
+                  onClick={() => openLightbox('image', 0)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-primary border border-primary/20 hover:bg-primary/10 transition-colors"
                 >
-                  <FaImage size={10} /> {piece.images.length}
+                  <FaImage size={12} /> {activePiece.images.length} Images
                 </button>
                 <button
-                  onClick={() => openLightbox(piece, 'video', 0)}
-                  className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono text-neon-pink border border-neon-pink/20 hover:bg-neon-pink/10 transition-colors"
+                  onClick={() => openLightbox('video', 0)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-neon-pink border border-neon-pink/20 hover:bg-neon-pink/10 transition-colors"
                 >
-                  <FaVideo size={10} /> {piece.videos.length}
+                  <FaVideo size={12} /> {activePiece.videos.length} Videos
                 </button>
               </div>
-
-              {/* Gumroad link */}
               <a
-                href={piece.gumroadUrl}
+                href={activePiece.gumroadUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-tertiary/30 bg-tertiary/5 text-tertiary text-xs font-bold uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all"
+                className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-tertiary/30 bg-tertiary/5 text-tertiary text-sm font-bold uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all"
               >
-                <SiGumroad size={12} /> Buy {piece.price}
+                <SiGumroad size={14} /> Buy {activePiece.price} on Gumroad
               </a>
             </div>
-          </motion.div>
-        ))}
-      </div>
+          </div>
+
+          {/* Right: Image thumbnails + Video thumbnails */}
+          <div className="space-y-4">
+            {/* Image thumbnails */}
+            <div>
+              <h3 className="text-sm font-bold text-primary font-mono uppercase tracking-widest mb-3 flex items-center gap-2">
+                <FaImage size={14} /> Images ({activePiece.images.length})
+              </h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {activePiece.images.map((img, i) => (
+                  <div
+                    key={i}
+                    onClick={() => openLightbox('image', i)}
+                    className="relative aspect-square rounded-lg overflow-hidden glass-panel border border-outline-variant/20 hover:border-primary/50 cursor-pointer group transition-all"
+                  >
+                    <img src={img} alt={`${activePiece.title} ${i + 1}`} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/60 to-transparent" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Video thumbnails */}
+            <div>
+              <h3 className="text-sm font-bold text-neon-pink font-mono uppercase tracking-widest mb-3 flex items-center gap-2">
+                <FaVideo size={14} /> Videos ({activePiece.videos.length})
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {activePiece.videos.map((vid, i) => (
+                  <div
+                    key={i}
+                    onClick={() => openLightbox('video', i)}
+                    className="relative aspect-video rounded-lg overflow-hidden glass-panel border border-outline-variant/20 hover:border-neon-pink/50 cursor-pointer group transition-all"
+                  >
+                    <video src={vid} muted className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/70 to-transparent flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-neon-pink/30 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <FaVideo size={14} className="text-neon-pink" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Store CTAs */}
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="flex flex-wrap justify-center gap-6 mt-8">
         <a href="https://aureliancanvas.gumroad.com/" target="_blank" rel="noreferrer"
           className="glass-panel border-tertiary text-tertiary px-8 py-4 rounded-lg font-mono uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all neon-glow-amber flex items-center gap-3 text-sm">
           <FaShoppingBag size={14} /> Visit Gumroad Store
@@ -302,14 +351,13 @@ const AurelianCanvas = () => {
 
       {/* Lightbox Modal */}
       <AnimatePresence>
-        {selectedPiece && (
+        {lightboxOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-surface-dark/95 backdrop-blur-xl z-[2000] flex flex-col items-center justify-center p-4"
           >
-            {/* Close button */}
             <button
               className="absolute top-6 right-6 text-gray-400 hover:text-white p-2 z-10"
               onClick={closeLightbox}
@@ -317,20 +365,18 @@ const AurelianCanvas = () => {
               <FaTimes size={28} />
             </button>
 
-            {/* Title */}
             <div className="text-center mb-4 px-4">
-              <h3 className="text-xl md:text-2xl font-bold text-text-primary">{selectedPiece.title}</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-text-primary">{activePiece.title}</h3>
               <p className="text-sm text-tertiary font-mono mt-1">
                 {lightboxType === 'image' ? 'IMAGE' : 'VIDEO'} {lightboxIndex + 1} / {currentItems.length}
               </p>
             </div>
 
-            {/* Media display */}
             <div className="max-w-4xl w-full flex items-center justify-center">
               {lightboxType === 'image' ? (
                 <img
                   src={currentItems[lightboxIndex]}
-                  alt={`${selectedPiece.title} ${lightboxIndex + 1}`}
+                  alt={`${activePiece.title} ${lightboxIndex + 1}`}
                   className="max-w-full max-h-[60vh] object-contain rounded-xl border border-tertiary/20"
                 />
               ) : (
@@ -342,7 +388,6 @@ const AurelianCanvas = () => {
               )}
             </div>
 
-            {/* Prev/Next buttons */}
             <div className="flex items-center gap-4 mt-6">
               <button
                 onClick={prevItem}
@@ -351,7 +396,6 @@ const AurelianCanvas = () => {
                 <FaChevronLeft size={20} />
               </button>
 
-              {/* Switch between images/videos */}
               <button
                 onClick={() => { setLightboxType(lightboxType === 'image' ? 'video' : 'image'); setLightboxIndex(0); }}
                 className="px-4 py-2 rounded-full glass-panel border border-primary/30 text-primary text-xs font-mono uppercase tracking-widest hover:bg-primary/10 transition-colors"
