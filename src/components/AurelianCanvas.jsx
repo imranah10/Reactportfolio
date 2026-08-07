@@ -382,8 +382,13 @@ const AurelianCanvas = () => {
               ) : (
                 <video
                   src={currentItems[lightboxIndex]}
-                  autoPlay loop controls
+                  autoPlay loop controls playsInline
                   className="max-w-full max-h-[60vh] object-contain rounded-xl border border-tertiary/20"
+                  onLoadedMetadata={(e) => {
+                    // Unmute after user click (browser allows sound after interaction)
+                    e.target.muted = false;
+                    e.target.play();
+                  }}
                 />
               )}
             </div>
