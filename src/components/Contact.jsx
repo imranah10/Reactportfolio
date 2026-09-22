@@ -1,13 +1,14 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMail, FiCopy, FiCheck, FiGithub, FiLinkedin, FiArrowUpRight,
-  FiSend, FiUser, FiAtSign, FiMessageSquare, FiAlertCircle, FiLoader,
+  FiSend, FiUser, FiAtSign, FiMessageSquare, FiLoader,
 } from 'react-icons/fi';
 import { SiX } from 'react-icons/si';
 
 const EMAIL = 'imranaha310@gmail.com';
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/imranaha310@gmail.com';
+const FORM_CLASSIC = 'https://formsubmit.co/imranaha310@gmail.com';
 
 const TOPICS = [
   { value: 'HR / Recruiter', label: 'HR / Recruiter — hiring' },
@@ -29,8 +30,17 @@ const fieldCls =
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
-  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [status, setStatus] = useState('idle'); // idle | sending | fallback | success
   const formRef = useRef(null);
+
+  // Returning from the classic-POST relay (?sent=1) → success
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    if (q.get('sent') === '1') {
+      setStatus('success');
+      window.history.replaceState({}, '', window.location.pathname + '#contact');
+    }
+  }, []);
 
   const copyEmail = async () => {
     try {
@@ -44,42 +54,60 @@ const Contact = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (status === 'sending') return;
+    if (status === 'sending' || status === 'fallback') return;
     setStatus('sending');
 
-    const data = new FormData(e.currentTarget);
-    const subject = data.get('topic') || 'Portfolio';
-    const payload = {
-      name: data.get('name'),
-      email: data.get('email'),
-      message: data.get('message'),
-      _subject: `Portfolio — ${subject} · ${data.get('name')}`,
-      _template: 'table',
-      _captcha: 'false',
-      _replyto: data.get('email'),
-    };
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const subject = `Portfolio — ${data.get('topic') || 'Enquiry'} · ${data.get('name')}`;
 
+    // Path 1: AJAX (fast, no reload)
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 15000);
-
+    const t = setTimeout(() => ctrl.abort(), 12000);
     try {
       const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          message: data.get('message'),
+          _subject: subject,
+          _template: 'table',
+          _captcha: 'false',
+          _replyto: data.get('email'),
+        }),
         signal: ctrl.signal,
       });
       clearTimeout(t);
       const json = await res.json().catch(() => null);
       if (res.ok && json && String(json.success) === 'true') {
         setStatus('success');
-        formRef.current?.reset();
-      } else {
-        setStatus('error');
+        form.reset();
+        return;
       }
+      throw new Error('ajax rejected');
     } catch {
       clearTimeout(t);
-      setStatus('error');
+      // Path 2: classic navigation POST — passes bot checks, redirects back with ?sent=1
+      setStatus('fallback');
+      const relay = document.createElement('form');
+      relay.method = 'POST';
+      relay.action = FORM_CLASSIC;
+      const add = (k, v) => {
+        const i = document.createElement('input');
+        i.type = 'hidden'; i.name = k; i.value = v;
+        relay.appendChild(i);
+      };
+      add('_captcha', 'false');
+      add('_template', 'table');
+      add('_subject', subject);
+      add('_next', `${window.location.origin}/?sent=1#contact`);
+      add('name', data.get('name') || '');
+      add('email', data.get('email') || '');
+      add('message', data.get('message') || '');
+      document.body.appendChild(relay);
+      relay.submit();
     }
   };
 
@@ -295,31 +323,15 @@ const Contact = () => {
                   {/* honeypot */}
                   <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
-                  {status === 'error' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-start gap-2.5 text-[13px] text-[#FF6B6B] bg-[#FF6B6B]/8 border border-[#FF6B6B]/25 rounded-xl px-4 py-3"
-                    >
-                      <FiAlertCircle size={15} className="mt-0.5 shrink-0" />
-                      <span>
-                        Something blocked the transmission.{' '}
-                        <a href={`mailto:${EMAIL}?subject=Portfolio%20enquiry`} className="underline underline-offset-2 font-semibold">
-                          Mail me directly
-                        </a>{' '}
-                        instead — same inbox.
-                      </span>
-                    </motion.div>
-                  )}
-
                   <button
                     type="submit"
-                    disabled={status === 'sending'}
+                    disabled={status === 'sending' || status === 'fallback'}
                     className="group w-full inline-flex items-center justify-center gap-2.5 bg-ink text-bg font-semibold text-sm px-6 py-4 rounded-xl hover:bg-cyan disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
                   >
-                    {status === 'sending' ? (
+                    {status === 'sending' || status === 'fallback' ? (
                       <>
-                        <FiLoader size={16} className="animate-spin" /> TRANSMITTING…
+                        <FiLoader size={16} className="animate-spin" />
+                        {status === 'fallback' ? 'SECURE RELAY…' : 'TRANSMITTING…'}
                       </>
                     ) : (
                       <>
