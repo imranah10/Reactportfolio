@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { FiArrowDown, FiArrowUpRight, FiFileText, FiMail } from 'react-icons/fi';
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { FiArrowDown, FiArrowUpRight, FiFileText, FiMail, FiChevronDown, FiDownload } from 'react-icons/fi';
 import profile1 from './images/profile1.jpg';
 import useLiveStats from './useLiveStats';
 
@@ -57,9 +57,24 @@ const KineticWord = ({ word, delay = 0, gradient = false }) => (
   </span>
 );
 
+const RESUMES = [
+  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 69 KB' },
+  { label: 'International (ATS)', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 8 KB' },
+];
+
 const Hero = () => {
   const role = useRoleScramble();
   const { npmMonthly, repos } = useLiveStats();
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const resRef = useRef(null);
+
+  useEffect(() => {
+    const close = (e) => {
+      if (resRef.current && !resRef.current.contains(e.target)) setResumeOpen(false);
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, []);
 
   const cardRef = useRef(null);
   const mx = useMotionValue(0);
@@ -156,14 +171,53 @@ const Hero = () => {
               View Work
               <FiArrowDown className="group-hover:translate-y-0.5 transition-transform" size={15} />
             </a>
-            <a
-              href="/Imran_Ahmad_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 border border-line-strong text-ink font-medium text-sm px-6 py-3.5 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
-            >
-              <FiFileText size={15} /> Resume
-            </a>
+            <div ref={resRef} className="relative">
+              <button
+                onClick={() => setResumeOpen((o) => !o)}
+                aria-expanded={resumeOpen}
+                className="inline-flex items-center gap-2.5 border border-line-strong text-ink font-medium text-sm px-6 py-3.5 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+              >
+                <FiFileText size={15} /> Resume
+                <FiChevronDown size={13} className={`transition-transform duration-300 ${resumeOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {resumeOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute top-full left-0 mt-2.5 w-[260px] panel rounded-xl overflow-hidden z-[60] glow-cyan"
+                  >
+                    <p className="font-mono text-[9px] tracking-[0.25em] text-faint px-4 pt-3 pb-2">
+                      DOWNLOAD RESUME //
+                    </p>
+                    {RESUMES.map((r) => (
+                      <a
+                        key={r.href}
+                        href={r.href}
+                        download={r.href.split('/').pop()}
+                        onClick={() => setResumeOpen(false)}
+                        className="group flex items-center justify-between gap-3 px-4 py-3 hover:bg-cyan/10 border-t border-line transition-colors"
+                      >
+                        <span className="flex items-center gap-2.5">
+                          <FiFileText size={14} className="text-cyan" />
+                          <span>
+                            <span className="block text-[13px] font-medium text-ink group-hover:text-cyan transition-colors">
+                              {r.label}
+                            </span>
+                            <span className="block font-mono text-[8px] tracking-[0.18em] text-faint mt-0.5">
+                              {r.size} · CLICK TO DOWNLOAD
+                            </span>
+                          </span>
+                        </span>
+                        <FiDownload size={14} className="text-faint group-hover:text-cyan transition-colors shrink-0" />
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <a
               href="mailto:imranaha310@gmail.com"
               className="inline-flex items-center gap-2.5 text-mute hover:text-ink font-medium text-sm px-2 py-3.5 transition-colors duration-300"

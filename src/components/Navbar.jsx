@@ -174,6 +174,22 @@ const Navbar = () => {
                 >
                   IMRANAHA310@GMAIL.COM
                 </a>
+                <div className="flex items-center gap-5">
+                  <a
+                    href="/Imran_Ahmad_Resume_India.pdf"
+                    download="Imran-Ahmad-Resume-India.pdf"
+                    className="font-mono text-xs tracking-[0.2em] text-mute hover:text-cyan transition-colors"
+                  >
+                    RESUME · INDIA ⬇
+                  </a>
+                  <a
+                    href="/Imran_Ahmad_Resume_International.pdf"
+                    download="Imran-Ahmad-Resume-International.pdf"
+                    className="font-mono text-xs tracking-[0.2em] text-mute hover:text-cyan transition-colors"
+                  >
+                    RESUME · INTL ⬇
+                  </a>
+                </div>
                 <Link
                   to="/ventures/aurelian-canvas"
                   onClick={() => setOpen(false)}

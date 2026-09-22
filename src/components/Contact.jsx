@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMail, FiCopy, FiCheck, FiGithub, FiLinkedin, FiArrowUpRight,
-  FiSend, FiUser, FiAtSign, FiMessageSquare, FiLoader,
+  FiSend, FiUser, FiAtSign, FiMessageSquare, FiLoader, FiFileText, FiDownload,
 } from 'react-icons/fi';
-import { SiX } from 'react-icons/si';
+import { SiX, SiGmail } from 'react-icons/si';
 
 const EMAIL = 'imranaha310@gmail.com';
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/imranaha310@gmail.com';
@@ -29,23 +29,27 @@ const fieldCls =
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
-  const [status, setStatus] = useState('idle'); // idle | sending | success | mailto
+  const [msgCopied, setMsgCopied] = useState(false);
+  const [status, setStatus] = useState('idle'); // idle | sending | success | handoff
   const [draft, setDraft] = useState(null);
   const formRef = useRef(null);
 
-  const buildMailto = (d) => {
-    if (!d) return `mailto:${EMAIL}`;
-    const body = `Name: ${d.name}\nEmail: ${d.email}\nType: ${d.topic}\n\n${d.message}`;
-    return `mailto:${EMAIL}?subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(body.slice(0, 1800))}`;
-  };
+  const composeBody = (d) => `Name: ${d?.name || ''}\nEmail: ${d?.email || ''}\nType: ${d?.topic || ''}\n\n${d?.message || ''}`;
 
-  // Auto-open the visitor's email app once, when falling back
-  useEffect(() => {
-    if (status === 'mailto' && draft) {
-      const id = setTimeout(() => { window.location.href = buildMailto(draft); }, 900);
-      return () => clearTimeout(id);
-    }
-  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
+  const buildMailto = (d) =>
+    `mailto:${EMAIL}?subject=${encodeURIComponent(d?.subject || 'Portfolio enquiry')}&body=${encodeURIComponent(composeBody(d).slice(0, 1800))}`;
+
+  // Gmail web compose — opens pre-filled in a new tab, works even with no default mail app
+  const buildGmail = (d) =>
+    `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}&su=${encodeURIComponent(d?.subject || 'Portfolio enquiry')}&body=${encodeURIComponent(composeBody(d).slice(0, 1500))}`;
+
+  const copyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(`${draft?.subject}\n\n${composeBody(draft)}`);
+      setMsgCopied(true);
+      setTimeout(() => setMsgCopied(false), 2200);
+    } catch { /* clipboard unavailable */ }
+  };
 
   const copyEmail = async () => {
     try {
@@ -96,8 +100,8 @@ const Contact = () => {
       throw new Error('ajax rejected');
     } catch {
       clearTimeout(t);
-      // Path 2: guaranteed handoff — visitor's own email app, message prefilled
-      setStatus('mailto');
+      // Path 2: guaranteed handoff — Gmail compose / email app / copy, user picks
+      setStatus('handoff');
     }
   };
 
@@ -178,7 +182,7 @@ const Contact = () => {
               transition={{ delay: 0.45, duration: 0.7 }}
             >
               <p className="font-mono text-[10px] tracking-[0.25em] text-faint mb-4">ELSEWHERE //</p>
-              <div className="flex items-center gap-3.5">
+              <div className="flex items-center gap-3.5 mb-9">
                 {SOCIALS.map((s) => (
                   <a
                     key={s.label}
@@ -190,6 +194,33 @@ const Contact = () => {
                     className="w-12 h-12 rounded-xl panel flex items-center justify-center text-mute hover:text-cyan hover:border-cyan/40 hover:-translate-y-1 transition-all duration-300"
                   >
                     {s.icon}
+                  </a>
+                ))}
+              </div>
+
+              {/* resume downloads */}
+              <p className="font-mono text-[10px] tracking-[0.25em] text-faint mb-4">RESUME //</p>
+              <div className="grid sm:grid-cols-2 gap-3 max-w-[420px]">
+                {[
+                  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 69 KB' },
+                  { label: 'International (ATS)', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 8 KB' },
+                ].map((r) => (
+                  <a
+                    key={r.href}
+                    href={r.href}
+                    download={r.href.split('/').pop()}
+                    className="group panel rounded-xl px-4 py-3.5 flex items-center gap-3 hover:border-cyan/40 hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    <FiFileText size={17} className="text-cyan shrink-0" />
+                    <span className="min-w-0">
+                      <span className="block text-[13px] font-medium text-ink group-hover:text-cyan transition-colors truncate">
+                        {r.label}
+                      </span>
+                      <span className="block font-mono text-[8px] tracking-[0.15em] text-faint mt-0.5">
+                        {r.size}
+                      </span>
+                    </span>
+                    <FiDownload size={14} className="text-faint group-hover:text-cyan transition-colors shrink-0 ml-auto" />
                   </a>
                 ))}
               </div>
@@ -234,37 +265,55 @@ const Contact = () => {
                     SEND ANOTHER →
                   </button>
                 </motion.div>
-              ) : status === 'mailto' ? (
+              ) : status === 'handoff' ? (
                 <motion.div
-                  key="mailto"
+                  key="handoff"
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="py-12 flex flex-col items-center text-center"
+                  className="py-10 flex flex-col items-center text-center"
                 >
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
-                    className="w-16 h-16 rounded-full bg-cyan/12 border border-cyan/40 flex items-center justify-center mb-6"
+                    className="w-16 h-16 rounded-full bg-cyan/12 border border-cyan/40 flex items-center justify-center mb-5"
                   >
                     <FiSend size={26} className="text-cyan" />
                   </motion.div>
                   <h3 className="font-display font-bold text-2xl mb-2">Your message is ready.</h3>
-                  <p className="text-mute text-sm max-w-[340px] mb-7">
-                    Your email app is opening with everything filled in —
-                    just hit <span className="text-ink font-semibold">send</span> and it lands
-                    straight in my inbox. 100% delivery, no middleman.
+                  <p className="text-mute text-sm max-w-[340px] mb-6">
+                    Pick one — everything is already filled in. It lands straight in my inbox.
                   </p>
+
                   <a
-                    href={buildMailto(draft)}
-                    className="inline-flex items-center gap-2.5 bg-ink text-bg font-semibold text-sm px-7 py-3.5 rounded-xl hover:bg-cyan transition-colors duration-300 mb-4"
+                    href={buildGmail(draft)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-full max-w-[300px] inline-flex items-center justify-center gap-2.5 bg-ink text-bg font-semibold text-sm px-6 py-3.5 rounded-xl hover:bg-cyan transition-colors duration-300 mb-2.5"
                   >
-                    <FiMail size={15} /> OPEN EMAIL APP
+                    <SiGmail size={16} /> SEND VIA GMAIL
                   </a>
+                  <div className="flex items-center gap-2.5 w-full max-w-[300px]">
+                    <a
+                      href={buildMailto(draft)}
+                      className="flex-1 inline-flex items-center justify-center gap-2 border border-line-strong text-ink text-[13px] font-medium px-4 py-3 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+                    >
+                      <FiMail size={14} /> EMAIL APP
+                    </a>
+                    <button
+                      onClick={copyMessage}
+                      aria-live="polite"
+                      className="flex-1 inline-flex items-center justify-center gap-2 border border-line-strong text-ink text-[13px] font-medium px-4 py-3 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+                    >
+                      {msgCopied ? <FiCheck size={14} className="text-lime" /> : <FiCopy size={14} />}
+                      {msgCopied ? 'COPIED!' : 'COPY TEXT'}
+                    </button>
+                  </div>
+
                   <button
                     onClick={() => setStatus('idle')}
-                    className="font-mono text-[10px] tracking-[0.2em] text-mute hover:text-cyan transition-colors"
+                    className="font-mono text-[10px] tracking-[0.2em] text-mute hover:text-cyan transition-colors mt-5"
                   >
                     ← BACK TO FORM
                   </button>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SiNodedotjs, SiTailwindcss, SiPrisma, SiPlaywright } from 'react-icons/si';
+import { FiLayout, FiCpu, FiTerminal } from 'react-icons/fi';
 import SectionHeading from './SectionHeading';
 
 /** Live stack — brand-colored, exactly what this portfolio + Toolverse run on */
@@ -35,6 +36,7 @@ const GROUPS = [
   {
     id: 'frontend',
     label: 'FRONTEND',
+    icon: FiLayout,
     skills: [
       ['React 18', 'Toolverse — 254 components published'],
       ['Next.js 16', 'Toolverse + client sites'],
@@ -49,6 +51,7 @@ const GROUPS = [
   {
     id: 'ai',
     label: 'AI & LLM',
+    icon: FiCpu,
     skills: [
       ['GLM 5.2', 'Shipped Toolverse with AI-assisted dev'],
       ['ChatGPT / Claude / Gemini', 'Product workflows & pairing'],
@@ -63,6 +66,7 @@ const GROUPS = [
   {
     id: 'core',
     label: 'CORE & TOOLS',
+    icon: FiTerminal,
     skills: [
       ['Git / GitHub', '70 public repos'],
       ['Vercel', 'Every project deployed'],
@@ -98,22 +102,26 @@ const Skills = () => {
         <SectionHeading num="03" kicker="ARSENAL" title={<>What I <span className="grad-text">wield</span>.</>} />
 
         {/* tabs */}
-        <div className="flex gap-2 mb-8" role="tablist" aria-label="Skill categories">
-          {GROUPS.map((g) => (
-            <button
-              key={g.id}
-              role="tab"
-              aria-selected={tab === g.id}
-              onClick={() => setTab(g.id)}
-              className={`font-mono text-[10px] sm:text-[11px] tracking-[0.2em] px-4 sm:px-5 py-2.5 rounded-xl border transition-all duration-300 ${
-                tab === g.id
-                  ? 'border-cyan/60 text-cyan bg-cyan/10 glow-cyan'
-                  : 'border-line text-mute hover:text-ink hover:border-line-strong'
-              }`}
-            >
-              {g.label}
-            </button>
-          ))}
+        <div className="flex gap-2 mb-8 flex-wrap" role="tablist" aria-label="Skill categories">
+          {GROUPS.map((g) => {
+            const Icon = g.icon;
+            return (
+              <button
+                key={g.id}
+                role="tab"
+                aria-selected={tab === g.id}
+                onClick={() => setTab(g.id)}
+                className={`inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] tracking-[0.2em] px-4 sm:px-5 py-2.5 rounded-xl border transition-all duration-300 ${
+                  tab === g.id
+                    ? 'border-cyan/60 text-cyan bg-cyan/10 glow-cyan'
+                    : 'border-line text-mute hover:text-ink hover:border-line-strong'
+                }`}
+              >
+                <Icon size={13} className={tab === g.id ? 'text-cyan' : 'text-faint'} />
+                {g.label}
+              </button>
+            );
+          })}
         </div>
 
         <AnimatePresence mode="wait">

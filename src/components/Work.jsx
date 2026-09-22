@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiExternalLink, FiGithub, FiPackage } from 'react-icons/fi';
+import { FiExternalLink, FiGithub, FiPackage, FiArrowUpRight } from 'react-icons/fi';
 import SectionHeading from './SectionHeading';
 
 const SHOTS = [
@@ -237,29 +237,49 @@ const Work = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.7 }}
-        className="mt-14 panel rounded-2xl px-6 sm:px-8 py-7"
+        className="mt-14"
       >
-        <p className="font-mono text-[10px] tracking-[0.3em] text-faint mb-5">
-          MORE BUILDS — ALL LINKS REAL, ALL LIVE
-        </p>
-        <div className="flex flex-wrap gap-x-8 gap-y-3">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
+          <p className="font-mono text-[10px] tracking-[0.3em] text-mute">
+            MORE BUILDS — <span className="text-lime">ALL LINKS REAL, ALL LIVE</span>
+          </p>
+          <span className="h-px flex-1 bg-gradient-to-r from-line-strong to-transparent" aria-hidden="true" />
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {[
-            ['PromptForge', 'https://promptforge-navy-psi.vercel.app/'],
-            ['PresentMyVirtualMate', 'https://present.myvirtualmate.com.au/'],
-            ['Outsource Guide', 'https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/'],
-            ['Trendzz', 'https://imranah10.github.io/Trendzz/'],
-            ['Techyy', 'https://imranah10.github.io/Techy/'],
-            ['I-Folio', 'https://imranah10.github.io/Portfolio-bootstrap-sample/'],
-          ].map(([name, url]) => (
-            <a
+            ['PromptForge', 'AI WORKBENCH', 'https://promptforge-navy-psi.vercel.app/'],
+            ['PresentMyVirtualMate', 'COMPANY PRESENTATION', 'https://present.myvirtualmate.com.au/'],
+            ['Outsource Guide', 'SEO CONTENT HUB', 'https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/'],
+            ['Trendzz', 'TRENDS UI', 'https://imranah10.github.io/Trendzz/'],
+            ['Techyy', 'TECH MAG UI', 'https://imranah10.github.io/Techy/'],
+            ['I-Folio', 'PORTFOLIO UI', 'https://imranah10.github.io/Portfolio-bootstrap-sample/'],
+          ].map(([name, type, url], i) => (
+            <motion.a
               key={name}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-xs text-mute hover:text-cyan transition-colors"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05, duration: 0.5 }}
+              whileHover={{ y: -3 }}
+              className="group panel rounded-xl px-4 py-4 flex items-center justify-between gap-3 hover:border-cyan/40 transition-colors duration-300"
             >
-              {name} ↗
-            </a>
+              <span>
+                <span className="block font-medium text-[13.5px] text-ink group-hover:text-cyan transition-colors">
+                  {name}
+                </span>
+                <span className="block font-mono text-[8px] tracking-[0.2em] text-faint mt-1 group-hover:text-mute transition-colors">
+                  {type}
+                </span>
+              </span>
+              <span className="shrink-0 w-8 h-8 rounded-lg border border-line flex items-center justify-center text-faint group-hover:text-cyan group-hover:border-cyan/40 transition-colors">
+                <FiArrowUpRight size={14} />
+              </span>
+            </motion.a>
           ))}
         </div>
       </motion.div>
