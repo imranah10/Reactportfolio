@@ -8,7 +8,6 @@ import { SiX } from 'react-icons/si';
 
 const EMAIL = 'imranaha310@gmail.com';
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/imranaha310@gmail.com';
-const FORM_CLASSIC = 'https://formsubmit.co/imranaha310@gmail.com';
 
 const TOPICS = [
   { value: 'HR / Recruiter', label: 'HR / Recruiter — hiring' },
@@ -30,17 +29,23 @@ const fieldCls =
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
-  const [status, setStatus] = useState('idle'); // idle | sending | fallback | success
+  const [status, setStatus] = useState('idle'); // idle | sending | success | mailto
+  const [draft, setDraft] = useState(null);
   const formRef = useRef(null);
 
-  // Returning from the classic-POST relay (?sent=1) → success
+  const buildMailto = (d) => {
+    if (!d) return `mailto:${EMAIL}`;
+    const body = `Name: ${d.name}\nEmail: ${d.email}\nType: ${d.topic}\n\n${d.message}`;
+    return `mailto:${EMAIL}?subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(body.slice(0, 1800))}`;
+  };
+
+  // Auto-open the visitor's email app once, when falling back
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search);
-    if (q.get('sent') === '1') {
-      setStatus('success');
-      window.history.replaceState({}, '', window.location.pathname + '#contact');
+    if (status === 'mailto' && draft) {
+      const id = setTimeout(() => { window.location.href = buildMailto(draft); }, 900);
+      return () => clearTimeout(id);
     }
-  }, []);
+  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const copyEmail = async () => {
     try {
@@ -54,14 +59,21 @@ const Contact = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (status === 'sending' || status === 'fallback') return;
+    if (status === 'sending') return;
     setStatus('sending');
 
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = `Portfolio — ${data.get('topic') || 'Enquiry'} · ${data.get('name')}`;
+    const d = {
+      name: data.get('name') || '',
+      email: data.get('email') || '',
+      topic: data.get('topic') || 'Enquiry',
+      message: data.get('message') || '',
+      subject: `Portfolio — ${data.get('topic') || 'Enquiry'} · ${data.get('name')}`,
+    };
+    setDraft(d);
 
-    // Path 1: AJAX (fast, no reload)
+    // Path 1: silent AJAX delivery to inbox
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 12000);
     try {
@@ -69,13 +81,8 @@ const Contact = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
-          name: data.get('name'),
-          email: data.get('email'),
-          message: data.get('message'),
-          _subject: subject,
-          _template: 'table',
-          _captcha: 'false',
-          _replyto: data.get('email'),
+          name: d.name, email: d.email, message: d.message,
+          _subject: d.subject, _template: 'table', _captcha: 'false', _replyto: d.email,
         }),
         signal: ctrl.signal,
       });
@@ -89,25 +96,8 @@ const Contact = () => {
       throw new Error('ajax rejected');
     } catch {
       clearTimeout(t);
-      // Path 2: classic navigation POST — passes bot checks, redirects back with ?sent=1
-      setStatus('fallback');
-      const relay = document.createElement('form');
-      relay.method = 'POST';
-      relay.action = FORM_CLASSIC;
-      const add = (k, v) => {
-        const i = document.createElement('input');
-        i.type = 'hidden'; i.name = k; i.value = v;
-        relay.appendChild(i);
-      };
-      add('_captcha', 'false');
-      add('_template', 'table');
-      add('_subject', subject);
-      add('_next', `${window.location.origin}/?sent=1#contact`);
-      add('name', data.get('name') || '');
-      add('email', data.get('email') || '');
-      add('message', data.get('message') || '');
-      document.body.appendChild(relay);
-      relay.submit();
+      // Path 2: guaranteed handoff — visitor's own email app, message prefilled
+      setStatus('mailto');
     }
   };
 
@@ -244,6 +234,41 @@ const Contact = () => {
                     SEND ANOTHER →
                   </button>
                 </motion.div>
+              ) : status === 'mailto' ? (
+                <motion.div
+                  key="mailto"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-12 flex flex-col items-center text-center"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
+                    className="w-16 h-16 rounded-full bg-cyan/12 border border-cyan/40 flex items-center justify-center mb-6"
+                  >
+                    <FiSend size={26} className="text-cyan" />
+                  </motion.div>
+                  <h3 className="font-display font-bold text-2xl mb-2">Your message is ready.</h3>
+                  <p className="text-mute text-sm max-w-[340px] mb-7">
+                    Your email app is opening with everything filled in —
+                    just hit <span className="text-ink font-semibold">send</span> and it lands
+                    straight in my inbox. 100% delivery, no middleman.
+                  </p>
+                  <a
+                    href={buildMailto(draft)}
+                    className="inline-flex items-center gap-2.5 bg-ink text-bg font-semibold text-sm px-7 py-3.5 rounded-xl hover:bg-cyan transition-colors duration-300 mb-4"
+                  >
+                    <FiMail size={15} /> OPEN EMAIL APP
+                  </a>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="font-mono text-[10px] tracking-[0.2em] text-mute hover:text-cyan transition-colors"
+                  >
+                    ← BACK TO FORM
+                  </button>
+                </motion.div>
               ) : (
                 <motion.form
                   key="form"
@@ -325,13 +350,12 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    disabled={status === 'sending' || status === 'fallback'}
+                    disabled={status === 'sending'}
                     className="group w-full inline-flex items-center justify-center gap-2.5 bg-ink text-bg font-semibold text-sm px-6 py-4 rounded-xl hover:bg-cyan disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
                   >
-                    {status === 'sending' || status === 'fallback' ? (
+                    {status === 'sending' ? (
                       <>
-                        <FiLoader size={16} className="animate-spin" />
-                        {status === 'fallback' ? 'SECURE RELAY…' : 'TRANSMITTING…'}
+                        <FiLoader size={16} className="animate-spin" /> TRANSMITTING…
                       </>
                     ) : (
                       <>
