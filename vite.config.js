@@ -6,9 +6,18 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: 'build' // Maintain CRA output directory to minimize deployment drift
+    outDir: 'build', // Maintain CRA output directory to minimize deployment drift
+    target: 'esnext',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-motion': ['framer-motion'],
+        },
+      },
+    },
   },
   server: {
-    port: 3000 // Maintain CRA default port
-  }
+    port: 3000,
+  },
 })

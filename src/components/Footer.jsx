@@ -1,57 +1,60 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FaLinkedinIn, FaGithub, FaHackerrank } from 'react-icons/fa';
-import { sounds } from '../utils/sound';
+import { useEffect, useState } from 'react';
+import { FiArrowUp } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  const socials = [
-    { name: "LinkedIn", link: "https://www.linkedin.com/in/imran-ahmad-aa257520b/", icon: <FaLinkedinIn size={18} /> },
-    { name: "GitHub", link: "https://github.com/imranah10", icon: <FaGithub size={18} /> },
-    { name: "HackerRank", link: "https://www.hackerrank.com/profile/imranaha310", icon: <FaHackerrank size={18} /> },
-  ];
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(
+        new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Kolkata',
+        }).format(new Date())
+      );
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <footer className="relative w-full overflow-hidden pt-32 pb-12 border-t border-primary/20 bg-surface-container-lowest/80 backdrop-blur-md flex flex-col items-center">
-      {/* Giant background text */}
-      <div className="font-black text-surface-container-highest/10 absolute -bottom-16 left-0 select-none text-[clamp(4rem,15vw,16rem)] leading-none tracking-tighter w-full text-center pointer-events-none whitespace-nowrap">
-        IMRAN AHMAD
-      </div>
+    <footer className="border-t border-line bg-surface/50">
+      <div className="max-w-[1200px] mx-auto px-5 md:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="text-center sm:text-left">
+          <p className="font-display font-bold text-sm tracking-tight">
+            IA<span className="text-cyan">.</span> — Imran Ahmad
+          </p>
+          <p className="font-mono text-[9px] tracking-[0.2em] text-faint mt-1.5">
+            DESIGNED &amp; BUILT BY ME · REACT · VITE · FRAMER MOTION
+          </p>
+        </div>
 
-      {/* Social links */}
-      <div className="relative z-10 flex gap-5 mb-8">
-        {socials.map((social, idx) => (
-          <motion.a
-            key={idx}
-            href={social.link}
-            target="_blank"
-            rel="noreferrer"
-            onMouseEnter={() => sounds.hover()}
-            onClick={() => sounds.click()}
-            whileHover={{ y: -4 }}
-            className="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant transition-all bg-surface-dark border border-white/10 hover:text-tertiary hover:border-tertiary/60"
-            aria-label={social.name}
+        <div className="flex items-center gap-6">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-mute" aria-label="Local time India">
+            IST {time}
+          </span>
+          <Link
+            to="/ventures/aurelian-canvas"
+            className="font-mono text-[10px] tracking-[0.2em] text-mute hover:text-cyan transition-colors"
           >
-            {social.icon}
-          </motion.a>
-        ))}
+            VENTURES ↗
+          </Link>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            className="w-10 h-10 rounded-xl panel flex items-center justify-center text-mute hover:text-cyan hover:border-cyan/40 transition-colors"
+          >
+            <FiArrowUp size={15} />
+          </button>
+        </div>
       </div>
-
-      {/* Text */}
-      <div className="relative z-10 flex flex-col items-center gap-4 px-4 max-w-xl mb-8">
-        <h3 className="text-xl font-bold text-text-primary">Stay Connected</h3>
-        <p className="text-on-surface-variant text-sm leading-relaxed">
-          React & AI developer. Creator of Toolverse (100+ tools, npm package).
-          Open for freelance, full-time, and collaboration.
-        </p>
-      </div>
-
-      {/* Bottom */}
-      <div className="relative z-10 flex flex-col sm:flex-row justify-between w-full max-w-[1280px] items-center text-gray-500 text-xs font-mono tracking-widest uppercase gap-4 px-8 pt-8 border-t border-white/5">
-        <p>© 2026 IMRAN AHMAD // NEURAL INTERFACE v2.0</p>
-        <p className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          BUILT WITH REACT · AI
-        </p>
+      <div className="border-t border-line py-4 text-center font-mono text-[9px] tracking-[0.25em] text-faint">
+        © 2026 · ALL SYSTEMS OPERATIONAL
       </div>
     </footer>
   );

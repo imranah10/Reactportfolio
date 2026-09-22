@@ -1,138 +1,188 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import { sounds } from '../utils/sound';
+import { FiMenu, FiX, FiArrowUpRight } from 'react-icons/fi';
+
+const LINKS = [
+  { label: 'Work', hash: '#work' },
+  { label: 'Experience', hash: '#experience' },
+  { label: 'Skills', hash: '#skills' },
+  { label: 'About', hash: '#about' },
+  { label: 'Contact', hash: '#contact' },
+];
+
+/** Scramble-on-hover decode effect (mono label) */
+function useScramble(label) {
+  const [text, setText] = useState(label);
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&';
+  let frame;
+  const onEnter = () => {
+    let iter = 0;
+    cancelAnimationFrame(frame);
+    const run = () => {
+      setText(
+        label
+          .split('')
+          .map((ch, i) => {
+            if (i < iter) return ch;
+            return ch === ' ' ? ' ' : CHARS[Math.floor(Math.random() * CHARS.length)];
+          })
+          .join('')
+      );
+      iter += 0.5;
+      if (iter <= label.length) frame = requestAnimationFrame(run);
+      else setText(label);
+    };
+    frame = requestAnimationFrame(run);
+  };
+  const onLeave = () => {
+    cancelAnimationFrame(frame);
+    setText(label);
+  };
+  useEffect(() => () => cancelAnimationFrame(frame), []);
+  return { text, onEnter, onLeave };
+}
+
+function NavLink({ item, onClick }) {
+  const { text, onEnter, onLeave } = useScramble(item.label);
+  return (
+    <a
+      href={item.hash}
+      onClick={onClick}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="font-mono text-[11px] tracking-[0.22em] text-mute hover:text-ink transition-colors duration-300"
+    >
+      {text.toUpperCase()}
+    </a>
+  );
+}
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navItems = [
-    { title: 'Work', path: 'projects' },
-    { title: 'Experience', path: 'experience' },
-    { title: 'About', path: 'about' },
-    { title: 'Contact', path: 'contact' },
-  ];
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
   return (
     <>
-      {/* Floating pill navbar */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-        className={`fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[1280px] rounded-full border border-outline-variant/30 bg-surface/60 backdrop-blur-xl shadow-[0_0_20px_rgba(76,215,246,0.15)] flex justify-between items-center px-6 py-3 z-50 transition-all duration-500 ${scrolled ? 'bg-surface-dark/90 shadow-[0_0_30px_rgba(76,215,246,0.2)]' : ''}`}
+      <motion.header
+        initial={{ y: -70, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-0 left-0 right-0 z-[8000] transition-all duration-500 ${
+          scrolled ? 'bg-bg/80 backdrop-blur-xl border-b border-line' : 'bg-transparent'
+        }`}
       >
-        {/* Logo */}
-        <a
-          href="/"
-          onClick={() => sounds.click()}
-          onMouseEnter={() => sounds.hover()}
-          className="text-primary animate-pulse drop-shadow-[0_0_10px_rgba(76,215,246,0.5)] text-2xl md:text-3xl font-black tracking-tighter cursor-pointer"
-        >
-          IMRAN
-        </a>
+        <nav className="max-w-[1200px] mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
+          <Link to="/" className="font-display font-extrabold text-lg tracking-tight group">
+            IA<span className="text-cyan">.</span>
+            <span className="hidden sm:inline text-mute font-body font-medium text-xs ml-3 group-hover:text-ink transition-colors">
+              IMRAN AHMAD
+            </span>
+          </Link>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex gap-8 items-center">
-          {navItems.map((item) => (
+          <div className="hidden md:flex items-center gap-8">
+            {isHome ? (
+              LINKS.map((l) => <NavLink key={l.hash} item={l} />)
+            ) : (
+              <a
+                href="/#work"
+                className="font-mono text-[11px] tracking-[0.22em] text-mute hover:text-ink transition-colors"
+              >
+                ← BACK TO PORTFOLIO
+              </a>
+            )}
+          </div>
+
+          <div className="hidden md:flex items-center gap-3">
             <a
-              key={item.path}
-              href={isHomePage ? `#${item.path}` : `/#${item.path}`}
-              onClick={() => sounds.click()}
-              onMouseEnter={() => sounds.hover()}
-              className="text-on-surface-variant font-medium text-sm tracking-tighter hover:text-primary transition-all duration-300 scale-95 active:scale-90"
+              href={isHome ? '#contact' : '/#contact'}
+              className="flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-lime border border-lime/25 bg-lime/5 rounded-full px-3.5 py-1.5 hover:bg-lime/10 transition-colors"
             >
-              {item.title}
+              <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
+              OPEN TO WORK
             </a>
-          ))}
-        </div>
+            <Link
+              to="/ventures/aurelian-canvas"
+              className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] text-mute border border-line rounded-full px-3.5 py-1.5 hover:text-cyan hover:border-cyan/40 transition-colors"
+            >
+              VENTURES <FiArrowUpRight size={11} />
+            </Link>
+          </div>
 
-        {/* Right buttons */}
-        <div className="flex items-center gap-3">
-          <a
-            href="/ventures/aurelian-canvas"
-            onClick={() => sounds.click()}
-            onMouseEnter={() => sounds.hover()}
-            className={`hidden sm:flex px-4 py-2 rounded-full border border-tertiary text-tertiary text-sm hover:bg-tertiary/10 transition-colors items-center gap-2 group ${location.pathname.includes('/ventures') ? 'bg-tertiary/10' : ''}`}
-          >
-            <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse group-hover:bg-primary transition-colors" />
-            Ventures
-          </a>
-          <a
-            href={isHomePage ? '#contact' : '/#contact'}
-            onClick={() => sounds.click()}
-            onMouseEnter={() => sounds.hover()}
-            className="hidden sm:flex px-4 py-2 rounded-full border border-primary bg-primary/10 text-primary text-sm hover:bg-primary/20 transition-colors items-center gap-2"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-            Available
-          </a>
-
-          {/* Mobile hamburger */}
           <button
-            className="md:hidden text-primary p-2"
-            onClick={() => { setMobileMenuOpen(true); sounds.whoosh(); }}
+            className="md:hidden text-ink p-2"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
+            <FiMenu size={22} />
           </button>
-        </div>
-      </motion.nav>
+        </nav>
+      </motion.header>
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {open && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-0 z-[2000] bg-surface-dark/95 backdrop-blur-3xl flex flex-col items-center justify-center gap-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9800] bg-bg/97 backdrop-blur-2xl flex flex-col"
           >
-            <button
-              className="absolute top-8 right-8 text-primary p-2"
-              onClick={() => { setMobileMenuOpen(false); sounds.click(); }}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-            {navItems.map((item, i) => (
-              <motion.a
-                key={item.path}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                href={isHomePage ? `#${item.path}` : `/#${item.path}`}
-                onClick={() => { setMobileMenuOpen(false); sounds.click(); }}
-                className="text-2xl font-bold text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest"
+            <div className="h-16 px-5 flex items-center justify-between">
+              <span className="font-display font-extrabold text-lg">IA<span className="text-cyan">.</span></span>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
+                <FiX size={24} />
+              </button>
+            </div>
+            <div className="flex-1 flex flex-col justify-center px-8 gap-2">
+              {LINKS.map((l, i) => (
+                <motion.a
+                  key={l.hash}
+                  href={l.hash}
+                  onClick={() => setOpen(false)}
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.08 + i * 0.06 }}
+                  className="font-display font-bold text-4xl py-3 text-ink hover:text-cyan transition-colors border-b border-line"
+                >
+                  {l.label}
+                </motion.a>
+              ))}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="pt-8 flex flex-col gap-4"
               >
-                {item.title}
-              </motion.a>
-            ))}
-            <motion.a
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: navItems.length * 0.08 }}
-              href="/ventures/aurelian-canvas"
-              onClick={() => { setMobileMenuOpen(false); sounds.click(); }}
-              className="text-2xl font-bold text-tertiary hover:text-tertiary-container transition-colors uppercase tracking-widest flex items-center gap-3"
-            >
-              <span className="w-2.5 h-2.5 rounded-full bg-tertiary animate-pulse" />
-              Ventures
-            </motion.a>
+                <a
+                  href="mailto:imranaha310@gmail.com"
+                  className="font-mono text-xs tracking-[0.2em] text-cyan"
+                >
+                  IMRANAHA310@GMAIL.COM
+                </a>
+                <Link
+                  to="/ventures/aurelian-canvas"
+                  onClick={() => setOpen(false)}
+                  className="font-mono text-xs tracking-[0.2em] text-mute"
+                >
+                  VENTURES →
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

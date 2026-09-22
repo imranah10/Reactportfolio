@@ -1,99 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Navbar from './Navbar';
 import { Outlet, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import Navbar from './Navbar';
 import Footer from './Footer';
-import AdvancedCursor from './AdvancedCursor';
-import ShaderBackground from './ShaderBackground';
-import { AnimatePresence } from 'framer-motion';
-import IntroOverlay from './IntroOverlay';
-import { sounds, toggleSound } from '../utils/sound';
-import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
 function AppLayout() {
-  const location = useLocation();
-  const isHomePage = location.pathname === '/';
-
-  // ONLY show intro on home page, never on other pages
-  const [showIntro, setShowIntro] = useState(isHomePage);
-  const [muted, setMuted] = useState(false);
-  const soundToggleRef = useRef(null);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleClick = (e) => {
-      if (soundToggleRef.current?.contains(e.target)) return;
-      sounds.click();
-    };
-
-    const handleHover = (e) => {
-      const target = e.target;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON' ||
-          target.closest('a') || target.closest('button')) {
-        sounds.hover();
-      }
-    };
-
-    document.addEventListener('click', handleClick);
-    document.addEventListener('mouseover', handleHover);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-      document.removeEventListener('mouseover', handleHover);
-    };
-  }, []);
-
-  // If navigating away from home, hide intro immediately
-  useEffect(() => {
-    if (!isHomePage) {
-      setShowIntro(false);
-    }
-  }, [isHomePage]);
-
-  const handleToggleSound = () => {
-    const enabled = toggleSound();
-    setMuted(!enabled);
-  };
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
-    <div className="w-full min-h-screen text-on-surface selection:bg-primary/30 text-white overflow-x-hidden relative z-0">
-      <ShaderBackground />
-      <AdvancedCursor />
-
-      {/* Sound Toggle Button */}
-      {!showIntro && (
-        <button
-          ref={soundToggleRef}
-          onClick={handleToggleSound}
-          className="fixed bottom-6 right-6 z-[10000] w-12 h-12 rounded-full bg-surface-dark/80 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:border-primary/50 hover:shadow-[0_0_20px_rgba(76,215,246,0.3)] transition-all duration-300 group"
-          aria-label={muted ? "Unmute" : "Mute"}
-        >
-          {muted ? (
-            <FaVolumeMute className="text-gray-400 group-hover:text-red-400 transition-colors" size={16} />
-          ) : (
-            <FaVolumeUp className="text-primary group-hover:text-primary transition-colors animate-pulse" size={16} />
-          )}
-          {!muted && (
-            <span className="absolute inset-0 rounded-full border border-primary/30 animate-ping" />
-          )}
-        </button>
-      )}
-
-      {/* Intro ONLY on home page */}
-      {isHomePage && showIntro && (
-        <AnimatePresence>
-          <IntroOverlay onComplete={() => setShowIntro(false)} />
-        </AnimatePresence>
-      )}
-
-      {/* Main content — show when intro is done OR when not on home page */}
-      {(!isHomePage || !showIntro) && (
-        <div className="flex flex-col min-h-screen relative z-10">
-          <Navbar />
-          <main className="flex-1 w-full pt-32 pb-20">
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
-      )}
+    <div className="w-full min-h-screen bg-bg text-ink relative">
+      <Navbar />
+      <main className="flex-1 w-full">
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   );
 }

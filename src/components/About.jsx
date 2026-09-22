@@ -1,120 +1,113 @@
-import React from "react";
-import { motion } from "framer-motion";
-import profile2 from "./images/profile.jpg";
-import { FiCpu, FiLayers, FiActivity, FiTerminal } from "react-icons/fi";
-import { sounds } from "../utils/sound";
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import SectionHeading from './SectionHeading';
+import { FiFileText, FiMail } from 'react-icons/fi';
 
-const About = () => {
-  const telemetryStats = [
-    { id: "SYS-01", label: "STACK DENSITY", value: "30+", desc: "Technology nodes including GLM 5.2, AI Studio, Three.js", icon: <FiCpu className="text-primary" size={20} /> },
-    { id: "SYS-02", label: "SYSTEM FLUIDITY", value: "99.9%", desc: "Adaptive UI layout uptime across all screen scales", icon: <FiActivity className="text-secondary" size={20} /> },
-    { id: "SYS-03", label: "BUILDS DELIVERED", value: "30+", desc: "Production web platforms, npm packages, and AI products", icon: <FiLayers className="text-neon-pink" size={20} /> }
-  ];
+const STORY = [
+  { p: '> whoami', c: 'text-cyan' },
+  { p: 'Self-taught developer from India. Started with HTML curiosity — ended up shipping a 56-tool platform.', c: 'text-ink' },
+  { p: '> cat philosophy.txt', c: 'text-cyan' },
+  { p: '"Fast, private, browser-first. If a tool can run on the user\'s machine, it should."', c: 'text-ink' },
+  { p: '> ./current_status.sh', c: 'text-cyan' },
+  { p: 'Building Toolverse in public. Open to full-time & freelance.', c: 'text-lime' },
+];
+
+const Terminal = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [line, setLine] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    if (line >= STORY.length) return undefined;
+    const t = setTimeout(() => setLine((l) => l + 1), line === 0 ? 200 : 340);
+    return () => clearTimeout(t);
+  }, [inView, line]);
 
   return (
-    <section id="about" className="py-32 relative border-t border-primary/10 max-w-[1280px] mx-auto px-5 md:px-16">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        onViewportEnter={() => sounds.reveal()}
-        className="glass-panel rounded-3xl p-8 md:p-12 border-primary/30 flex flex-col md:flex-row gap-12 items-center relative overflow-hidden"
-      >
-        {/* Background dot grid */}
-        <div className="absolute inset-0 opacity-50 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(76,215,246,0.05) 1px, transparent 1px)',
-          backgroundSize: '20px 20px'
-        }} />
-
-        {/* Profile image */}
-        <div className="w-64 h-64 rounded-2xl border-2 border-primary/50 overflow-hidden relative shrink-0 tilt-card neon-glow z-10">
-          <img src={profile2} alt="Imran Ahmad" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-primary/20 mix-blend-overlay" />
-          <div className="scanline" />
-          <div className="corner-bracket corner-tl" />
-          <div className="corner-bracket corner-tr" />
-          <div className="corner-bracket corner-bl" />
-          <div className="corner-bracket corner-br" />
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 space-y-6 z-10">
-          <div className="flex items-center gap-4 border-b border-primary/20 pb-6">
-            <h2 className="text-3xl md:text-5xl font-black text-text-primary">SUBJECT: IMRAN AHMAD</h2>
-            <span className="px-3 py-1 bg-primary/10 text-primary font-mono text-xs rounded border border-primary/30 animate-pulse">ID: IA-77X</span>
-          </div>
-
-          {/* System specs */}
-          <div className="grid grid-cols-2 gap-4 font-mono text-sm text-on-surface-variant bg-surface-dark/50 p-4 rounded-xl border border-outline-variant/20">
-            <div><span className="text-primary mr-2">CLASS:</span> CREATIVE TECHNOLOGIST</div>
-            <div><span className="text-primary mr-2">STATUS:</span> ACTIVE</div>
-            <div><span className="text-primary mr-2">LOCATION:</span> BIHAR, INDIA</div>
-            <div><span className="text-primary mr-2">UPTIME:</span> 99.9%</div>
-          </div>
-
-          {/* Bio */}
-          <p className="text-lg text-on-surface-variant leading-relaxed">
-            Self-taught React & AI developer with 1 year of experience. Creator of Toolverse —
-            a privacy-first online toolkit with 100+ tools, published as an npm package with 263 React components
-            and 1,099 SVG icons. I bridge the gap between conceptual design and robust technical implementation,
-            specializing in high-performance web applications that demand both visual excellence and architectural integrity.
+    <div ref={ref} className="panel rounded-2xl overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface/80">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        <span className="ml-3 font-mono text-[9px] tracking-[0.2em] text-faint">IMRAN@PORTFOLIO: ~</span>
+      </div>
+      <div className="p-5 sm:p-6 font-mono text-[12px] sm:text-[13px] leading-[1.9] min-h-[260px]">
+        {STORY.slice(0, line).map((s, i) => (
+          <p key={i} className={s.c} style={{ whiteSpace: 'pre-wrap' }}>
+            {s.p}
           </p>
+        ))}
+        {line < STORY.length && <span className="inline-block w-2 h-4 bg-cyan/70 animate-pulse" />}
+      </div>
+    </div>
+  );
+};
 
-          {/* Telemetry stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-            {telemetryStats.map((stat, i) => (
-              <motion.div
-                key={stat.id}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="glass-panel p-4 rounded-xl border-outline-variant/20 relative overflow-hidden"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <span className="font-mono text-[9px] text-gray-500 font-bold tracking-widest">{stat.id}</span>
-                  <div className="p-1.5 rounded-lg bg-white/5 border border-white/10">{stat.icon}</div>
-                </div>
-                <div className="text-2xl font-black text-text-primary">{stat.value}</div>
-                <p className="text-xs text-on-surface-variant mt-1">{stat.desc}</p>
-              </motion.div>
+const FACTS = [
+  ['BASED IN', 'India · Remote-friendly'],
+  ['FOCUS', 'Full Stack · AI products'],
+  ['SHIPPING SINCE', '2022'],
+  ['STATUS', 'Open to full-time & freelance'],
+];
+
+const About = () => (
+  <section id="about" className="relative py-24 sm:py-32 border-t border-line bg-surface/30">
+    <div className="max-w-[1200px] mx-auto px-5 md:px-8">
+      <SectionHeading num="04" kicker="HUMAN BEHIND THE CODE" title={<>The <span className="grad-text">story</span>.</>} />
+
+      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Terminal />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-5"
+        >
+          <div className="panel rounded-2xl divide-y divide-[rgba(255,255,255,0.06)]">
+            {FACTS.map(([k, v]) => (
+              <div key={k} className="flex items-center justify-between px-5 py-4">
+                <span className="font-mono text-[9px] tracking-[0.25em] text-faint">{k}</span>
+                <span className="text-[13px] text-ink">{v}</span>
+              </div>
             ))}
           </div>
 
-          {/* Terminal console */}
-          <div className="bg-surface-dark/90 border border-primary/25 rounded-xl overflow-hidden">
-            <div className="bg-surface-container-lowest px-4 py-3 border-b border-white/5 flex items-center justify-between">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-error/30" />
-                <span className="w-3 h-3 rounded-full bg-tertiary/30" />
-                <span className="w-3 h-3 rounded-full bg-primary/30" />
-              </div>
-              <span className="font-mono text-[9px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5">
-                <FiTerminal className="text-primary" /> TOOLVERSE_SYSTEM.sh
-              </span>
-              <span className="w-8" />
-            </div>
-            <div className="p-4 font-mono text-sm text-on-surface-variant">
-              <div className="flex gap-2 mb-2 text-primary font-bold">
-                <span>$</span><span>cat toolverse_core.txt</span>
-              </div>
-              <p className="italic mb-2 pl-4 border-l border-primary/30 leading-relaxed">
-                "Toolverse is a privacy-first online toolkit with 8 Studios and 100+ tools — all running 100% in the browser.
-                Published as an npm package with 263 React components and 1,099 SVG icons. Built entirely with AI-assisted
-                development using GLM 5.2, AI Studio, and Google Stitch."
-              </p>
-              <div className="flex items-center gap-1.5 text-neon-pink font-bold font-mono">
-                <span>$</span>
-                <span className="text-on-surface-variant uppercase tracking-widest text-xs">TOOLVERSE SYSTEM ONLINE</span>
-                <span className="w-2 h-4 bg-neon-pink animate-[blink_1s_step-start_infinite]" />
-              </div>
-            </div>
+          <p className="text-mute text-[14px] leading-relaxed px-1">
+            I don't just write components — I ship products. Every project on this page is live,
+            every number is real, and every tool respects the user's privacy. That's the standard
+            I bring to any team.
+          </p>
+
+          <div className="flex flex-wrap gap-3 px-1">
+            <a
+              href="/Imran_Ahmad_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-line-strong text-ink text-sm px-5 py-3 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+            >
+              <FiFileText size={14} /> Full Resume
+            </a>
+            <a
+              href="mailto:imranaha310@gmail.com"
+              className="inline-flex items-center gap-2 border border-line-strong text-ink text-sm px-5 py-3 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+            >
+              <FiMail size={14} /> Say hello
+            </a>
           </div>
-        </div>
-      </motion.div>
-    </section>
-  );
-};
+        </motion.div>
+      </div>
+    </div>
+  </section>
+);
 
 export default About;

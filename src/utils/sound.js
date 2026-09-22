@@ -2,7 +2,7 @@
 // Uses Web Speech API for voice, Web Audio API for sounds
 
 let audioContext = null;
-let soundEnabled = true;
+let soundEnabled = false; // OFF by default — user opts in
 
 function getAudioContext() {
   if (!audioContext) {
