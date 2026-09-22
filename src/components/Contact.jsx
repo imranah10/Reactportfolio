@@ -1,11 +1,36 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FiMail, FiCopy, FiCheck, FiGithub, FiLinkedin, FiArrowUpRight } from 'react-icons/fi';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FiMail, FiCopy, FiCheck, FiGithub, FiLinkedin, FiArrowUpRight,
+  FiSend, FiUser, FiAtSign, FiMessageSquare, FiAlertCircle, FiLoader,
+} from 'react-icons/fi';
+import { SiX } from 'react-icons/si';
 
 const EMAIL = 'imranaha310@gmail.com';
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/imranaha310@gmail.com';
+
+const TOPICS = [
+  { value: 'HR / Recruiter', label: 'HR / Recruiter — hiring' },
+  { value: 'Client — Project', label: 'Client — project enquiry' },
+  { value: 'Collaboration', label: 'Collaboration / content' },
+  { value: 'Something else', label: 'Something else' },
+];
+
+const SOCIALS = [
+  { icon: <FiGithub size={18} />, href: 'https://github.com/imranah10', label: 'GitHub' },
+  { icon: <SiX size={16} />, href: 'https://x.com/ImranAhama49612', label: 'X (Twitter)' },
+  { icon: <FiLinkedin size={18} />, href: 'https://www.linkedin.com/in/imran-ahmad-aa257520b', label: 'LinkedIn' },
+  { icon: <FiArrowUpRight size={18} />, href: 'https://toolverse-official.vercel.app', label: 'Toolverse' },
+];
+
+const fieldCls =
+  'w-full bg-bg/60 border border-line rounded-xl px-4 py-3.5 text-sm text-ink placeholder:text-faint ' +
+  'outline-none focus:border-cyan/60 focus:ring-2 focus:ring-cyan/15 transition-all duration-300';
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const formRef = useRef(null);
 
   const copyEmail = async () => {
     try {
@@ -17,92 +42,301 @@ const Contact = () => {
     }
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+
+    const data = new FormData(e.currentTarget);
+    const subject = data.get('topic') || 'Portfolio';
+    const payload = {
+      name: data.get('name'),
+      email: data.get('email'),
+      message: data.get('message'),
+      _subject: `Portfolio — ${subject} · ${data.get('name')}`,
+      _template: 'table',
+      _captcha: 'false',
+      _replyto: data.get('email'),
+    };
+
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 15000);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal,
+      });
+      clearTimeout(t);
+      const json = await res.json().catch(() => null);
+      if (res.ok && json && String(json.success) === 'true') {
+        setStatus('success');
+        formRef.current?.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      clearTimeout(t);
+      setStatus('error');
+    }
+  };
+
   return (
     <section id="contact" className="relative py-28 sm:py-40 border-t border-line overflow-hidden">
       <div className="absolute inset-0 grid-bg opacity-60" aria-hidden="true" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] rounded-full bg-cyan/[0.05] blur-[120px]" aria-hidden="true" />
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 w-[560px] h-[560px] rounded-full bg-cyan/[0.05] blur-[120px]" aria-hidden="true" />
+      <div className="absolute bottom-0 right-0 w-[420px] h-[420px] rounded-full bg-magenta/[0.05] blur-[120px]" aria-hidden="true" />
 
-      <div className="max-w-[1200px] mx-auto px-5 md:px-8 relative text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7 }}
-          className="inline-flex items-center gap-2.5 font-mono text-[10px] tracking-[0.25em] text-lime border border-lime/25 bg-lime/5 rounded-full px-4 py-2 mb-10"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
-          AVAILABLE FOR DEPLOYMENT
-        </motion.div>
+      <div className="max-w-[1200px] mx-auto px-5 md:px-8 relative">
+        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 lg:gap-16 items-start">
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-extrabold tracking-tight leading-[1.02] text-[clamp(2.6rem,8vw,5.5rem)] mb-6"
-        >
-          Let's build something
-          <br />
-          <span className="grad-text">worth shipping.</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.25, duration: 0.7 }}
-          className="text-mute max-w-[520px] mx-auto mb-12 text-[15px] leading-relaxed"
-        >
-          Full-time roles, freelance builds, or wild ideas — my inbox is open and I reply fast.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.35, duration: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
-        >
-          <a
-            href={`mailto:${EMAIL}`}
-            className="inline-flex items-center gap-2.5 bg-ink text-bg font-semibold text-sm px-7 py-4 rounded-xl hover:bg-cyan transition-colors duration-300"
-          >
-            <FiMail size={16} /> {EMAIL}
-          </a>
-          <button
-            onClick={copyEmail}
-            className="inline-flex items-center gap-2.5 border border-line-strong text-ink text-sm px-6 py-4 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
-            aria-live="polite"
-          >
-            {copied ? <FiCheck size={16} className="text-lime" /> : <FiCopy size={16} />}
-            {copied ? 'COPIED!' : 'COPY EMAIL'}
-          </button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.45, duration: 0.7 }}
-          className="flex items-center justify-center gap-4"
-        >
-          {[
-            { icon: <FiGithub size={18} />, href: 'https://github.com/imranah10', label: 'GitHub' },
-            { icon: <FiLinkedin size={18} />, href: 'https://www.linkedin.com/in/imran-ahmad-aa257520b', label: 'LinkedIn' },
-            { icon: <FiArrowUpRight size={18} />, href: 'https://toolverse-official.vercel.app', label: 'Toolverse' },
-          ].map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.label}
-              className="w-12 h-12 rounded-xl panel flex items-center justify-center text-mute hover:text-cyan hover:border-cyan/40 hover:-translate-y-1 transition-all duration-300"
+          {/* ── Left: pitch + direct channels ── */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.7 }}
+              className="inline-flex items-center gap-2.5 font-mono text-[10px] tracking-[0.25em] text-lime border border-lime/25 bg-lime/5 rounded-full px-4 py-2 mb-8"
             >
-              {s.icon}
-            </a>
-          ))}
-        </motion.div>
+              <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
+              AVAILABLE FOR DEPLOYMENT
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-extrabold tracking-tight leading-[1.02] text-[clamp(2.4rem,6.5vw,4.4rem)] mb-6"
+            >
+              Let's build something
+              <br />
+              <span className="grad-text">worth shipping.</span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25, duration: 0.7 }}
+              className="text-mute max-w-[480px] mb-9 text-[15px] leading-relaxed"
+            >
+              Full-time roles, freelance builds, or wild ideas — drop it in the form and
+              it lands straight in my inbox. I reply within 24 hours.
+            </motion.p>
+
+            {/* email row */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.35, duration: 0.7 }}
+              className="flex flex-wrap items-center gap-3 mb-9"
+            >
+              <a
+                href={`mailto:${EMAIL}`}
+                className="inline-flex items-center gap-2.5 bg-ink text-bg font-semibold text-sm px-6 py-3.5 rounded-xl hover:bg-cyan transition-colors duration-300"
+              >
+                <FiMail size={16} /> {EMAIL}
+              </a>
+              <button
+                onClick={copyEmail}
+                className="inline-flex items-center gap-2.5 border border-line-strong text-ink text-sm px-5 py-3.5 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"
+                aria-live="polite"
+              >
+                {copied ? <FiCheck size={16} className="text-lime" /> : <FiCopy size={16} />}
+                {copied ? 'COPIED!' : 'COPY'}
+              </button>
+            </motion.div>
+
+            {/* socials */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.45, duration: 0.7 }}
+            >
+              <p className="font-mono text-[10px] tracking-[0.25em] text-faint mb-4">ELSEWHERE //</p>
+              <div className="flex items-center gap-3.5">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    title={s.label}
+                    className="w-12 h-12 rounded-xl panel flex items-center justify-center text-mute hover:text-cyan hover:border-cyan/40 hover:-translate-y-1 transition-all duration-300"
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* ── Right: the form ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="relative panel rounded-2xl p-6 sm:p-8 glow-cyan overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan/60 to-transparent" aria-hidden="true" />
+
+            <AnimatePresence mode="wait">
+              {status === 'success' ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.94 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-14 flex flex-col items-center text-center"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
+                    className="w-16 h-16 rounded-full bg-lime/15 border border-lime/40 flex items-center justify-center mb-6"
+                  >
+                    <FiCheck size={30} className="text-lime" />
+                  </motion.div>
+                  <h3 className="font-display font-bold text-2xl mb-2">Message transmitted.</h3>
+                  <p className="text-mute text-sm max-w-[320px] mb-7">
+                    It's in my inbox already — expect a reply within 24 hours.
+                  </p>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="font-mono text-[11px] tracking-[0.2em] text-cyan border border-cyan/30 rounded-full px-5 py-2.5 hover:bg-cyan/10 transition-colors"
+                  >
+                    SEND ANOTHER →
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  ref={formRef}
+                  onSubmit={onSubmit}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4"
+                  noValidate={false}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-mono text-[10px] tracking-[0.25em] text-faint">
+                      TRANSMISSION FORM
+                    </p>
+                    <span className="font-mono text-[9px] tracking-[0.15em] text-lime flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" /> ENCRYPTED · SECURE
+                    </span>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <label className="block">
+                      <span className="font-mono text-[9px] tracking-[0.2em] text-mute mb-2 flex items-center gap-1.5">
+                        <FiUser size={10} /> YOUR NAME *
+                      </span>
+                      <input
+                        required
+                        name="name"
+                        type="text"
+                        autoComplete="name"
+                        placeholder="Jane Doe"
+                        className={fieldCls}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="font-mono text-[9px] tracking-[0.2em] text-mute mb-2 flex items-center gap-1.5">
+                        <FiAtSign size={10} /> YOUR EMAIL *
+                      </span>
+                      <input
+                        required
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="jane@company.com"
+                        className={fieldCls}
+                      />
+                    </label>
+                  </div>
+
+                  <label className="block">
+                    <span className="font-mono text-[9px] tracking-[0.2em] text-mute mb-2 flex items-center gap-1.5">
+                      <FiMessageSquare size={10} /> I AM A…
+                    </span>
+                    <select name="topic" defaultValue={TOPICS[0].value} className={`${fieldCls} appearance-none cursor-pointer`}>
+                      {TOPICS.map((t) => (
+                        <option key={t.value} value={t.value} className="bg-[#0B0C12] text-ink">
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="font-mono text-[9px] tracking-[0.2em] text-mute mb-2 flex items-center gap-1.5">
+                      <FiMessageSquare size={10} /> MESSAGE *
+                    </span>
+                    <textarea
+                      required
+                      name="message"
+                      rows={5}
+                      minLength={10}
+                      placeholder="Tell me about the role, the project, or the idea…"
+                      className={`${fieldCls} resize-none`}
+                    />
+                  </label>
+
+                  {/* honeypot */}
+                  <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+
+                  {status === 'error' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-start gap-2.5 text-[13px] text-[#FF6B6B] bg-[#FF6B6B]/8 border border-[#FF6B6B]/25 rounded-xl px-4 py-3"
+                    >
+                      <FiAlertCircle size={15} className="mt-0.5 shrink-0" />
+                      <span>
+                        Something blocked the transmission.{' '}
+                        <a href={`mailto:${EMAIL}?subject=Portfolio%20enquiry`} className="underline underline-offset-2 font-semibold">
+                          Mail me directly
+                        </a>{' '}
+                        instead — same inbox.
+                      </span>
+                    </motion.div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={status === 'sending'}
+                    className="group w-full inline-flex items-center justify-center gap-2.5 bg-ink text-bg font-semibold text-sm px-6 py-4 rounded-xl hover:bg-cyan disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
+                  >
+                    {status === 'sending' ? (
+                      <>
+                        <FiLoader size={16} className="animate-spin" /> TRANSMITTING…
+                      </>
+                    ) : (
+                      <>
+                        SEND MESSAGE
+                        <FiSend size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </>
+                    )}
+                  </button>
+
+                  <p className="font-mono text-[9px] tracking-[0.12em] text-faint text-center pt-1">
+                    // LANDS DIRECTLY IN MY INBOX — NO MIDDLEMEN, NO SPAM.
+                  </p>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import { FiArrowDown, FiArrowUpRight, FiFileText, FiMail } from 'react-icons/fi'
 import profile1 from './images/profile1.jpg';
 import useLiveStats from './useLiveStats';
 
-const ROLES = ['React Developer', 'AI Builder', 'Creator of Toolverse', 'Creative Technologist'];
+const ROLES = ['Full Stack Developer', 'AI Developer', 'Content Creator', 'Creator of Toolverse'];
 
 /** Scramble role rotator */
 const useRoleScramble = () => {
@@ -205,7 +205,7 @@ const Hero = () => {
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg via-bg/80 to-transparent pt-14 pb-4 px-4">
               <div className="font-mono text-[9px] tracking-[0.25em] text-cyan mb-1">ID: IA-77X</div>
               <div className="font-mono text-[10px] tracking-[0.15em] text-mute">
-                FULL STACK · AI DEVELOPER
+                DEV · AI · CONTENT CREATOR
               </div>
             </div>
             <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-cyan/70" />

@@ -6,7 +6,6 @@ import Footer from './components/Footer';
 import Preloader from './components/Preloader';
 import ScrollProgress from './components/ScrollProgress';
 import CustomCursor from './components/CustomCursor';
-import SoundToggle from './components/SoundToggle';
 import AppLayout from './components/AppLayout';
 import Home from './components/Home';
 import AurelianCanvas from './components/AurelianCanvas';
@@ -79,7 +78,6 @@ function App() {
       <Preloader />
       <ScrollProgress />
       <CustomCursor />
-      <SoundToggle />
       <RouterProvider router={router} />
     </>
   );

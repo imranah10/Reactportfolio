@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaShoppingBag, FaTimes, FaChevronLeft, FaChevronRight, FaImage, FaVideo } from 'react-icons/fa';
-import { SiPinterest, SiGumroad } from 'react-icons/si';
-import { sounds } from '../utils/sound';
+import { SiPinterest, SiGumroad, SiInstagram } from 'react-icons/si';
 
 const S = 'https://cgomxsxsvfgvivnyhhvu.supabase.co/storage/v1/object/public/aurelian-canvas/AurelianCanvas';
 const acLogo = `${S}/Logo.png`;
@@ -161,24 +160,20 @@ const AurelianCanvas = () => {
     setLightboxType(type);
     setLightboxIndex(index);
     setLightboxOpen(true);
-    sounds.whoosh();
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    sounds.click();
   };
 
   const nextItem = () => {
     const items = lightboxType === 'image' ? activePiece.images : activePiece.videos;
     setLightboxIndex((lightboxIndex + 1) % items.length);
-    sounds.ping();
   };
 
   const prevItem = () => {
     const items = lightboxType === 'image' ? activePiece.images : activePiece.videos;
     setLightboxIndex((lightboxIndex - 1 + items.length) % items.length);
-    sounds.ping();
   };
 
   const currentItems = lightboxType === 'image' ? activePiece.images : activePiece.videos;
@@ -204,7 +199,15 @@ const AurelianCanvas = () => {
         </div>
         <p className="text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto">
           AI art brand — solo operation. 7 premium 16K digital artworks.
-          Sold on Gumroad, marketed on Pinterest.
+          Follow the drop feed on{' '}
+          <a
+            href="https://www.instagram.com/aureliancanvas/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-tertiary font-semibold underline decoration-tertiary/40 underline-offset-4 hover:decoration-tertiary transition-colors"
+          >
+            Instagram
+          </a>{' '}— sold on Gumroad.
         </p>
       </motion.div>
 
@@ -213,8 +216,7 @@ const AurelianCanvas = () => {
         {artPieces.map((piece, idx) => (
           <button
             key={piece.id}
-            onClick={() => { setActiveTab(idx); sounds.click(); }}
-            onMouseEnter={() => sounds.hover()}
+            onClick={() => setActiveTab(idx)}
             className={`px-3 py-2 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-all whitespace-nowrap ${
               activeTab === idx
                 ? 'bg-tertiary text-on-tertiary shadow-[0_0_15px_rgba(255,185,95,0.3)]'
@@ -338,7 +340,12 @@ const AurelianCanvas = () => {
       </AnimatePresence>
 
       {/* Store CTAs */}
-      <div className="flex flex-wrap justify-center gap-6 mt-8">
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-8">
+        <a href="https://www.instagram.com/aureliancanvas/" target="_blank" rel="noreferrer"
+          className="px-8 py-4 rounded-lg font-mono uppercase tracking-widest flex items-center gap-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(45deg,#F58529,#DD2A7B 45%,#8134AF 75%,#515BD4)' }}>
+          <SiInstagram size={16} /> @aureliancanvas on Instagram
+        </a>
         <a href="https://aureliancanvas.gumroad.com/" target="_blank" rel="noreferrer"
           className="glass-panel border-tertiary text-tertiary px-8 py-4 rounded-lg font-mono uppercase tracking-widest hover:bg-tertiary hover:text-on-tertiary transition-all neon-glow-amber flex items-center gap-3 text-sm">
           <FaShoppingBag size={14} /> Visit Gumroad Store

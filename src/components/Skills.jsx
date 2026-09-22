@@ -1,6 +1,35 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SiNodedotjs, SiTailwindcss, SiPrisma, SiPlaywright } from 'react-icons/si';
 import SectionHeading from './SectionHeading';
+
+/** Live stack — brand-colored, exactly what this portfolio + Toolverse run on */
+const STACK = [
+  {
+    icon: SiNodedotjs,
+    name: 'Node.js',
+    color: '#5FA04E',
+    use: 'APIs, CLIs & the Toolverse build pipeline',
+  },
+  {
+    icon: SiTailwindcss,
+    name: 'Tailwind CSS 4',
+    color: '#38BDF8',
+    use: 'This entire page — zero UI kit, pure tokens',
+  },
+  {
+    icon: SiPrisma,
+    name: 'Prisma',
+    color: '#8B9CF9',
+    use: 'Type-safe data layers & schemas',
+  },
+  {
+    icon: SiPlaywright,
+    name: 'Playwright',
+    color: '#2EAD33',
+    use: 'E2E tests that gate every deploy',
+  },
+];
 
 const GROUPS = [
   {
@@ -110,6 +139,60 @@ const Skills = () => {
             ))}
           </motion.div>
         </AnimatePresence>
+
+        {/* ── Currently shipping with — brand colors ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12"
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-cyan">currently shipping with</span>
+            <span className="h-px flex-1 bg-gradient-to-r from-cyan/40 to-transparent" aria-hidden="true" />
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {STACK.map((t, i) => {
+              const Icon = t.icon;
+              return (
+                <motion.div
+                  key={t.name}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.55 }}
+                  whileHover={{ y: -4 }}
+                  className="group relative panel rounded-2xl p-5 overflow-hidden transition-colors duration-300"
+                  style={{ '--brand': t.color }}
+                >
+                  {/* brand glow */}
+                  <div
+                    className="absolute -top-10 -right-10 w-28 h-28 rounded-full blur-[36px] opacity-0 group-hover:opacity-25 transition-opacity duration-500"
+                    style={{ background: t.color }}
+                    aria-hidden="true"
+                  />
+                  <Icon
+                    size={30}
+                    className="mb-3 transition-transform duration-300 group-hover:scale-110"
+                    style={{ color: t.color, filter: `drop-shadow(0 0 10px ${t.color}55)` }}
+                  />
+                  <p className="font-semibold text-[14px] text-ink mb-1">{t.name}</p>
+                  <p className="font-mono text-[9px] leading-relaxed tracking-[0.04em] text-faint group-hover:text-mute transition-colors">
+                    {t.use}
+                  </p>
+                  {/* bottom brand line */}
+                  <span
+                    className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
+                    style={{ background: `linear-gradient(90deg, ${t.color}, transparent)` }}
+                    aria-hidden="true"
+                  />
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0 }}
