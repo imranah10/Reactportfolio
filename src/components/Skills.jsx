@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SiNodedotjs, SiTailwindcss, SiPrisma, SiPlaywright } from 'react-icons/si';
-import { FiLayout, FiCpu, FiTerminal } from 'react-icons/fi';
+import {
+  SiNodedotjs, SiTailwindcss, SiPrisma, SiPlaywright,
+  SiReact, SiNextdotjs, SiTypescript, SiJavascript, SiFramer, SiThreedotjs, SiVite,
+  SiGooglegemini, SiVercel, SiNpm,
+} from 'react-icons/si';
+import {
+  FiLayout, FiCpu, FiTerminal, FiBox, FiGitMerge, FiVideo, FiMessageSquare,
+  FiMousePointer, FiZap, FiGithub, FiTrendingUp, FiSend, FiSmartphone,
+} from 'react-icons/fi';
 import SectionHeading from './SectionHeading';
 
 /** Live stack — brand-colored, exactly what this portfolio + Toolverse run on */
@@ -38,14 +45,14 @@ const GROUPS = [
     label: 'FRONTEND',
     icon: FiLayout,
     skills: [
-      ['React 18', 'Toolverse — 254 components published'],
-      ['Next.js 16', 'Toolverse + client sites'],
-      ['TypeScript', 'Typed across production code'],
-      ['JavaScript (ES6+)', 'Daily driver since 2022'],
-      ['Tailwind CSS 4', 'This page — zero UI kit'],
-      ['Framer Motion', 'Every animation here'],
-      ['Three.js / WebGL', '3D scenes & particles'],
-      ['Vite', 'Instant HMR pipelines'],
+      ['React 18', 'Toolverse — 254 components published', SiReact, '#61DAFB'],
+      ['Next.js 16', 'Toolverse + client sites', SiNextdotjs, '#FFFFFF'],
+      ['TypeScript', 'Typed across production code', SiTypescript, '#3178C6'],
+      ['JavaScript (ES6+)', 'Daily driver since 2022', SiJavascript, '#F7DF1E'],
+      ['Tailwind CSS 4', 'This page — zero UI kit', SiTailwindcss, '#38BDF8'],
+      ['Framer Motion', 'Every animation here', SiFramer, '#E8E8E8'],
+      ['Three.js / WebGL', '3D scenes & particles', SiThreedotjs, '#FFFFFF'],
+      ['Vite', 'Instant HMR pipelines', SiVite, '#9D7CFF'],
     ],
   },
   {
@@ -53,14 +60,14 @@ const GROUPS = [
     label: 'AI & LLM',
     icon: FiCpu,
     skills: [
-      ['GLM 5.2', 'Shipped Toolverse with AI-assisted dev'],
-      ['ChatGPT / Claude / Gemini', 'Product workflows & pairing'],
-      ['Ollama', 'Local model experiments'],
-      ['n8n', 'Automation pipelines'],
-      ['Veo-3 / Google Flow', 'AI video generation'],
-      ['Google AI Studio', 'Rapid API prototyping'],
-      ['Cursor / Lovable / Trae', 'AI-native tooling'],
-      ['Prompt Engineering', 'PromptForge — live app'],
+      ['GLM 5.2', 'Shipped Toolverse with AI-assisted dev', FiCpu, '#4CD7F6'],
+      ['ChatGPT / Claude / Gemini', 'Product workflows & pairing', FiMessageSquare, '#10A37F'],
+      ['Ollama', 'Local model experiments', FiBox, '#DCDDE0'],
+      ['n8n', 'Automation pipelines', FiGitMerge, '#EA4B71'],
+      ['Veo-3 / Google Flow', 'AI video generation', FiVideo, '#EA4335'],
+      ['Google AI Studio', 'Rapid API prototyping', SiGooglegemini, '#4285F4'],
+      ['Cursor / Lovable / Trae', 'AI-native tooling', FiMousePointer, '#E5E5E5'],
+      ['Prompt Engineering', 'PromptForge — live app', FiZap, '#FF4ECD'],
     ],
   },
   {
@@ -68,14 +75,14 @@ const GROUPS = [
     label: 'CORE & TOOLS',
     icon: FiTerminal,
     skills: [
-      ['Git / GitHub', '70 public repos'],
-      ['Vercel', 'Every project deployed'],
-      ['npm publishing', 'toolverse package live'],
-      ['Playwright', 'Automated E2E testing'],
-      ['Lighthouse / SEO', 'Perf budgets & meta systems'],
-      ['Web3Forms', 'Serverless form layer'],
-      ['Prisma / SQLite', 'Data layers when needed'],
-      ['PWA basics', 'Installable web apps'],
+      ['Git / GitHub', '70 public repos', FiGithub, '#FFFFFF'],
+      ['Vercel', 'Every project deployed', SiVercel, '#FFFFFF'],
+      ['npm publishing', 'toolverse package live', SiNpm, '#CB3837'],
+      ['Playwright', 'Automated E2E testing', SiPlaywright, '#2EAD33'],
+      ['Lighthouse / SEO', 'Perf budgets & meta systems', FiTrendingUp, '#F9AB00'],
+      ['Web3Forms', 'Serverless form layer', FiSend, '#4CD7F6'],
+      ['Prisma / SQLite', 'Data layers when needed', SiPrisma, '#8B9CF9'],
+      ['PWA basics', 'Installable web apps', FiSmartphone, '#9B6CFF'],
     ],
   },
 ];
@@ -134,15 +141,31 @@ const Skills = () => {
             className="grid sm:grid-cols-2 gap-3"
             role="tabpanel"
           >
-            {active.skills.map(([name, proof]) => (
+            {active.skills.map(([name, proof, Icon, color]) => (
               <div
                 key={name}
-                className="group panel rounded-xl px-5 py-4 flex items-center justify-between gap-4 hover:border-cyan/30 transition-colors duration-300"
+                className="group panel rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 hover:border-cyan/30 transition-colors duration-300"
               >
-                <span className="font-medium text-[14px] text-ink whitespace-nowrap">{name}</span>
-                <span className="font-mono text-[9px] tracking-[0.08em] text-faint group-hover:text-mute text-right transition-colors">
-                  {proof}
+                {/* brand icon chip */}
+                <span
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center border border-line transition-all duration-300 group-hover:scale-105"
+                  style={{ background: `${color}14`, borderColor: `${color}2e` }}
+                  aria-hidden="true"
+                >
+                  <Icon size={17} style={{ color, filter: `drop-shadow(0 0 6px ${color}44)` }} />
                 </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-medium text-[13.5px] text-ink truncate">{name}</span>
+                  <span className="block font-mono text-[8.5px] tracking-[0.06em] text-faint group-hover:text-mute transition-colors truncate mt-0.5">
+                    {proof}
+                  </span>
+                </span>
+                {/* brand accent bar on hover */}
+                <span
+                  className="shrink-0 w-[3px] h-7 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: color }}
+                  aria-hidden="true"
+                />
               </div>
             ))}
           </motion.div>

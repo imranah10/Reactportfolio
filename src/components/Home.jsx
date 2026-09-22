@@ -4,7 +4,7 @@ import ProofStrip from './ProofStrip';
 
 const Home = ({ children }) => {
   return (
-    <div className="relative">
+    <div className="relative overflow-x-clip">
       <Hero />
       <Marquee />
       <ProofStrip />

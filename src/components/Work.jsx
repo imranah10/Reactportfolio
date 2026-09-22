@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiExternalLink, FiGithub, FiPackage, FiArrowUpRight } from 'react-icons/fi';
+import { FiExternalLink, FiGithub, FiPackage, FiArrowUpRight, FiGlobe } from 'react-icons/fi';
 import SectionHeading from './SectionHeading';
 
 const SHOTS = [
@@ -231,57 +231,104 @@ const Work = () => (
         ))}
       </div>
 
-      {/* More builds */}
+      {/* More builds — every link real, every site live */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.7 }}
-        className="mt-14"
+        className="mt-16"
       >
-        <div className="flex items-center gap-3 mb-5">
+        {/* header strip */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
-          <p className="font-mono text-[10px] tracking-[0.3em] text-mute">
-            MORE BUILDS — <span className="text-lime">ALL LINKS REAL, ALL LIVE</span>
+          <p className="font-mono text-[11px] tracking-[0.3em] text-ink font-bold">
+            MORE BUILDS
           </p>
-          <span className="h-px flex-1 bg-gradient-to-r from-line-strong to-transparent" aria-hidden="true" />
+          <span className="font-mono text-[9px] tracking-[0.2em] px-2.5 py-1 rounded-md border border-lime/30 bg-lime/10 text-lime">
+            ALL LINKS REAL, ALL LIVE
+          </span>
+          <span className="h-px flex-1 bg-gradient-to-r from-lime/25 to-transparent" aria-hidden="true" />
+          <span className="font-mono text-[9px] tracking-[0.2em] text-faint">06 SITES</span>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {[
-            ['PromptForge', 'AI WORKBENCH', 'https://promptforge-navy-psi.vercel.app/'],
-            ['PresentMyVirtualMate', 'COMPANY PRESENTATION', 'https://present.myvirtualmate.com.au/'],
-            ['Outsource Guide', 'SEO CONTENT HUB', 'https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/'],
-            ['Trendzz', 'TRENDS UI', 'https://imranah10.github.io/Trendzz/'],
-            ['Techyy', 'TECH MAG UI', 'https://imranah10.github.io/Techy/'],
-            ['I-Folio', 'PORTFOLIO UI', 'https://imranah10.github.io/Portfolio-bootstrap-sample/'],
-          ].map(([name, type, url], i) => (
-            <motion.a
-              key={name}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.5 }}
-              whileHover={{ y: -3 }}
-              className="group panel rounded-xl px-4 py-4 flex items-center justify-between gap-3 hover:border-cyan/40 transition-colors duration-300"
-            >
-              <span>
-                <span className="block font-medium text-[13.5px] text-ink group-hover:text-cyan transition-colors">
-                  {name}
+            { name: 'PromptForge', type: 'AI WORKBENCH', url: 'https://promptforge-navy-psi.vercel.app/' },
+            { name: 'PresentMyVirtualMate', type: 'COMPANY PRESENTATION', url: 'https://present.myvirtualmate.com.au/' },
+            { name: 'Outsource Guide', type: 'SEO CONTENT HUB', url: 'https://benefits-of-outsourcing-with-mvm.myvirtualmate.com.au/' },
+            { name: 'Trendzz', type: 'TRENDS UI', url: 'https://imranah10.github.io/Trendzz/' },
+            { name: 'Techyy', type: 'TECH MAG UI', url: 'https://imranah10.github.io/Techy/' },
+            { name: 'I-Folio', type: 'PORTFOLIO UI', url: 'https://imranah10.github.io/Portfolio-bootstrap-sample/' },
+          ].map(({ name, type, url }, i) => {
+            let host = url;
+            try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { /* keep url */ }
+            return (
+              <motion.a
+                key={name}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.5 }}
+                whileHover={{ y: -3 }}
+                className="group relative panel rounded-xl pl-4 pr-3 py-3.5 flex items-center gap-3.5 overflow-hidden hover:border-cyan/40 transition-colors duration-300"
+              >
+                {/* index + live state, top-right sweep line */}
+                <span className="font-mono text-[10px] text-faint/70 group-hover:text-cyan transition-colors shrink-0">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="block font-mono text-[8px] tracking-[0.2em] text-faint mt-1 group-hover:text-mute transition-colors">
-                  {type}
+
+                {/* live favicon (globe fallback) */}
+                <span className="relative shrink-0 w-9 h-9 rounded-lg border border-line bg-surface flex items-center justify-center overflow-hidden">
+                  <FiGlobe size={15} className="text-faint" aria-hidden="true" />
+                  <img
+                    src={`https://icons.duckduckgo.com/ip3/${host}.ico`}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-contain p-1.5"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
                 </span>
-              </span>
-              <span className="shrink-0 w-8 h-8 rounded-lg border border-line flex items-center justify-center text-faint group-hover:text-cyan group-hover:border-cyan/40 transition-colors">
-                <FiArrowUpRight size={14} />
-              </span>
-            </motion.a>
-          ))}
+
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center gap-2 min-w-0">
+                    <span className="block font-semibold text-[13.5px] text-ink group-hover:text-cyan transition-colors truncate">
+                      {name}
+                    </span>
+                    <span className="shrink-0 inline-flex items-center gap-1 font-mono text-[7.5px] tracking-[0.15em] text-lime/90">
+                      <span className="w-1 h-1 rounded-full bg-lime animate-pulse-dot" />
+                      LIVE
+                    </span>
+                  </span>
+                  <span className="block font-mono text-[8px] tracking-[0.18em] text-faint mt-1 group-hover:text-mute transition-colors truncate">
+                    {type}
+                  </span>
+                  <span className="block font-mono text-[8px] tracking-[0.04em] text-faint/70 truncate mt-0.5">
+                    {host}
+                  </span>
+                </span>
+
+                <span className="shrink-0 w-8 h-8 rounded-lg border border-line flex items-center justify-center text-faint group-hover:text-cyan group-hover:border-cyan/50 group-hover:bg-cyan/10 transition-all duration-300">
+                  <FiArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                </span>
+
+                {/* hover sweep */}
+                <span
+                  className="absolute inset-x-0 bottom-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-cyan to-transparent"
+                  aria-hidden="true"
+                />
+              </motion.a>
+            );
+          })}
         </div>
+
+        <p className="mt-5 font-mono text-[9px] tracking-[0.15em] text-faint">
+          // EVERY CARD OPENS THE REAL DEPLOYED SITE IN A NEW TAB — NO MOCKUPS, NO DEAD LINKS.
+        </p>
       </motion.div>
     </div>
   </section>

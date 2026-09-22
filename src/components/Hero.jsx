@@ -90,11 +90,14 @@ const Hero = () => {
   const resetTilt = () => { mx.set(0); my.set(0); };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* Background layers */}
-      <div className="grid-bg absolute inset-0" aria-hidden="true" />
-      <div className="absolute -top-40 -right-40 w-[640px] h-[640px] rounded-full bg-cyan/[0.07] blur-[120px]" aria-hidden="true" />
-      <div className="absolute -bottom-52 -left-40 w-[620px] h-[620px] rounded-full bg-magenta/[0.06] blur-[120px]" aria-hidden="true" />
+    <section className="relative min-h-screen flex items-center pt-24 pb-16">
+      {/* Background layers — clipped INSIDE their own layer so the resume
+          dropdown can escape the section without blobs causing h-scroll */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="grid-bg absolute inset-0" />
+        <div className="absolute -top-40 -right-40 w-[640px] h-[640px] rounded-full bg-cyan/[0.07] blur-[120px]" />
+        <div className="absolute -bottom-52 -left-40 w-[620px] h-[620px] rounded-full bg-magenta/[0.06] blur-[120px]" />
+      </div>
 
       <div className="max-w-[1200px] mx-auto px-5 md:px-8 w-full grid lg:grid-cols-[1.15fr_0.85fr] gap-14 lg:gap-10 items-center relative">
         {/* ── Left: copy ── */}
@@ -183,11 +186,11 @@ const Hero = () => {
               <AnimatePresence>
                 {resumeOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.97 }}
                     transition={{ duration: 0.18 }}
-                    className="absolute top-full left-0 mt-2.5 w-[260px] panel rounded-xl overflow-hidden z-[60] glow-cyan"
+                    className="absolute bottom-full left-0 mb-2.5 w-[260px] panel rounded-xl overflow-hidden z-[60] glow-cyan"
                   >
                     <p className="font-mono text-[9px] tracking-[0.25em] text-faint px-4 pt-3 pb-2">
                       DOWNLOAD RESUME //
