@@ -36,7 +36,7 @@ const ITEMS = [
 const Experience = () => (
   <section id="experience" className="relative py-24 sm:py-32 border-t border-line bg-surface/30">
     <div className="max-w-[1200px] mx-auto px-5 md:px-8">
-      <SectionHeading num="02" kicker="CAREER TIMELINE" title={<>Where I've <span className="grad-text">worked</span>.</>} />
+      <SectionHeading num="03" kicker="CAREER TIMELINE" title={<>Where I've <span className="grad-text">worked</span>.</>} />
 
       <div className="relative">
         {/* vertical line */}

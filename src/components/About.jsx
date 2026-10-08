@@ -54,7 +54,7 @@ const FACTS = [
 const About = () => (
   <section id="about" className="relative py-24 sm:py-32 border-t border-line bg-surface/30">
     <div className="max-w-[1200px] mx-auto px-5 md:px-8">
-      <SectionHeading num="04" kicker="HUMAN BEHIND THE CODE" title={<>The <span className="grad-text">story</span>.</>} />
+      <SectionHeading num="05" kicker="HUMAN BEHIND THE CODE" title={<>The <span className="grad-text">story</span>.</>} />
 
       <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-start">
         <motion.div

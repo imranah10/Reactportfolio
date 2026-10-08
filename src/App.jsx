@@ -11,6 +11,7 @@ import Home from './components/Home';
 import AurelianCanvas from './components/AurelianCanvas';
 
 const Work = lazy(() => import('./components/Work'));
+const Automation = lazy(() => import('./components/Automation'));
 const Experience = lazy(() => import('./components/Experience'));
 const Skills = lazy(() => import('./components/Skills'));
 const About = lazy(() => import('./components/About'));
@@ -60,6 +61,7 @@ function App() {
             <Home>
               <Suspense fallback={<Loader />}>
                 <Work />
+                <Automation />
                 <Experience />
                 <Skills />
                 <About />

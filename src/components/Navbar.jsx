@@ -5,6 +5,7 @@ import { FiMenu, FiX, FiArrowUpRight } from 'react-icons/fi';
 
 const LINKS = [
   { label: 'Work', hash: '#work' },
+  { label: 'Automation', hash: '#automation' },
   { label: 'Experience', hash: '#experience' },
   { label: 'Skills', hash: '#skills' },
   { label: 'About', hash: '#about' },

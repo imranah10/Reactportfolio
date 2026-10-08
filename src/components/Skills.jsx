@@ -106,7 +106,7 @@ const Skills = () => {
       />
 
       <div className="max-w-[1200px] mx-auto px-5 md:px-8 relative">
-        <SectionHeading num="03" kicker="ARSENAL" title={<>What I <span className="grad-text">wield</span>.</>} />
+        <SectionHeading num="04" kicker="ARSENAL" title={<>What I <span className="grad-text">wield</span>.</>} />
 
         {/* tabs */}
         <div className="flex gap-2 mb-8 flex-wrap" role="tablist" aria-label="Skill categories">
