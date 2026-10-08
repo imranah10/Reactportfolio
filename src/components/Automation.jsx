@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   FiGithub, FiExternalLink, FiZap, FiShield, FiRefreshCw, FiCrop,
@@ -147,20 +148,8 @@ const TV_LINES = [
   <>{'→ '}<W>logs outcome →</W> <Y>retries</Y><W>,</W> <Y>anti-stuck auto-advance</Y></>,
 ];
 
-const ToolverseCard = () => (
-  <motion.article {...rise()} className="panel rounded-2xl p-5 sm:p-8 relative overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan/60 to-transparent" />
-    <header className="flex flex-wrap items-start gap-3 justify-between mb-4">
-      <div className="flex items-center gap-3.5">
-        <div className="w-11 h-11 rounded-xl border border-cyan/30 bg-cyan/10 flex items-center justify-center text-cyan shrink-0"><FiCpu size={20} /></div>
-        <div>
-          <h3 className="font-display font-extrabold text-xl sm:text-2xl leading-tight">Toolverse <span className="grad-text">Autopilot</span></h3>
-          <p className="font-mono text-[9.5px] tracking-[0.2em] text-mute uppercase mt-0.5">90-day self-driving social machine</p>
-        </div>
-      </div>
-      <LiveBadge tone="lime">LIVE · RUNNING DAILY</LiveBadge>
-    </header>
-
+const ToolverseBody = () => (
+  <>
     <p className="text-mute text-sm sm:text-[15px] leading-relaxed">
       The marketing engine behind <span className="text-ink">Toolverse</span> — my privacy-first toolkit with
       100+ tools. A <span className="text-ink">90-day pre-planned schedule</span> publishes a daily image
@@ -234,7 +223,7 @@ const ToolverseCard = () => (
         <FiExternalLink size={14} /> LIVE — 100+ TOOLS
       </a>
     </div>
-  </motion.article>
+  </>
 );
 
 /* ── project 2: AURELIAN CANVAS ───────────────────────────────── */
@@ -256,20 +245,8 @@ const AC_FEATURES = [
   { icon: FiDatabase, t: 'Token rotation', d: 'Never-expiring FB Page token; Pinterest refresh auto-minted.' },
 ];
 
-const AurelianCard = () => (
-  <motion.article {...rise(0.05)} className="panel rounded-2xl p-5 sm:p-8 relative overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-magenta/60 to-transparent" />
-    <header className="flex flex-wrap items-start gap-3 justify-between mb-4">
-      <div className="flex items-center gap-3.5">
-        <div className="w-11 h-11 rounded-xl border border-magenta/30 bg-magenta/10 flex items-center justify-center text-magenta shrink-0"><FiPlay size={20} /></div>
-        <div>
-          <h3 className="font-display font-extrabold text-xl sm:text-2xl leading-tight">Aurelian Canvas <span className="grad-text">Auto-Poster</span></h3>
-          <p className="font-mono text-[9.5px] tracking-[0.2em] text-mute uppercase mt-0.5">450-post hands-free marketing engine</p>
-        </div>
-      </div>
-      <LiveBadge tone="cyan">LIVE FROM OCT 9, 2026</LiveBadge>
-    </header>
-
+const AurelianBody = () => (
+  <>
     <p className="text-mute text-sm sm:text-[15px] leading-relaxed">
       Fully automated social marketing for my <span className="text-ink">digital art storefront</span>
       (7 products + 4 bundles) — <span className="text-ink">90 days without touching it</span>.
@@ -358,8 +335,132 @@ const AurelianCard = () => (
         <FiExternalLink size={14} /> FULL CASE STUDY
       </Link>
     </div>
-  </motion.article>
+  </>
 );
+
+/* ── accordion tabs: one open at a time ─────────────────────────
+   FUTURE AUTOMATION? Push one object into AUTOMATIONS below — tab bar,
+   badge, mini-stats and the single-open accordion all render automatically. */
+
+const TONE = {
+  cyan: {
+    icon: 'border-cyan/30 bg-cyan/10 text-cyan',
+    text: 'text-cyan', glow: 'via-cyan/60', open: 'border-cyan/40!', plus: 'border-cyan/40! text-cyan',
+  },
+  magenta: {
+    icon: 'border-magenta/30 bg-magenta/10 text-magenta',
+    text: 'text-magenta', glow: 'via-magenta/60', open: 'border-magenta/40!', plus: 'border-magenta/40! text-magenta',
+  },
+};
+
+const MiniStat = ({ v, l }) => (
+  <span className="inline-flex items-baseline gap-1.5 font-mono text-[9px] tracking-[0.14em] uppercase px-2 py-1 rounded-md border border-line bg-surface/60">
+    <span className="font-display font-extrabold text-[11px] grad-text">{v}</span>
+    <span className="text-mute">{l}</span>
+  </span>
+);
+
+const AUTOMATIONS = [
+  {
+    id: 'toolverse',
+    num: '01',
+    tone: 'cyan',
+    icon: FiCpu,
+    title: <>Toolverse <span className="grad-text">Autopilot</span></>,
+    tagline: '90-day self-driving social machine',
+    badge: { tone: 'lime', text: 'LIVE · RUNNING DAILY' },
+    teaser: '90-day pre-planned schedule → daily IG image (7 PM) + viral reel (11 PM) + Facebook. 60 AI videos on a Releases CDN, idempotent engine, zero skips.',
+    minis: [['90', 'day plan'], ['180+', 'posts auto'], ['0', 'skips']],
+    Body: ToolverseBody,
+  },
+  {
+    id: 'aurelian',
+    num: '02',
+    tone: 'magenta',
+    icon: FiPlay,
+    title: <>Aurelian Canvas <span className="grad-text">Auto-Poster</span></>,
+    tagline: '450-post hands-free marketing engine',
+    badge: { tone: 'cyan', text: 'LIVE FROM OCT 9, 2026' },
+    teaser: 'Python engine posts 2× daily to Pinterest + Instagram for 90 days — 450 Gumroad-deep-linked posts, 4:5 auto-crop, idempotent, catch-up safe.',
+    minis: [['450', 'posts'], ['360', 'pins'], ['₹0', 'cost']],
+    Body: AurelianBody,
+  },
+];
+
+const AutomationTabs = () => {
+  const [open, setOpen] = useState(null); // sirf EK tab open kabhi — null = sab band
+  const toggle = (id) => setOpen((cur) => (cur === id ? null : id));
+
+  return (
+    <div className="mt-10 sm:mt-12">
+      <div className="flex items-center gap-2 font-mono text-[9.5px] tracking-[0.22em] text-faint uppercase mb-4">
+        <FiZap size={12} className="text-lime" /> tap a system to open · one at a time
+      </div>
+
+      <div className="space-y-4">
+        {AUTOMATIONS.map((a) => {
+          const t = TONE[a.tone];
+          const Ic = a.icon;
+          const isOpen = open === a.id;
+          return (
+            <div key={a.id}
+              className={`panel rounded-2xl relative overflow-hidden transition-colors duration-300 ${isOpen ? t.open : 'hover:border-line-strong!'}`}>
+              {isOpen && <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${t.glow} to-transparent`} />}
+
+              {/* tab bar — click to open / click again to close */}
+              <button type="button" onClick={() => toggle(a.id)} aria-expanded={isOpen}
+                className="w-full text-left p-4 sm:p-6 group cursor-pointer">
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  <span className="hidden sm:block font-display font-extrabold text-2xl text-faint/60 w-9 shrink-0">{a.num}</span>
+                  <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${t.icon}`}>
+                    <Ic size={20} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                      <h3 className="font-display font-extrabold text-lg sm:text-xl leading-tight">{a.title}</h3>
+                      <LiveBadge tone={a.badge.tone}>{a.badge.text}</LiveBadge>
+                    </div>
+                    <p className="font-mono text-[9px] sm:text-[9.5px] tracking-[0.2em] text-mute uppercase mt-1">{a.tagline}</p>
+                  </div>
+                  <span aria-hidden="true"
+                    className={`shrink-0 w-9 h-9 rounded-full border flex items-center justify-center text-lg leading-none transition-all duration-300 ${isOpen ? `${t.plus} rotate-45` : 'border-line-strong! text-mute group-hover:text-ink'}`}>
+                    +
+                  </span>
+                </div>
+
+                <div className="mt-3 sm:mt-3.5 flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4">
+                  <p className="text-mute text-[12px] sm:text-[12.5px] leading-snug sm:flex-1 min-w-0">{a.teaser}</p>
+                  <div className="flex flex-wrap gap-1.5 shrink-0">
+                    {a.minis.map(([v, l]) => <MiniStat key={l} v={v} l={l} />)}
+                  </div>
+                </div>
+              </button>
+
+              {/* expanding panel — smooth height animation */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="panel"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.55, ease: EASE }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mx-4 sm:mx-6 border-t border-line" />
+                    <div className="px-4 sm:px-6 pb-5 sm:pb-7 pt-5">
+                      <a.Body />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 /* ── pillars + section ────────────────────────────────────────── */
 
@@ -397,10 +498,7 @@ const Automation = () => (
         <Stat v="₹0" l="infra cost" />
       </motion.div>
 
-      <div className="mt-10 sm:mt-12 space-y-8 sm:space-y-10">
-        <ToolverseCard />
-        <AurelianCard />
-      </div>
+      <AutomationTabs />
 
       <div className="grid sm:grid-cols-3 gap-3 sm:gap-4 mt-10">
         {PILLARS.map((p, i) => {
