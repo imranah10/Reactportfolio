@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import {
   FiGithub, FiExternalLink, FiZap, FiShield, FiRefreshCw, FiCrop,
   FiDatabase, FiTrendingUp, FiGitBranch, FiCpu, FiPlay, FiCheckCircle,
+  FiBriefcase,
 } from 'react-icons/fi';
 import SectionHeading from './SectionHeading';
+import JobHunterDiagram from '../assets/job-hunter-n8n-diagram.png';
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -338,6 +340,75 @@ const AurelianBody = () => (
   </>
 );
 
+/* ── project 3: AI AUTONOMOUS JOB HUNTER PRO ──────────────────── */
+
+const JH_STAGES = [
+  { n: '00', t: 'Start / Stop Gate', d: 'Manual PDF upload or the daily 9 AM schedule trigger. A master RUNNING / PAUSED / STOPPED switch plus a time-window check — nothing runs outside my control.' },
+  { n: '01', t: 'AI Resume Parser', d: 'Gemini 2.0 Flash reads the PDF multimodally in one fast call: primary + backup roles, 12 core skills, honest experience years and first-person achievements. A multi-field fallback engine covers tech, data, marketing, sales, finance and ops resumes.' },
+  { n: '02', t: 'Global Job Harvester', d: '8 scrapers in a chain — Reddit, YC HackerNews "Who Is Hiring", LinkedIn/X/Telegram, Naukri, Indeed, NaukriGulf, RemoteOK and Arbeitnow (EU/UK/DE visa-sponsored). Blocks personal Gmail/Yahoo job-seekers, extracts corporate HR emails + WhatsApp numbers, dedupes against the tracking sheet.' },
+  { n: '03', t: 'AI Scorer & Multi-Channel Apply', d: 'Every job scored 0–100% against the parsed profile. Only ≥55% matches proceed: a tailored cover letter + WhatsApp pitch written per company, resume emailed to real corporate HR via Gmail, a WhatsApp bridge for companies that drop numbers, and a portal auto-apply bridge for the rest.' },
+  { n: '04', t: '18-Column Tracking Sheet', d: 'A new date-time tab per run with a written header row — every sent application logged across 18 columns (company, role, HR email, score, channels, status…). Cross-run dedupe means no company is ever contacted twice.' },
+  { n: '05', t: 'Reports & Auto Follow-Ups', d: 'An 8:00 PM daily scorecard email with date-wise sent / approved / rejected stats. Applications silent for 3 days automatically get a smart HR follow-up — no opportunity dies quietly.' },
+  { n: '06', t: 'Reply Intelligence — Interview Prep', d: 'A Gmail trigger watches company replies (standby). Gemini classifies approved vs rejected and updates the sheet live; the moment a company shortlists me, a custom interview Q&A cheat-sheet is generated and emailed instantly.' },
+];
+
+const JobHunterBody = () => (
+  <>
+    <p className="text-mute text-sm sm:text-[15px] leading-relaxed">
+      An end-to-end job-hunting machine — <span className="text-ink">upload a resume once</span> and it finds,
+      scores and applies to jobs across <span className="text-ink">50+ countries</span>. Gemini reads the PDF
+      and detects primary + backup roles; 8 parallel harvesters scrape Naukri, Indeed, NaukriGulf, LinkedIn,
+      RemoteOK, Arbeitnow (EU/UK/DE visa jobs), Reddit and YC "Who is Hiring"; every job is scored 0–100%
+      and only <span className="text-ink">≥55% matches</span> get a tailored cover letter + WhatsApp pitch with
+      the resume emailed to real corporate HR inboxes. Every application lands in an
+      <span className="text-ink"> 18-column Google Sheet</span> (new tab per run, duplicate-proof), an
+      <span className="text-ink"> 8 PM daily scorecard</span> lands in my inbox, silent HR follow-ups fire after
+      3 days without a reply, and a shortlisted company instantly triggers an AI-generated
+      <span className="text-ink"> interview Q&amp;A cheat-sheet</span>.
+    </p>
+
+    <div className="mt-6">
+      <div className="flex items-center gap-2 mb-2.5 font-mono text-[9.5px] tracking-[0.2em] text-lime">
+        <FiGitBranch size={13} /> FULL WORKFLOW MAP — 40 NODES · 39 CONNECTIONS · 7 STAGES
+      </div>
+      <a href={JobHunterDiagram} target="_blank" rel="noreferrer"
+         className="block rounded-xl border border-line-strong overflow-hidden hover:border-lime/40 transition-colors">
+        <img src={JobHunterDiagram} alt="AI Autonomous Job Hunter Pro — full n8n workflow map: 40 nodes across 7 stages, from resume parsing to interview prep"
+             className="w-full h-auto" loading="lazy" />
+      </a>
+      <div className="font-mono text-[9px] tracking-[0.18em] text-faint mt-2 uppercase">
+        tap to open full size · arrows show execution flow · 40 working nodes · 7 stages
+      </div>
+    </div>
+
+    <div className="grid sm:grid-cols-2 gap-3 mt-6">
+      {JH_STAGES.map((s) => (
+        <div key={s.n} className="rounded-xl border border-line bg-surface/50 p-4">
+          <div className="flex items-baseline gap-2.5">
+            <span className="font-mono font-extrabold text-[11px] tracking-[0.18em] text-lime">STAGE {s.n}</span>
+            <span className="font-display font-bold text-[13.5px] leading-tight">{s.t}</span>
+          </div>
+          <div className="text-mute text-[12px] leading-relaxed mt-1.5">{s.d}</div>
+        </div>
+      ))}
+    </div>
+
+    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5 mt-6">
+      <Stat v="40" l="real nodes" />
+      <Stat v="39" l="connections" />
+      <Stat v="50+" l="countries" />
+      <Stat v="18" l="col tracking" />
+      <Stat v="8 PM" l="scorecard" />
+    </div>
+
+    <div className="flex flex-wrap gap-2 mt-5">
+      <Chip>n8n Cloud</Chip><Chip>Gemini 2.0 Flash</Chip><Chip>OpenAI / Claude / Grok / Groq ready</Chip>
+      <Chip>Gmail API</Chip><Chip>Google Sheets API</Chip><Chip>WhatsApp Bridge</Chip><Chip>REST / HTTP APIs</Chip>
+    </div>
+
+  </>
+);
+
 /* ── accordion tabs: one open at a time ─────────────────────────
    FUTURE AUTOMATION? Push one object into AUTOMATIONS below — tab bar,
    badge, mini-stats and the single-open accordion all render automatically. */
@@ -350,6 +421,10 @@ const TONE = {
   magenta: {
     icon: 'border-magenta/30 bg-magenta/10 text-magenta',
     text: 'text-magenta', glow: 'via-magenta/60', open: 'border-magenta/40!', plus: 'border-magenta/40! text-magenta',
+  },
+  lime: {
+    icon: 'border-lime/30 bg-lime/10 text-lime',
+    text: 'text-lime', glow: 'via-lime/60', open: 'border-lime/40!', plus: 'border-lime/40! text-lime',
   },
 };
 
@@ -384,6 +459,18 @@ const AUTOMATIONS = [
     teaser: 'Python engine posts 2× daily to Pinterest + Instagram for 90 days — 450 Gumroad-deep-linked posts, 4:5 auto-crop, idempotent, catch-up safe.',
     minis: [['450', 'posts'], ['360', 'pins'], ['₹0', 'cost']],
     Body: AurelianBody,
+  },
+  {
+    id: 'jobhunter',
+    num: '03',
+    tone: 'lime',
+    icon: FiBriefcase,
+    title: <>AI Job Hunter <span className="grad-text">Pro</span></>,
+    tagline: 'resume once → applies across 50+ countries',
+    badge: { tone: 'lime', text: 'n8n CLOUD · 40 NODES · 7 STAGES' },
+    teaser: 'n8n + Gemini pipeline: 8 harvesters across Naukri/LinkedIn/RemoteOK/Arbeitnow, 0–100% AI fit scoring, auto cover letters + WhatsApp pitches to HR, 18-col tracking sheet, 8 PM scorecards, 3-day follow-ups & instant interview prep.',
+    minis: [['40', 'nodes'], ['7', 'stages'], ['50+', 'countries']],
+    Body: JobHunterBody,
   },
 ];
 
