@@ -59,6 +59,15 @@ function NavLink({ item, onClick }) {
   );
 }
 
+/* Preload the creator chunk on hover/touch so the mode switch feels instant */
+let creatorPreloaded = false;
+const preloadCreator = () => {
+  if (!creatorPreloaded) {
+    creatorPreloaded = true;
+    import('./CreatorMode');
+  }
+};
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -78,6 +87,9 @@ const Navbar = () => {
         <button
           key={o.m}
           onClick={() => switchTo(o.to)}
+          onMouseEnter={o.m === 'CREATOR' ? preloadCreator : undefined}
+          onFocus={o.m === 'CREATOR' ? preloadCreator : undefined}
+          onTouchStart={o.m === 'CREATOR' ? preloadCreator : undefined}
           className={`relative rounded-full font-mono tracking-[0.18em] transition-colors duration-300 ${
             big ? 'px-5 py-2.5 text-[11px]' : 'px-3.5 py-1.5 text-[10px]'
           } ${o.active ? (isCreator ? 'text-[#f6c26b]' : 'text-cyan') : 'text-mute hover:text-ink'}`}

@@ -27,6 +27,45 @@ function Loader() {
   );
 }
 
+/* Router lives at module scope — creating it inside the component body
+   would rebuild the router (and remount the whole tree) on every render. */
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: (
+          <Home>
+            <Suspense fallback={<Loader />}>
+              <Work />
+              <Automation />
+              <Experience />
+              <Skills />
+              <About />
+              <Contact />
+            </Suspense>
+          </Home>
+        ),
+      },
+      { path: '/ventures/aurelian-canvas', element: <AurelianCanvas /> },
+      /* Suspense boundary is REQUIRED here: without it, clicking the mode
+         switch suspends during a synchronous input update and React throws
+         "Minified React error #426" (component suspended while responding
+         to synchronous input). */
+      {
+        path: '/creator',
+        element: (
+          <Suspense fallback={<Loader />}>
+            <CreatorMode />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+]);
+
 function App() {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,31 +91,12 @@ function App() {
     };
   }, []);
 
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <AppLayout />,
-      children: [
-        {
-          path: '/',
-          element: (
-            <Home>
-              <Suspense fallback={<Loader />}>
-                <Work />
-                <Automation />
-                <Experience />
-                <Skills />
-                <About />
-                <Contact />
-              </Suspense>
-            </Home>
-          ),
-        },
-        { path: '/ventures/aurelian-canvas', element: <AurelianCanvas /> },
-        { path: '/creator', element: <CreatorMode /> },
-      ],
-    },
-  ]);
+  /* Preload the creator chunk shortly after first paint so the DEV -> CREATOR
+     switch is instant (and never suspends visibly) even on first tap. */
+  useEffect(() => {
+    const t = setTimeout(() => import('./components/CreatorMode'), 2200);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <>
