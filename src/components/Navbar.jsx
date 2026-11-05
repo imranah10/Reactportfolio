@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiArrowUpRight } from 'react-icons/fi';
+import { FiMenu, FiX, FiArrowUpRight, FiZap } from 'react-icons/fi';
 
 const LINKS = [
   { label: 'Work', hash: '#work' },
@@ -63,7 +63,40 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isHome = pathname === '/';
+  const isCreator = pathname.startsWith('/creator');
+
+  const switchTo = (to) => {
+    setOpen(false);
+    navigate(to);
+  };
+
+  const ModeSwitch = ({ big = false }) => (
+    <div className={`relative flex items-center rounded-full border border-line bg-surface/70 ${big ? 'p-1 self-start' : 'p-0.5'}`}>
+      {[{ m: 'DEV', to: '/', active: !isCreator }, { m: 'CREATOR', to: '/creator', active: isCreator }].map((o) => (
+        <button
+          key={o.m}
+          onClick={() => switchTo(o.to)}
+          className={`relative rounded-full font-mono tracking-[0.18em] transition-colors duration-300 ${
+            big ? 'px-5 py-2.5 text-[11px]' : 'px-3.5 py-1.5 text-[10px]'
+          } ${o.active ? (isCreator ? 'text-[#f6c26b]' : 'text-cyan') : 'text-mute hover:text-ink'}`}
+        >
+          {o.active && (
+            <motion.span
+              layoutId={big ? 'modePillMobile' : 'modePill'}
+              className={`absolute inset-0 rounded-full ${isCreator ? 'bg-[#ff4ecd]/15 border border-[#f6c26b]/30' : 'bg-cyan/15 border border-cyan/30'}`}
+              transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+            />
+          )}
+          <span className={`relative flex items-center gap-1.5 ${o.m === 'DEV' ? '' : ''}`}>
+            {o.m === 'DEV' ? <FiZap size={big ? 12 : 10} /> : <span className="text-[0.9em]">✦</span>}
+            {o.m}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -98,6 +131,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             {isHome ? (
               LINKS.map((l) => <NavLink key={l.hash} item={l} />)
+            ) : isCreator ? (
+              <Link
+                to="/"
+                className="font-mono text-[11px] tracking-[0.22em] text-mute hover:text-ink transition-colors"
+              >
+                ← DEV PORTFOLIO
+              </Link>
             ) : (
               <a
                 href="/#work"
@@ -109,19 +149,26 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <ModeSwitch />
             <a
-              href={isHome ? '#contact' : '/#contact'}
-              className="flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-lime border border-lime/25 bg-lime/5 rounded-full px-3.5 py-1.5 hover:bg-lime/10 transition-colors"
+              href={isCreator ? 'mailto:imranaha310@gmail.com?subject=Hiring%20—%20Content%20/%20Social%20Media%20/%20AI%20Video' : isHome ? '#contact' : '/#contact'}
+              className={`flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] border rounded-full px-3.5 py-1.5 transition-colors ${
+                isCreator
+                  ? 'text-[#f6c26b] border-[#f6c26b]/25 bg-[#f6c26b]/5 hover:bg-[#f6c26b]/10'
+                  : 'text-lime border-lime/25 bg-lime/5 hover:bg-lime/10'
+              }`}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse-dot" />
-              OPEN TO WORK
+              <span className={`w-1.5 h-1.5 rounded-full animate-pulse-dot ${isCreator ? 'bg-[#f6c26b]' : 'bg-lime'}`} />
+              {isCreator ? 'HIRE ME' : 'OPEN TO WORK'}
             </a>
-            <Link
-              to="/ventures/aurelian-canvas"
-              className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] text-mute border border-line rounded-full px-3.5 py-1.5 hover:text-cyan hover:border-cyan/40 transition-colors"
-            >
-              VENTURES <FiArrowUpRight size={11} />
-            </Link>
+            {!isCreator && (
+              <Link
+                to="/ventures/aurelian-canvas"
+                className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] text-mute border border-line rounded-full px-3.5 py-1.5 hover:text-cyan hover:border-cyan/40 transition-colors"
+              >
+                VENTURES <FiArrowUpRight size={11} />
+              </Link>
+            )}
           </div>
 
           <button
@@ -148,6 +195,9 @@ const Navbar = () => {
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
                 <FiX size={24} />
               </button>
+            </div>
+            <div className="px-8 pt-2 pb-4">
+              <ModeSwitch big />
             </div>
             <div className="flex-1 flex flex-col justify-center px-8 gap-2">
               {LINKS.map((l, i) => (
@@ -181,14 +231,14 @@ const Navbar = () => {
                     download="Imran-Ahmad-Resume-India.pdf"
                     className="font-mono text-xs tracking-[0.2em] text-mute hover:text-cyan transition-colors"
                   >
-                    RESUME · INDIA ⬇
+                    RESUME · DEV ⬇
                   </a>
                   <a
-                    href="/Imran_Ahmad_Resume_International.pdf"
-                    download="Imran-Ahmad-Resume-International.pdf"
-                    className="font-mono text-xs tracking-[0.2em] text-mute hover:text-cyan transition-colors"
+                    href="/Imran_Ahmad_Creator_Resume.pdf"
+                    download="Imran-Ahmad-Creator-Resume.pdf"
+                    className="font-mono text-xs tracking-[0.2em] text-[#f6c26b] hover:text-[#ffde9e] transition-colors"
                   >
-                    RESUME · INTL ⬇
+                    RESUME · CREATOR ⬇
                   </a>
                 </div>
                 <Link

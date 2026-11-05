@@ -10,6 +10,8 @@ import AppLayout from './components/AppLayout';
 import Home from './components/Home';
 import AurelianCanvas from './components/AurelianCanvas';
 
+const CreatorMode = lazy(() => import('./components/CreatorMode'));
+
 const Work = lazy(() => import('./components/Work'));
 const Automation = lazy(() => import('./components/Automation'));
 const Experience = lazy(() => import('./components/Experience'));
@@ -71,6 +73,7 @@ function App() {
           ),
         },
         { path: '/ventures/aurelian-canvas', element: <AurelianCanvas /> },
+        { path: '/creator', element: <CreatorMode /> },
       ],
     },
   ]);

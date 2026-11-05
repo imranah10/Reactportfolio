@@ -133,3 +133,50 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Creator Mode (gold/magenta identity) ────────────────────── */
+@utility grad-text-gold {
+  background: linear-gradient(95deg, #ff4ecd 0%, #f6c26b 52%, #4cd7f6 108%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glow-gold {
+  box-shadow: 0 0 24px rgba(246, 194, 107, 0.16), 0 0 72px rgba(255, 78, 205, 0.10);
+}
+
+@keyframes aurora-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(60px, -40px) scale(1.12); }
+  66% { transform: translate(-40px, 30px) scale(0.94); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40% { transform: translate(-70px, -50px) scale(1.08); }
+  70% { transform: translate(50px, 40px) scale(0.92); }
+}
+@keyframes aurora-c {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  50% { transform: translate(-50%, -50%) rotate(180deg); }
+}
+@utility animate-aurora-a { animation: aurora-a 16s ease-in-out infinite; }
+@utility animate-aurora-b { animation: aurora-b 21s ease-in-out infinite; }
+@utility animate-aurora-c { animation: aurora-c 28s linear infinite; }
+
+@keyframes shine-sweep {
+  0% { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+  18% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
+}
+@utility animate-shine { animation: shine-sweep 3.2s ease-in-out infinite; }
+
+@keyframes flow-dash {
+  to { background-position: 200% 0; }
+}
+@utility pipeline-flow {
+  background: linear-gradient(90deg, rgba(255,78,205,0.7), rgba(246,194,107,0.7), rgba(76,215,246,0.7), rgba(255,78,205,0.7));
+  background-size: 200% 100%;
+  animation: flow-dash 3.4s linear infinite;
+}

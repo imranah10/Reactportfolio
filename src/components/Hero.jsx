@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { FiArrowDown, FiArrowUpRight, FiFileText, FiMail, FiChevronDown, FiDownload } from 'react-icons/fi';
 import profile1 from './images/profile1.jpg';
@@ -227,6 +228,12 @@ const Hero = () => {
             >
               <FiMail size={15} /> imranaha310@gmail.com
             </a>
+            <Link
+              to="/creator"
+              className="inline-flex items-center gap-2 text-[#f6c26b] hover:text-[#ffde9e] font-mono text-[11px] tracking-[0.18em] px-2 py-3.5 transition-colors duration-300"
+            >
+              <span>✦</span> CREATOR MODE <FiArrowUpRight size={12} />
+            </Link>
           </motion.div>
         </div>
 
