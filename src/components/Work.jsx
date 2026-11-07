@@ -345,8 +345,10 @@ const Work = () => (
 const ProjectCard = ({ p, i }) => {
   const vidRef = useRef(null);
 
-  const onEnter = () => { if (p.video && vidRef.current) vidRef.current.play().catch(() => {}); };
-  const onLeave = () => { if (p.video && vidRef.current) vidRef.current.pause(); };
+  // autoplay on mount — videos run as soon as the site opens (no hover needed)
+  useEffect(() => {
+    if (p.video && vidRef.current) vidRef.current.play().catch(() => {});
+  }, [p.video]);
 
   return (
     <motion.article
@@ -354,8 +356,6 @@ const ProjectCard = ({ p, i }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ delay: (i % 3) * 0.09, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
       className="group panel rounded-2xl overflow-hidden hover:border-cyan/30 transition-colors duration-300 flex flex-col"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-surface" data-cursor="view">
@@ -363,10 +363,11 @@ const ProjectCard = ({ p, i }) => {
           <video
             ref={vidRef}
             src={p.video}
+            autoPlay
             muted
             loop
             playsInline
-            preload="none"
+            preload="auto"
             className="w-full h-full object-cover"
           />
         ) : (
