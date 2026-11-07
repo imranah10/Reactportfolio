@@ -186,6 +186,14 @@ const Work = () => (
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {[
           {
+            title: 'Sun Power Enterprises',
+            type: 'SOLAR BUSINESS · CLIENT',
+            desc: 'Hindi-first rooftop solar website for a Patna client — PM Surya Ghar subsidy (₹98,000), savings calculator and WhatsApp lead capture. Live in production.',
+            img: '/shots/sunpower-hero.jpg',
+            demo: 'https://sun-power-enterprises.vercel.app/',
+            stack: ['Next.js', 'SEO', 'Vercel'],
+          },
+          {
             title: 'MyVirtualMate',
             type: 'AI COMPANION · CLIENT',
             desc: 'AI-powered virtual companion for emotional support — production product for an Australian company.',
