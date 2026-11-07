@@ -55,7 +55,7 @@ const Card = ({ icon, label, children, delay = 0, live = false, href, cta }) => 
 );
 
 const ProofStrip = () => {
-  const { npmMonthly, repos } = useLiveStats();
+  const { npmTotal, repos } = useLiveStats();
 
   return (
     <section id="proof" className="relative py-20 sm:py-24">
@@ -80,10 +80,10 @@ const ProofStrip = () => {
             delay={0}
           >
             <div className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight">
-              <CountUp value={npmMonthly ?? 547} />
+              <CountUp value={npmTotal ?? 1480} />
             </div>
             <div className="mt-2 font-mono text-[11px] tracking-[0.15em] text-mute">
-              DOWNLOADS / MONTH
+              TOTAL NPM DOWNLOADS
             </div>
             <p className="mt-3 text-[13px] text-faint leading-relaxed">
               Real-time from npm registry. Package <span className="text-mute">toolverse</span> —

@@ -133,11 +133,12 @@ const Navbar = () => {
         }`}
       >
         <nav className="max-w-[1200px] mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
-          <Link to="/" className="font-display font-extrabold text-lg tracking-tight group">
-            IA<span className="text-cyan">.</span>
-            <span className="hidden sm:inline text-mute font-body font-medium text-xs ml-3 group-hover:text-ink transition-colors">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <img src="/creator/logos/ia-logo.png" alt="Imran Ahmad monogram logo" className="w-8 h-8 object-contain" />
+            <span className="hidden sm:inline text-mute font-body font-medium text-xs tracking-[0.18em] group-hover:text-ink transition-colors">
               IMRAN AHMAD
             </span>
+            <span className="sm:hidden font-display font-extrabold text-lg">IA<span className="text-cyan">.</span></span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -203,7 +204,10 @@ const Navbar = () => {
             className="fixed inset-0 z-[9800] bg-bg/97 backdrop-blur-2xl flex flex-col"
           >
             <div className="h-16 px-5 flex items-center justify-between">
-              <span className="font-display font-extrabold text-lg">IA<span className="text-cyan">.</span></span>
+              <span className="flex items-center gap-2 font-display font-extrabold text-lg">
+                <img src="/creator/logos/ia-logo.png" alt="Imran Ahmad monogram logo" className="w-8 h-8 object-contain" />
+                IA<span className="text-cyan">.</span>
+              </span>
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
                 <FiX size={24} />
               </button>

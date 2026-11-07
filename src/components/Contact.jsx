@@ -202,8 +202,8 @@ const Contact = () => {
               <p className="font-mono text-[10px] tracking-[0.25em] text-faint mb-4">RESUME //</p>
               <div className="grid sm:grid-cols-2 gap-3 max-w-[420px]">
                 {[
-                  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 69 KB' },
-                  { label: 'International (ATS)', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 8 KB' },
+                  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 1 page · ATS' },
+                  { label: 'International · Visa Sponsorship', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 1 page · ATS' },
                 ].map((r) => (
                   <a
                     key={r.href}

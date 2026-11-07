@@ -59,13 +59,13 @@ const KineticWord = ({ word, delay = 0, gradient = false }) => (
 );
 
 const RESUMES = [
-  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 69 KB' },
-  { label: 'International (ATS)', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 8 KB' },
+  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 1 page · ATS' },
+  { label: 'International · Visa Sponsorship', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 1 page · ATS' },
 ];
 
 const Hero = () => {
   const role = useRoleScramble();
-  const { npmMonthly, repos } = useLiveStats();
+  const { npmTotal, repos } = useLiveStats();
   const [resumeOpen, setResumeOpen] = useState(false);
   const resRef = useRef(null);
 
@@ -148,10 +148,10 @@ const Hero = () => {
             className="mt-7 flex flex-wrap gap-2.5"
           >
             <span className="font-mono text-[11px] px-3.5 py-2 rounded-lg border border-line bg-panel text-mute">
-              <span className="text-cyan">{npmMonthly ?? '547'}</span> npm downloads / mo
+              <span className="text-cyan">{npmTotal != null ? npmTotal.toLocaleString('en-IN') + '+' : '1,480+'}</span> npm downloads
             </span>
             <span className="font-mono text-[11px] px-3.5 py-2 rounded-lg border border-line bg-panel text-mute">
-              <span className="text-cyan">56</span> tools · 9 studios
+              <span className="text-cyan">57+</span> tools · 8 studios
             </span>
             <span className="font-mono text-[11px] px-3.5 py-2 rounded-lg border border-line bg-panel text-mute">
               <span className="text-cyan">254</span> components on npm

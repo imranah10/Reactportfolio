@@ -18,8 +18,9 @@ const VENTURES = [
     name: 'ToolVerse',
     accent: '#b7ff4e',
     monogram: 'TV',
-    desc: 'A privacy-first AI toolkit — 57 tools across 9 studios, 100% in-browser. Published as an npm package with 254 React components, live on Vercel, and fed by a fully automated 90-day content engine.',
-    metrics: ['57 AI tools', '9 studios', '254 npm components', '90-day auto engine'],
+    logo: '/creator/logos/toolverse-logo.png',
+    desc: 'A privacy-first AI toolkit — 57+ tools across 8 studios, 100% in-browser. Published as an npm package with 254 React components, live on Vercel, and fed by a fully automated 90-day content engine.',
+    metrics: ['57+ AI tools', '8 studios', '254 npm components', '90-day auto engine'],
     profile: {
       platform: 'IG',
       handle: '@toolverse.offiicial',
@@ -40,6 +41,7 @@ const VENTURES = [
     name: 'Aurelian Canvas',
     accent: '#f6c26b',
     monogram: 'AC',
+    logo: '/creator/logos/aurelian-logo.png',
     desc: 'Museum-grade 16K AI masterpieces — "Engineered for the Elite. Curated for the Visionary." A luxury digital-art label with its own gallery identity, growing across Instagram and Pinterest.',
     metrics: ['16K ultra-res art', 'luxury positioning', 'IG + Pinterest', 'Linktree funnel'],
     profile: {
@@ -62,6 +64,7 @@ const VENTURES = [
     name: 'Pipsio Kids',
     accent: '#4cd7f6',
     monogram: 'PK',
+    logo: '/creator/logos/pipsio-logo.png',
     desc: 'A 3D nursery-rhymes universe with original characters — Roary, Mimi, Gola & Pip. Weekly songs and stories produced end-to-end with an AI pipeline: script to final render.',
     metrics: ['original characters', '3D AI pipeline', 'weekly uploads', 'YouTube + IG + FB'],
     profile: {
@@ -389,8 +392,8 @@ const VentureCard = ({ v, i }) => (
         {/* monogram with brand ring */}
         <div className="relative shrink-0" style={{ perspective: 600 }}>
           <div className="absolute -inset-1 rounded-2xl blur-md opacity-40" style={{ background: v.ring }} />
-          <div className="relative w-16 h-16 rounded-2xl bg-bg border border-line-strong flex items-center justify-center" style={{ transform: 'translateZ(30px)' }}>
-            <span className="font-display font-extrabold text-xl" style={{ color: v.accent }}>{v.monogram}</span>
+          <div className="relative w-16 h-16 rounded-2xl bg-bg border border-line-strong flex items-center justify-center overflow-hidden" style={{ transform: 'translateZ(30px)' }}>
+            <img src={v.logo} alt={`${v.name} logo`} className="w-full h-full object-contain p-1.5" loading="lazy" />
           </div>
         </div>
       </div>
@@ -406,8 +409,8 @@ const VentureCard = ({ v, i }) => (
       {/* mock social profile strip */}
       <div className="rounded-2xl border border-line bg-bg/60 p-4 mb-5 flex items-center gap-4">
         <div className="w-12 h-12 rounded-full p-[2.5px] shrink-0" style={{ background: v.profile.ring }}>
-          <div className="w-full h-full rounded-full bg-bg flex items-center justify-center font-display font-extrabold text-[11px]" style={{ color: v.accent }}>
-            {v.monogram}
+          <div className="w-full h-full rounded-full bg-bg flex items-center justify-center overflow-hidden">
+            <img src={v.logo} alt="" className="w-9 h-9 object-contain" loading="lazy" />
           </div>
         </div>
         <div className="min-w-0">
@@ -442,10 +445,114 @@ const VentureCard = ({ v, i }) => (
   </motion.div>
 );
 
+const OperatorStrip = () => (
+  <section className="relative pb-2 sm:pb-6">
+    <div className="max-w-[1200px] mx-auto px-5 md:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.8, ease: EASE }}
+        className="panel rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 relative overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ff4ecd]/50 to-transparent" />
+        <div className="relative shrink-0">
+          <div className="absolute -inset-1 rounded-3xl blur-md opacity-40 bg-gradient-to-br from-[#f6c26b] via-[#ff4ecd] to-cyan" />
+          <img
+            src="/creator/work/imran-portrait.jpg"
+            alt="Imran Ahmad — the creator behind the three brands"
+            loading="lazy"
+            className="relative w-28 h-32 sm:w-32 sm:h-36 rounded-3xl object-cover object-top"
+          />
+        </div>
+        <div className="min-w-0 text-center sm:text-left">
+          <p className="font-mono text-[9px] tracking-[0.3em] text-[#f6c26b] mb-2">THE OPERATOR</p>
+          <h3 className="font-display font-extrabold text-2xl sm:text-3xl tracking-tight mb-2">One human. Three brands. Zero missed posts.</h3>
+          <p className="text-mute text-sm leading-relaxed max-w-[560px] mx-auto sm:mx-0">
+            I'm <span className="text-ink font-medium">Imran Ahmad</span> — a developer-turned-creator from Bihar, India. I design the visuals,
+            write the hooks, render the videos and code the engines that publish them. AI-assisted, human-directed — shipped on time, every time.
+          </p>
+          <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-4">
+            {['Developer-turned-creator', 'AI-native stack', 'Bihar, India', 'Open for hire'].map((c) => (
+              <span key={c} className="font-mono text-[10px] px-2.5 py-1.5 rounded-lg border border-line bg-panel text-mute">{c}</span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
+
+const BRAND_TAG = {
+  toolverse: { label: 'ToolVerse', color: '#b7ff4e' },
+  aurelian: { label: 'Aurelian Canvas', color: '#f6c26b' },
+  pipsio: { label: 'Pipsio Kids', color: '#4cd7f6' },
+};
+
+const SHOWCASE = [
+  { brand: 'toolverse', src: '/creator/work/tv-photo3d.jpg', title: 'Photo → 3D with depth & parallax · Image Studio', kind: 'IG 4:5' },
+  { brand: 'aurelian', src: '/creator/work/ac-royal.jpg', title: 'Royal Luxe — 16K gallery drop', kind: 'IG · Pinterest' },
+  { brand: 'pipsio', src: '/creator/work/pk-stars.jpg', title: 'Who Stole the Stars? — original story', kind: 'YouTube' },
+  { brand: 'toolverse', src: '/creator/work/tv-flipbook.jpg', title: 'PDF → 3D interactive flipbook · PDF Studio', kind: 'IG 4:5' },
+  { brand: 'pipsio', src: '/creator/work/pk-bus.jpg', title: 'Wheels on the Bus — 3D sing-along', kind: 'YouTube' },
+  { brand: 'toolverse', src: '/creator/work/tv-architect.jpg', title: 'Sketch → interior render · AI Pro Studio', kind: 'IG 4:5' },
+  { brand: 'aurelian', src: '/creator/work/ac-gallery.jpg', title: 'Museum-grade gallery identity', kind: 'Brand film' },
+  { brand: 'toolverse', src: '/creator/work/tv-npmxray.jpg', title: 'X-ray your npm dependencies · Developer Studio', kind: 'IG 4:5' },
+  { brand: 'pipsio', src: '/creator/work/pk-colors.jpg', title: "Let's Learn Colors — nursery episode", kind: 'YouTube' },
+  { brand: 'toolverse', src: '/creator/work/tv-shadow.jpg', title: 'Browser fingerprint audit · Shield Studio', kind: 'IG 4:5' },
+];
+
+const ShowcaseSection = () => (
+  <section id="work" className="relative py-20 sm:py-28 border-t border-line">
+    <div className="max-w-[1200px] mx-auto px-5 md:px-8">
+      <SectionHead num="02" kicker="THE OUTPUT" title={<>Real posts,<br /><span className="grad-text-gold">shipped by the engine</span></>} />
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.7, ease: EASE }}
+        className="max-w-[680px] text-mute text-[15px] leading-relaxed mb-10"
+      >
+        No stock mockups — every visual below was generated, branded and published by my content engine:
+        ToolVerse tool drops, Aurelian Canvas gallery pieces and Pipsio Kids episodes.
+      </motion.p>
+      <div className="columns-2 lg:columns-3 gap-4 [&>*]:mb-4">
+        {SHOWCASE.map((w, i) => {
+          const b = BRAND_TAG[w.brand];
+          return (
+            <motion.figure
+              key={w.src}
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ delay: (i % 3) * 0.08, duration: 0.7, ease: EASE }}
+              className="group relative break-inside-avoid overflow-hidden rounded-2xl border border-line bg-panel"
+            >
+              <img
+                src={w.src}
+                alt={`${b.label} — ${w.title}`}
+                loading="lazy"
+                className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              <figcaption className="absolute inset-x-0 bottom-0 p-3.5 pt-8 bg-gradient-to-t from-black/85 via-black/45 to-transparent">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: b.color }} />
+                  <span className="font-mono text-[9px] tracking-[0.22em]" style={{ color: b.color }}>{b.label.toUpperCase()} · {w.kind}</span>
+                </div>
+                <div className="font-display font-bold text-[13px] leading-snug text-white/95">{w.title}</div>
+              </figcaption>
+            </motion.figure>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
 const MachineSection = () => (
   <section id="machine" className="relative py-20 sm:py-28 border-t border-line">
     <div className="max-w-[1200px] mx-auto px-5 md:px-8">
-      <SectionHead num="02" kicker="WHY I'M DIFFERENT" title={<>I don't post content.<br /><span className="grad-text-gold">I build engines</span> that post it.</>} />
+      <SectionHead num="03" kicker="WHY I'M DIFFERENT" title={<>I don't post content.<br /><span className="grad-text-gold">I build engines</span> that post it.</>} />
 
       <motion.p
         initial={{ opacity: 0, y: 20 }}
@@ -504,7 +611,7 @@ const MachineSection = () => (
 const ServicesSection = () => (
   <section id="services" className="relative py-20 sm:py-28 border-t border-line">
     <div className="max-w-[1200px] mx-auto px-5 md:px-8">
-      <SectionHead num="03" kicker="HIRE ME FOR" title={<>What I can run<br /><span className="grad-text-gold">for your brand</span></>} />
+      <SectionHead num="04" kicker="HIRE ME FOR" title={<>What I can run<br /><span className="grad-text-gold">for your brand</span></>} />
 
       <div className="grid md:grid-cols-3 gap-5">
         {SERVICES.map((s, i) => (
@@ -621,6 +728,7 @@ const CreatorMode = () => (
     <CreatorHero />
     <CreatorMarquee />
     <StatsBar />
+    <OperatorStrip />
 
     <section id="ventures" className="relative py-20 sm:py-28">
       <div className="max-w-[1200px] mx-auto px-5 md:px-8">
@@ -633,6 +741,7 @@ const CreatorMode = () => (
       </div>
     </section>
 
+    <ShowcaseSection />
     <MachineSection />
     <ServicesSection />
     <HireSection />
