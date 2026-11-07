@@ -16,10 +16,10 @@ const Row = ({ reverse = false }) => (
     <div className={`flex shrink-0 items-center gap-10 pr-10 ${reverse ? 'animate-marquee-rev' : 'animate-marquee'}`}>
       {[...ITEMS, ...ITEMS].map((item, i) => (
         <span key={i} className="flex items-center gap-10 shrink-0">
-          <span className="font-display font-bold text-2xl sm:text-3xl tracking-tight text-stroke whitespace-nowrap">
+          <span className="font-display font-bold text-2xl sm:text-3xl tracking-tight grad-text whitespace-nowrap">
             {item}
           </span>
-          <span className={`w-2 h-2 rotate-45 ${i % 2 ? 'bg-magenta/60' : 'bg-cyan/60'}`} />
+          <span className={`w-2 h-2 rotate-45 ${i % 2 ? 'bg-magenta' : 'bg-cyan'}`} />
         </span>
       ))}
     </div>

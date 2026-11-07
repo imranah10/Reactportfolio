@@ -56,9 +56,12 @@ const Footer = () => {
       <div className="relative max-w-[1200px] mx-auto px-5 md:px-8 pb-8 grid md:grid-cols-[1.3fr_0.7fr_1fr] gap-10 md:gap-8">
         {/* brand */}
         <div>
-          <p className="font-display font-extrabold text-2xl tracking-tight">
-            IA<span className="text-cyan">.</span>
-          </p>
+          <img
+            src="/creator/logos/ia-logo.png"
+            alt="IA — Imran Ahmad monogram"
+            loading="lazy"
+            className="h-11 w-11 object-contain"
+          />
           <p className="text-mute text-[13px] leading-relaxed mt-3 max-w-[300px]">
             Full Stack &amp; AI Developer · Content Creator. Building fast, private,
             browser-first products — and documenting the journey.

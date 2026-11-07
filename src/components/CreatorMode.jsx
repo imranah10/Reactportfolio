@@ -179,7 +179,7 @@ const SectionHead = ({ num, kicker, title }) => (
 );
 
 /** Mouse-tracked 3D tilt card with shine sweep */
-const Tilt = ({ children, className = '', glow = 'glow-gold' }) => {
+const Tilt = ({ children, className = '', glow = 'glow-gold', ...rest }) => {
   const ref = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -200,6 +200,7 @@ const Tilt = ({ children, className = '', glow = 'glow-gold' }) => {
       onMouseLeave={() => { mx.set(0); my.set(0); }}
       style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d', perspective: 900 }}
       className={`group relative ${className}`}
+      {...rest}
     >
       <div className={`absolute -inset-px rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${glow}`} />
       {children}
@@ -250,18 +251,19 @@ const CreatorHero = () => {
         <div className="absolute -bottom-56 left-[30%] w-[520px] h-[520px] rounded-full bg-cyan/[0.07] blur-[130px] animate-aurora-a" />
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-5 md:px-8 w-full relative">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.15, duration: 0.6 }}
-          className="inline-flex items-center gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-mute border border-line rounded-full px-4 py-2 mb-7"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#f6c26b] animate-pulse-dot" />
-          3 BRANDS · 1 OPERATOR · OPEN FOR HIRE
-        </motion.div>
+      <div className="max-w-[1200px] mx-auto px-5 md:px-8 w-full relative grid lg:grid-cols-[1.12fr_0.88fr] gap-12 lg:gap-14 items-center">
+        <div className="min-w-0">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.15, duration: 0.6 }}
+            className="inline-flex items-center gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-mute border border-line rounded-full px-4 py-2 mb-7"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#f6c26b] animate-pulse-dot" />
+            3 BRANDS · 1 OPERATOR · OPEN FOR HIRE
+          </motion.div>
 
-        <h1 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.9rem,8vw,6rem)]">
+          <h1 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.6rem,5.6vw,4.4rem)]">
           <KineticWord word="I" delay={1.2} /> <KineticWord word="BUILD" delay={1.28} />
           <br />
           <KineticWord word="BRANDS" delay={1.45} gold />
@@ -317,6 +319,35 @@ const CreatorHero = () => {
             <FiArrowLeft size={13} /> SWITCH TO DEV MODE
           </Link>
         </motion.div>
+        </div>
+
+        {/* studio visual — AI-generated */}
+        <motion.div
+          initial={{ opacity: 0, y: 34, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 2.0, duration: 1.0, ease: EASE }}
+          className="relative w-full max-w-[460px] mx-auto lg:max-w-none"
+        >
+          <div className="absolute -inset-3 rounded-[2.2rem] bg-gradient-to-br from-[#f6c26b]/25 via-[#ff4ecd]/12 to-cyan/20 blur-2xl opacity-70" aria-hidden="true" />
+          <div className="relative rounded-[1.75rem] border border-line-strong overflow-hidden shadow-2xl bg-panel">
+            <img
+              src="/creator/work/hero-studio.jpg"
+              alt="Imran's creator studio — cinema camera, golden ring light and live analytics dashboards"
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-4 left-4 font-mono text-[9px] tracking-[0.25em] text-white/70 bg-black/50 backdrop-blur-md border border-white/15 rounded-lg px-2.5 py-1.5">
+              THE STUDIO
+            </div>
+            <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+              {['3 LIVE BRANDS', '90-DAY ENGINE', '60+ VIDEOS'].map((chip) => (
+                <span key={chip} className="font-mono text-[9px] tracking-[0.18em] bg-black/55 backdrop-blur-md border border-white/15 text-white/85 rounded-lg px-2.5 py-1.5">
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       <motion.a
@@ -342,8 +373,8 @@ const CreatorMarquee = () => (
       <div className="flex shrink-0 items-center gap-10 pr-10 animate-marquee">
         {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
           <span key={i} className="flex items-center gap-10 shrink-0">
-            <span className="font-display font-bold text-2xl sm:text-3xl tracking-tight text-stroke whitespace-nowrap">{item}</span>
-            <span className={`w-2 h-2 rotate-45 ${i % 2 ? 'bg-[#f6c26b]/60' : 'bg-[#ff4ecd]/60'}`} />
+            <span className="font-display font-bold text-2xl sm:text-3xl tracking-tight whitespace-nowrap bg-gradient-to-r from-[#f6c26b] via-[#ffe2ae] to-[#f6c26b] bg-clip-text text-transparent">{item}</span>
+            <span className={`w-2 h-2 rotate-45 ${i % 2 ? 'bg-[#ff4ecd]' : 'bg-[#f6c26b]'}`} />
           </span>
         ))}
       </div>
@@ -383,7 +414,14 @@ const VentureCard = ({ v, i }) => (
     viewport={{ once: true, margin: '-60px' }}
     transition={{ delay: i * 0.12, duration: 0.8, ease: EASE }}
   >
-    <Tilt className="panel rounded-3xl p-6 sm:p-8 h-full">
+    <Tilt
+      className="panel rounded-3xl p-6 sm:p-8 h-full cursor-pointer"
+      onClick={() => window.open(v.links[0].href, '_blank', 'noopener,noreferrer')}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open(v.links[0].href, '_blank', 'noopener,noreferrer'); } }}
+      role="link"
+      tabIndex={0}
+      aria-label={`Open ${v.name}`}
+    >
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
           <p className="font-mono text-[9px] tracking-[0.3em] mb-2" style={{ color: v.accent }}>{v.tag}</p>
@@ -393,7 +431,7 @@ const VentureCard = ({ v, i }) => (
         <div className="relative shrink-0" style={{ perspective: 600 }}>
           <div className="absolute -inset-1 rounded-2xl blur-md opacity-40" style={{ background: v.ring }} />
           <div className="relative w-16 h-16 rounded-2xl bg-bg border border-line-strong flex items-center justify-center overflow-hidden" style={{ transform: 'translateZ(30px)' }}>
-            <img src={v.logo} alt={`${v.name} logo`} className="w-full h-full object-contain p-1.5" loading="lazy" />
+            <img src={v.logo} alt={`${v.name} logo`} className="w-full h-full object-contain p-2.5" loading="lazy" />
           </div>
         </div>
       </div>
@@ -410,7 +448,7 @@ const VentureCard = ({ v, i }) => (
       <div className="rounded-2xl border border-line bg-bg/60 p-4 mb-5 flex items-center gap-4">
         <div className="w-12 h-12 rounded-full p-[2.5px] shrink-0" style={{ background: v.profile.ring }}>
           <div className="w-full h-full rounded-full bg-bg flex items-center justify-center overflow-hidden">
-            <img src={v.logo} alt="" className="w-9 h-9 object-contain" loading="lazy" />
+            <img src={v.logo} alt="" className="w-8 h-8 object-contain" loading="lazy" />
           </div>
         </div>
         <div className="min-w-0">
@@ -433,6 +471,7 @@ const VentureCard = ({ v, i }) => (
             href={l.href}
             target="_blank"
             rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="group/link flex items-center gap-3 font-mono text-[11px] text-mute hover:text-ink transition-colors"
           >
             <l.icon size={14} style={{ color: v.accent }} />
@@ -440,6 +479,15 @@ const VentureCard = ({ v, i }) => (
             <FiArrowUpRight size={11} className="ml-auto opacity-0 group-hover/link:opacity-100 transition-opacity shrink-0" />
           </a>
         ))}
+      </div>
+
+      {/* whole-card click hint */}
+      <div
+        className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] transition-all duration-300 group-hover:gap-3"
+        style={{ color: v.accent }}
+      >
+        OPEN {v.name.toUpperCase()}
+        <FiArrowUpRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </div>
     </Tilt>
   </motion.div>
