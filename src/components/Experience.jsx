@@ -3,12 +3,19 @@ import SectionHeading from './SectionHeading';
 
 const ITEMS = [
   {
-    role: 'Full Stack Developer → Independent AI Builder',
+    role: 'Freelance Web Developer — Toolverse & AI Products',
+    org: 'Self-employed',
+    meta: 'REMOTE · OWN PRODUCTS + CLIENT WORK',
+    period: 'Dec 2025 — Present',
+    desc: 'Maintain the Toolverse ecosystem — npm package (250+ React components, 1,000+ SVG icons) and its 57+ tool web app. Shipped OmniPost-AI (AI campaign studio) and a GitHub Actions content engine running a 90-day publishing calendar with prime-time geo-targeting. Built and maintain Sun Power Enterprises — live Next.js + SEO client site.',
+    current: true,
+  },
+  {
+    role: 'Full Stack Developer (4-Month Contract)',
     org: 'MyVirtualMate',
     meta: 'REMOTE · AUSTRALIAN COMPANY',
     period: 'Aug 2025 — Nov 2025',
-    desc: 'Built and shipped product surfaces for a live AI-companion platform: presentation site, resume screener and marketing pages.',
-    current: true,
+    desc: 'Built and shipped product surfaces for a live AI-companion platform: presentation site, resume screener and marketing pages. AI-first workflow — company-provided tools (Cursor, Lovable), features delivered to production on Supabase.',
   },
   {
     role: 'Web Developer Intern',
