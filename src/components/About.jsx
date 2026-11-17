@@ -90,7 +90,7 @@ const About = () => (
 
           <div className="flex flex-wrap gap-3 px-1">
             <a
-              href="/Imran_Ahmad_Resume.pdf"
+              href="/imran-ahmad-resume-international.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-line-strong text-ink text-sm px-5 py-3 rounded-xl hover:border-cyan/50 hover:text-cyan transition-colors duration-300"

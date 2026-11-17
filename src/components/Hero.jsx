@@ -59,8 +59,10 @@ const KineticWord = ({ word, delay = 0, gradient = false }) => (
 );
 
 const RESUMES = [
-  { label: 'India Format', href: '/Imran_Ahmad_Resume_India.pdf', size: 'PDF · 1 page · ATS' },
-  { label: 'International · Visa Sponsorship', href: '/Imran_Ahmad_Resume_International.pdf', size: 'PDF · 1 page · ATS' },
+  { label: 'India Format · PDF', href: '/imran-ahmad-resume-india.pdf', size: 'PDF · 2 pages · ATS' },
+  { label: 'India Format · Word', href: '/imran-ahmad-resume-india.docx', size: 'DOCX · editable' },
+  { label: 'International · PDF', href: '/imran-ahmad-resume-international.pdf', size: 'Visa Sponsorship · 2 pages · ATS' },
+  { label: 'International · Word', href: '/imran-ahmad-resume-international.docx', size: 'Visa Sponsorship · DOCX editable' },
 ];
 
 const Hero = () => {

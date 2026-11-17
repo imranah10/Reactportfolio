@@ -241,8 +241,8 @@ const Navbar = () => {
                 </a>
                 <div className="flex items-center gap-5">
                   <a
-                    href="/Imran_Ahmad_Resume_India.pdf"
-                    download="Imran-Ahmad-Resume-India.pdf"
+                    href="/imran-ahmad-resume-india.pdf"
+                    download="imran-ahmad-resume-india.pdf"
                     className="font-mono text-xs tracking-[0.2em] text-mute hover:text-cyan transition-colors"
                   >
                     RESUME · DEV ⬇
